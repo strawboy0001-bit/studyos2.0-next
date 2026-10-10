@@ -1,69 +1,109 @@
+"use client";
+
+import { BookOpen, Calendar, Target, Clock, CheckSquare, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/db";
 import Image from "next/image";
 
-export default function Home() {
+export default function DashboardPage() {
+  const profile = useLiveQuery(() => db.profile.get(1));
+  const tasks = useLiveQuery(() => db.tasks.toArray());
+  
+  const pendingTasks = tasks?.filter(t => t.status !== "completed") || [];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="space-y-8 max-w-7xl mx-auto pb-32">
+      <div className="bg-pink-400 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+        {/* Decorative circle */}
+        <div className="absolute -left-16 -top-16 w-64 h-64 bg-pink-300 rounded-full opacity-50"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl font-black tracking-tight mb-2">
+            {profile ? `Study_OS // ${profile.name}` : "Study_OS // Dashboard"}
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-pink-100 font-medium">
+            {profile ? `Class: ${profile.degree}` : "Let's do our best today!"}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md p-6 shadow-sm border border-pink-100 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-2">
+            <BookOpen className="h-5 w-5 text-pink-500" />
+            <h3 className="font-bold text-pink-900/60 text-sm">Subjects</h3>
+          </div>
+          <p className="mt-4 text-4xl font-black text-pink-500">4</p>
         </div>
-      </main>
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md p-6 shadow-sm border border-pink-100 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-2">
+            <Target className="h-5 w-5 text-rose-500" />
+            <h3 className="font-bold text-pink-900/60 text-sm">Active Goals</h3>
+          </div>
+          <p className="mt-4 text-4xl font-black text-rose-500">2</p>
+        </div>
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md p-6 shadow-sm border border-pink-100 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-2">
+            <Clock className="h-5 w-5 text-pink-400" />
+            <h3 className="font-bold text-pink-900/60 text-sm">Study Time</h3>
+          </div>
+          <p className="mt-4 text-4xl font-black text-pink-400">2.5<span className="text-sm font-bold text-pink-900/30 ml-2">hrs</span></p>
+        </div>
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md p-6 shadow-sm border border-pink-100 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-2">
+            <Calendar className="h-5 w-5 text-pink-600" />
+            <h3 className="font-bold text-pink-900/60 text-sm">Upcoming Exams</h3>
+          </div>
+          <p className="mt-4 text-4xl font-black text-pink-600">1</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Quick Actions */}
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md shadow-sm border border-pink-100 overflow-hidden">
+          <div className="border-b border-pink-100 px-6 py-4">
+            <h3 className="font-bold text-pink-950 text-lg">Quick Actions</h3>
+          </div>
+          <div className="p-6 grid grid-cols-2 gap-4">
+            <Link href="/tasks/new" className="flex flex-col items-center justify-center p-6 rounded-2xl bg-pink-50 hover:bg-pink-100 text-pink-500 transition-colors">
+              <Target className="h-8 w-8 mb-3" />
+              <span className="font-bold text-sm">Add Task</span>
+            </Link>
+            <Link href="/notes/new" className="flex flex-col items-center justify-center p-6 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-500 transition-colors">
+              <BookOpen className="h-8 w-8 mb-3" />
+              <span className="font-bold text-sm">New Note</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Today's Tasks */}
+        <div className="rounded-3xl bg-white/80 backdrop-blur-md shadow-sm border border-pink-100 overflow-hidden flex flex-col h-full">
+          <div className="border-b border-pink-100 px-6 py-4 flex items-center justify-between">
+            <h3 className="font-bold text-pink-950 text-lg">Today's Priorities</h3>
+            <Link href="/tasks" className="text-sm font-bold text-pink-500 hover:text-pink-600">View all</Link>
+          </div>
+          <div className="p-6 flex-1 flex flex-col items-center justify-center text-center">
+            {pendingTasks.length > 0 ? (
+              <div className="space-y-4 w-full text-left">
+                {pendingTasks.slice(0,3).map(task => (
+                   <div key={task.id} className="p-4 bg-pink-50 rounded-2xl flex justify-between items-center border border-pink-100/50">
+                     <span className="font-bold text-pink-950">{task.title}</span>
+                     <span className="text-xs font-bold text-pink-500 px-3 py-1 bg-white rounded-full">{task.priority}</span>
+                   </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="h-16 w-16 bg-pink-100 rounded-full flex items-center justify-center mb-4">
+                  <CheckSquare className="h-8 w-8 text-pink-400" />
+                </div>
+                <p className="text-pink-900/60 font-bold">All tasks done! Good job!</p>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
