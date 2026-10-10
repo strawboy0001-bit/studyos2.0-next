@@ -24,7 +24,7 @@ const navigation = [
   { name: 'Goals', href: '/goals', icon: Target },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full w-full flex-col bg-transparent">
       <div className="flex h-16 shrink-0 items-center px-6">
@@ -36,6 +36,7 @@ export function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onNavigate}
               className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-pink-900/60 hover:bg-pink-100/50 hover:text-pink-600 transition-all"
             >
               <item.icon className="h-5 w-5 shrink-0 text-pink-400" aria-hidden="true" />
@@ -46,6 +47,7 @@ export function Sidebar() {
         <div className="mt-auto pt-4 space-y-1">
           <Link
             href="/settings"
+            onClick={onNavigate}
             className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-pink-900/60 hover:bg-pink-100/50 hover:text-pink-600 transition-all"
           >
             <Settings className="h-5 w-5 shrink-0 text-pink-400" aria-hidden="true" />

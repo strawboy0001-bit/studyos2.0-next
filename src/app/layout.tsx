@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import { Sidebar } from "@/components/layout/Sidebar";
+import { MobileHeader } from "@/components/layout/MobileHeader";
 import { OnboardingModal } from "@/components/ui/OnboardingModal";
 import { CherryBlossomBackground } from "@/components/ui/CherryBlossomBackground";
 import { FloatingAssistant } from "@/components/ui/FloatingAssistant";
@@ -36,12 +37,13 @@ export default function RootLayout({
         <CherryBlossomBackground />
         <OnboardingModal />
         <FloatingAssistant />
-        <div className="flex h-screen overflow-hidden relative z-10">
+        <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
+          <MobileHeader />
           <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-xl bg-white/70 border-r border-pink-100 shadow-[4px_0_24px_rgba(253,164,175,0.1)]">
             <Sidebar />
           </div>
-          <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0">
-            <main className="flex-1 overflow-y-auto p-8">
+          <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0 overflow-hidden">
+            <main className="flex-1 overflow-y-auto p-4 md:p-8">
               {children}
             </main>
           </div>
