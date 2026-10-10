@@ -20,10 +20,7 @@ export function CherryBlossomBackground() {
     <div 
       className="fixed inset-0 pointer-events-none overflow-hidden z-[-1]" 
       style={{ 
-        backgroundImage: 'url("/bg-anime.jpg")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundColor: '#f8fafc', // Light background to contrast with the blossoms and glass
       }}
     >
       {/* Dark/Light overlay to ensure text readability if needed, but we rely on glassmorphism panels */}

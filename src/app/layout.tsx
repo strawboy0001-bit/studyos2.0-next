@@ -21,6 +21,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { OnboardingModal } from "@/components/ui/OnboardingModal";
 import { CherryBlossomBackground } from "@/components/ui/CherryBlossomBackground";
+import { FloatingAssistant } from "@/components/ui/FloatingAssistant";
 
 export default function RootLayout({
   children,
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col text-slate-800 font-sans bg-slate-50/10 selection:bg-violet-200">
         <CherryBlossomBackground />
         <OnboardingModal />
+        <FloatingAssistant />
         <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
           <MobileHeader />
           <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-2xl bg-white/40 border-r border-white/60 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
