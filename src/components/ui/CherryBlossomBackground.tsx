@@ -7,7 +7,7 @@ export function CherryBlossomBackground() {
 
   useEffect(() => {
     // Generate a fixed number of petals
-    const newPetals = Array.from({ length: 75 }).map((_, i) => ({
+    const newPetals = Array.from({ length: 300 }).map((_, i) => ({
       id: i,
       left: Math.random() * 100, // percentage
       animationDuration: 10 + Math.random() * 15, // 10-25 seconds

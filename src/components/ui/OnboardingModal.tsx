@@ -52,17 +52,17 @@ export function OnboardingModal() {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="bg-white/95 backdrop-blur-xl border border-blue-100 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-w-md w-full relative overflow-hidden"
+            className="bg-white/40 backdrop-blur-2xl border border-white/60 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-w-md w-full relative overflow-hidden"
           >
             {/* Decorative background circle */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500 rounded-full opacity-10 blur-3xl pointer-events-none"></div>
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]0 rounded-full opacity-10 blur-3xl pointer-events-none"></div>
 
             <div className="flex justify-center mb-6 relative z-10">
               <motion.div 
                 initial={{ rotate: -180, scale: 0 }}
                 animate={{ rotate: 0, scale: 1 }}
                 transition={{ type: "spring", delay: 0.2, stiffness: 200 }}
-                className="bg-blue-100/80 p-4 rounded-2xl text-blue-600 shadow-sm"
+                className="bg-white/60 backdrop-blur-lg border border-white/60 p-4 rounded-2xl text-violet-700 shadow-sm"
               >
                 <GraduationCap className="h-10 w-10" />
               </motion.div>
@@ -91,7 +91,7 @@ export function OnboardingModal() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Alex"
                   required
-                  className="w-full px-4 py-3 bg-white border border-blue-100 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
+                  className="w-full px-4 py-3 bg-white border border-white/60 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
                 />
               </motion.div>
               <motion.div
@@ -106,7 +106,7 @@ export function OnboardingModal() {
                   onChange={(e) => setDegree(e.target.value)}
                   placeholder="e.g. Computer Science"
                   required
-                  className="w-full px-4 py-3 bg-white border border-blue-100 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
+                  className="w-full px-4 py-3 bg-white border border-white/60 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
                 />
               </motion.div>
               
@@ -117,7 +117,7 @@ export function OnboardingModal() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-md mt-6"
+                className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white font-bold py-3.5 rounded-xl hover:from-violet-600 hover:to-fuchsia-600 transition-colors shadow-md mt-6"
               >
                 Begin Journey
               </motion.button>

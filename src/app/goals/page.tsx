@@ -23,7 +23,7 @@ export default function GoalsPage() {
         </div>
         <Link
           href="/goals/new"
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-4 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Create New Goal
@@ -37,7 +37,7 @@ export default function GoalsPage() {
           <Target className="h-12 w-12 text-slate-300 mb-4" />
           <h3 className="text-lg font-medium text-slate-900">No active goals</h3>
           <p className="text-slate-500 mt-1 mb-4">Tell us what you want to achieve, and we'll help you get there.</p>
-          <Link href="/goals/new" className="bg-blue-50 text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition-colors">
+          <Link href="/goals/new" className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 px-4 py-2 rounded-md font-medium hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors">
             Start a Goal
           </Link>
         </div>
@@ -80,7 +80,7 @@ export default function GoalsPage() {
                 <span className="text-slate-500">
                   {goal.targetDate ? `Target: ${new Date(goal.targetDate).toLocaleDateString()}` : "No specific target date"}
                 </span>
-                <Link href={`/goals/${goal.id}`} className="text-blue-600 hover:underline flex items-center font-medium">
+                <Link href={`/goals/${goal.id}`} className="text-violet-700 hover:underline flex items-center font-medium">
                   Details <ChevronRight className="h-4 w-4 ml-1" />
                 </Link>
               </div>

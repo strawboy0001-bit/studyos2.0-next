@@ -170,7 +170,7 @@ export default function QuizzesPage() {
         </div>
         <button
           onClick={handleGenerateMockQuiz}
-          className="flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-100 transition-colors font-medium"
+          className="flex items-center gap-2 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 px-4 py-2 rounded-md hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors font-medium"
         >
           <BrainCircuit className="h-4 w-4" />
           Generate AI Quiz

@@ -24,7 +24,7 @@ export default function SettingsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-1 space-y-1">
-          <button className="w-full text-left px-4 py-2 bg-blue-50 text-blue-700 rounded-md font-medium">General</button>
+          <button className="w-full text-left px-4 py-2 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-blue-700 rounded-md font-medium">General</button>
           <button className="w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-md">AI Providers</button>
           <button className="w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-md">Data & Privacy</button>
         </div>

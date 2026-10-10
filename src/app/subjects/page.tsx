@@ -37,7 +37,7 @@ export default function SubjectsPage() {
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-4 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Add Subject
@@ -54,7 +54,7 @@ export default function SubjectsPage() {
             onChange={(e) => setNewSubjectName(e.target.value)}
             className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          <button type="submit" className="bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-4 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600">
             Save
           </button>
           <button type="button" onClick={() => setIsAdding(false)} className="text-slate-500 hover:text-slate-700">
@@ -76,7 +76,7 @@ export default function SubjectsPage() {
           {subjects.map((subject) => (
             <div key={subject.id} className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col">
               <div className="flex justify-between items-start mb-4">
-                <div className="bg-blue-50 text-blue-600 p-3 rounded-lg">
+                <div className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 p-3 rounded-lg">
                   <BookOpen className="h-6 w-6" />
                 </div>
                 <button 
@@ -93,7 +93,7 @@ export default function SubjectsPage() {
               </p>
               <div className="mt-auto pt-6 flex justify-between items-center text-sm text-slate-500 border-t mt-4">
                 <span>Created {new Date(subject.createdAt).toLocaleDateString()}</span>
-                <span className="font-medium text-blue-600 hover:underline cursor-pointer">Open</span>
+                <span className="font-medium text-violet-700 hover:underline cursor-pointer">Open</span>
               </div>
             </div>
           ))}

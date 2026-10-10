@@ -28,7 +28,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full w-full flex-col bg-transparent">
       <div className="flex h-16 shrink-0 items-center px-6">
-        <h1 className="text-2xl font-black text-blue-500 tracking-tight font-sans">StudyOS<span className="text-blue-300">.</span></h1>
+        <h1 className="text-2xl font-black text-violet-600 tracking-tight font-sans">StudyOS<span className="text-blue-300">.</span></h1>
       </div>
       <nav className="flex flex-1 flex-col px-4 pb-4 overflow-y-auto">
         <div className="space-y-1 mt-4">
@@ -37,9 +37,9 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               key={item.name}
               href={item.href}
               onClick={onNavigate}
-              className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-blue-900/60 hover:bg-blue-100/50 hover:text-blue-600 transition-all"
+              className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700/60 hover:bg-white/50 backdrop-blur-md border border-white/50 hover:text-violet-700 transition-all"
             >
-              <item.icon className="h-5 w-5 shrink-0 text-blue-400" aria-hidden="true" />
+              <item.icon className="h-5 w-5 shrink-0 text-violet-500" aria-hidden="true" />
               {item.name}
             </Link>
           ))}
@@ -48,9 +48,9 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           <Link
             href="/settings"
             onClick={onNavigate}
-            className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-blue-900/60 hover:bg-blue-100/50 hover:text-blue-600 transition-all"
+            className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 text-sm font-bold text-slate-700/60 hover:bg-white/50 backdrop-blur-md border border-white/50 hover:text-violet-700 transition-all"
           >
-            <Settings className="h-5 w-5 shrink-0 text-blue-400" aria-hidden="true" />
+            <Settings className="h-5 w-5 shrink-0 text-violet-500" aria-hidden="true" />
             Settings
           </Link>
         </div>

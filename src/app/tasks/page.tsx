@@ -71,7 +71,7 @@ export default function TasksPage() {
           <ListTodo className="h-12 w-12 text-slate-300 mb-4" />
           <h3 className="text-lg font-medium text-slate-900">No tasks yet</h3>
           <p className="text-slate-500 mt-1 mb-4">Add your first task above, or generate them from a Goal.</p>
-          <Link href="/goals/new" className="bg-blue-50 text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition-colors">
+          <Link href="/goals/new" className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 px-4 py-2 rounded-md font-medium hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors">
             Break Down a Goal
           </Link>
         </div>
@@ -81,11 +81,11 @@ export default function TasksPage() {
           {pendingTasks.length > 0 && (
             <div className="space-y-3">
               <h2 className="font-semibold text-slate-700 flex items-center gap-2">
-                <Circle className="h-4 w-4 text-blue-500" /> Pending ({pendingTasks.length})
+                <Circle className="h-4 w-4 text-violet-600" /> Pending ({pendingTasks.length})
               </h2>
               {pendingTasks.map(task => (
                 <div key={task.id} className="bg-white p-4 rounded-lg border shadow-sm flex items-start gap-3 hover:border-blue-300 transition-colors group">
-                  <button onClick={() => handleToggleTask(task.id, task.status)} className="mt-1 text-slate-300 hover:text-blue-500">
+                  <button onClick={() => handleToggleTask(task.id, task.status)} className="mt-1 text-slate-300 hover:text-violet-600">
                     <Circle className="h-5 w-5" />
                   </button>
                   <div className="flex-1">

@@ -71,18 +71,18 @@ export default function NewGoalWizard() {
 
       {/* Progress Bar */}
       <div className="flex items-center justify-between mb-8">
-        <div className={`flex flex-col items-center ${step >= 1 ? 'text-blue-600' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 1 ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'}`}>1</div>
+        <div className={`flex flex-col items-center ${step >= 1 ? 'text-violet-700' : 'text-slate-400'}`}>
+          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 1 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>1</div>
           <span className="text-xs font-medium">Define</span>
         </div>
-        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 2 ? 'bg-blue-600' : 'bg-slate-200'}`} />
-        <div className={`flex flex-col items-center ${step >= 2 ? 'text-blue-600' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 2 ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'}`}>2</div>
+        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 2 ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20' : 'bg-slate-200'}`} />
+        <div className={`flex flex-col items-center ${step >= 2 ? 'text-violet-700' : 'text-slate-400'}`}>
+          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 2 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>2</div>
           <span className="text-xs font-medium">Data Source</span>
         </div>
-        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 3 ? 'bg-blue-600' : 'bg-slate-200'}`} />
-        <div className={`flex flex-col items-center ${step >= 3 ? 'text-blue-600' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 3 ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'}`}>3</div>
+        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 3 ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20' : 'bg-slate-200'}`} />
+        <div className={`flex flex-col items-center ${step >= 3 ? 'text-violet-700' : 'text-slate-400'}`}>
+          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 3 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>3</div>
           <span className="text-xs font-medium">Review Plan</span>
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function NewGoalWizard() {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!title}
-                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-6 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 disabled:opacity-50 transition-colors"
               >
                 Next Step
               </button>
@@ -143,9 +143,9 @@ export default function NewGoalWizard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button 
                 onClick={() => setDataSource('manual')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'manual' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
+                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'manual' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'manual' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+                <div className={`p-2 rounded-lg w-fit ${dataSource === 'manual' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
                   <CheckSquare className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-slate-800">Manual Entry</h3>
@@ -154,9 +154,9 @@ export default function NewGoalWizard() {
 
               <button 
                 onClick={() => setDataSource('upload')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'upload' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
+                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'upload' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'upload' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+                <div className={`p-2 rounded-lg w-fit ${dataSource === 'upload' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
                   <FileText className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-slate-800">Upload Syllabus</h3>
@@ -165,9 +165,9 @@ export default function NewGoalWizard() {
 
               <button 
                 onClick={() => setDataSource('search')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'search' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
+                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'search' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'search' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+                <div className={`p-2 rounded-lg w-fit ${dataSource === 'search' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
                   <Search className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-slate-800">Web Resources</h3>
@@ -201,7 +201,7 @@ export default function NewGoalWizard() {
               <button 
                 onClick={handleSimulateBreakdown}
                 disabled={isLoading}
-                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-6 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 transition-colors flex items-center gap-2"
               >
                 {isLoading ? (
                   <><Loader2 className="h-4 w-4 animate-spin" /> Processing...</>
@@ -234,26 +234,26 @@ export default function NewGoalWizard() {
               ))}
               <button 
                 onClick={() => setGeneratedTasks([...generatedTasks, "New Task"])}
-                className="text-sm text-blue-600 font-medium hover:underline mt-2 inline-block"
+                className="text-sm text-violet-700 font-medium hover:underline mt-2 inline-block"
               >
                 + Add another task
               </button>
             </div>
 
             {dataSource === 'search' && (
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 space-y-3">
+              <div className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] border border-white/60 rounded-lg p-4 space-y-3">
                 <h3 className="font-semibold text-slate-700 flex items-center gap-2">
-                  <Search className="h-4 w-4 text-blue-600" /> Suggested Resources
+                  <Search className="h-4 w-4 text-violet-700" /> Suggested Resources
                 </h3>
-                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-blue-100 flex justify-between">
+                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-white/60 flex justify-between">
                   <span>Introduction to {title || "Topic"} (YouTube)</span>
-                  <span className="text-xs bg-blue-100 px-2 py-1 rounded">Video</span>
+                  <span className="text-xs bg-white/50 backdrop-blur-md border border-white/50 px-2 py-1 rounded">Video</span>
                 </div>
-                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-blue-100 flex justify-between">
+                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-white/60 flex justify-between">
                   <span>Official Documentation Guide</span>
-                  <span className="text-xs bg-blue-100 px-2 py-1 rounded">Article</span>
+                  <span className="text-xs bg-white/50 backdrop-blur-md border border-white/50 px-2 py-1 rounded">Article</span>
                 </div>
-                <p className="text-xs text-blue-500 italic">These resources will be saved to your Goal details.</p>
+                <p className="text-xs text-violet-600 italic">These resources will be saved to your Goal details.</p>
               </div>
             )}
 

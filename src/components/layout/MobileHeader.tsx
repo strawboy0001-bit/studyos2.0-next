@@ -10,9 +10,9 @@ export function MobileHeader() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between h-16 px-6 bg-white/70 backdrop-blur-xl border-b border-blue-100 z-30 relative shadow-sm shrink-0 w-full">
-        <h1 className="text-xl font-black text-blue-500 tracking-tight font-sans">StudyOS<span className="text-blue-300">.</span></h1>
-        <button onClick={() => setIsOpen(!isOpen)} className="text-blue-500 p-2 rounded-lg hover:bg-blue-100/50 transition-colors">
+      <div className="md:hidden flex items-center justify-between h-16 px-6 bg-white/40 backdrop-blur-2xl border-b border-white/60 z-30 relative shadow-sm shrink-0 w-full">
+        <h1 className="text-xl font-black text-violet-600 tracking-tight font-sans">StudyOS<span className="text-blue-300">.</span></h1>
+        <button onClick={() => setIsOpen(!isOpen)} className="text-violet-600 p-2 rounded-lg hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors">
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>

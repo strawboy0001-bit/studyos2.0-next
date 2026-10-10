@@ -61,7 +61,7 @@ export default function MaterialsPage() {
 
   const getFileIcon = (type: string) => {
     if (type.includes('pdf')) return <FileText className="h-8 w-8 text-red-500" />;
-    if (type.includes('image')) return <ImageIcon className="h-8 w-8 text-blue-500" />;
+    if (type.includes('image')) return <ImageIcon className="h-8 w-8 text-violet-600" />;
     return <File className="h-8 w-8 text-slate-500" />;
   };
 
@@ -92,14 +92,14 @@ export default function MaterialsPage() {
         />
         
         {isUploading ? (
-          <div className="flex flex-col items-center justify-center text-blue-600">
+          <div className="flex flex-col items-center justify-center text-violet-700">
             <Loader2 className="h-10 w-10 animate-spin mb-4" />
             <p className="font-medium">Uploading and extracting text...</p>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center pointer-events-none">
-            <div className="bg-blue-50 p-4 rounded-full mb-4">
-              <FileUp className="h-8 w-8 text-blue-600" />
+            <div className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] p-4 rounded-full mb-4">
+              <FileUp className="h-8 w-8 text-violet-700" />
             </div>
             <h3 className="font-semibold text-slate-800 text-lg mb-1">Upload Material</h3>
             <p className="text-slate-500 text-sm mb-4">Drag & drop files or click to browse</p>
@@ -138,7 +138,7 @@ export default function MaterialsPage() {
               <div className="flex-1 overflow-hidden">
                 <div className="flex justify-between items-start">
                   <h3 
-                    className="font-bold text-slate-800 truncate cursor-pointer hover:text-blue-600 transition-colors" 
+                    className="font-bold text-slate-800 truncate cursor-pointer hover:text-violet-700 transition-colors" 
                     title={material.title}
                     onClick={() => handleOpen(material)}
                   >
@@ -154,7 +154,7 @@ export default function MaterialsPage() {
                 <div className="flex flex-col mt-1 space-y-1">
                   <span className="text-xs text-slate-500">{formatBytes(material.fileSize)}</span>
                   {material.subjectId && subjects && (
-                    <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md w-fit truncate max-w-full">
+                    <span className="text-xs font-medium text-violet-700 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] px-2 py-0.5 rounded-md w-fit truncate max-w-full">
                       {subjects.find(s => s.id === material.subjectId)?.name || 'Unknown'}
                     </span>
                   )}

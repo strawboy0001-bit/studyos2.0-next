@@ -96,7 +96,7 @@ export default function NotesPage() {
               <div className="mt-4 pt-4 border-t text-xs text-slate-400 flex justify-between">
                 <span>{new Date(note.createdAt).toLocaleDateString()}</span>
                 {note.isAiGenerated && (
-                  <span className="text-blue-500 font-medium">AI Generated</span>
+                  <span className="text-violet-600 font-medium">AI Generated</span>
                 )}
               </div>
             </Link>

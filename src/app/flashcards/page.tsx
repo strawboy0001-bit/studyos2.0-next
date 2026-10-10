@@ -116,7 +116,7 @@ export default function FlashcardsPage() {
           <div className="flex gap-4 w-full justify-center">
             <button onClick={() => handleReviewAnswer(1)} className="flex-1 bg-red-100 text-red-700 py-3 rounded-lg font-medium hover:bg-red-200">Again (Forgot)</button>
             <button onClick={() => handleReviewAnswer(3)} className="flex-1 bg-amber-100 text-amber-700 py-3 rounded-lg font-medium hover:bg-amber-200">Hard</button>
-            <button onClick={() => handleReviewAnswer(4)} className="flex-1 bg-blue-100 text-blue-700 py-3 rounded-lg font-medium hover:bg-blue-200">Good</button>
+            <button onClick={() => handleReviewAnswer(4)} className="flex-1 bg-white/50 backdrop-blur-md border border-white/50 text-blue-700 py-3 rounded-lg font-medium hover:bg-blue-200">Good</button>
             <button onClick={() => handleReviewAnswer(5)} className="flex-1 bg-green-100 text-green-700 py-3 rounded-lg font-medium hover:bg-green-200">Easy</button>
           </div>
         )}
