@@ -46,22 +46,22 @@ export function FloatingAssistant() {
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.8, x: 20 }}
                 transition={{ type: "spring", bounce: 0.4 }}
-                className="relative bg-white/90 backdrop-blur-md border border-pink-100 p-4 rounded-2xl shadow-xl max-w-[200px] mb-8"
+                className="relative bg-white/90 backdrop-blur-md border border-blue-100 p-4 rounded-2xl shadow-xl max-w-[200px] mb-8"
               >
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowSpeech(false);
                   }}
-                  className="absolute -top-2 -right-2 bg-pink-100 text-pink-500 rounded-full p-1 hover:bg-pink-200 transition-colors z-10"
+                  className="absolute -top-2 -right-2 bg-blue-100 text-blue-500 rounded-full p-1 hover:bg-blue-200 transition-colors z-10"
                 >
                   <X className="h-3 w-3" />
                 </button>
-                <p className="text-sm text-pink-900 font-medium leading-relaxed">
+                <p className="text-sm text-blue-900 font-medium leading-relaxed">
                   {getSpeechText()}
                 </p>
                 {/* Speech bubble tail */}
-                <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white/90 border-b border-r border-pink-100 transform rotate-45"></div>
+                <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white/90 border-b border-r border-blue-100 transform rotate-45"></div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -89,7 +89,7 @@ export function FloatingAssistant() {
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0, opacity: 0 }}
-                  className="absolute -top-4 right-0 bg-pink-500 text-white p-2 rounded-full shadow-lg"
+                  className="absolute -top-4 right-0 bg-blue-500 text-white p-2 rounded-full shadow-lg"
                 >
                   <MessageCircle className="h-4 w-4 animate-bounce" />
                 </motion.div>

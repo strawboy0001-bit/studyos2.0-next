@@ -98,13 +98,13 @@ export default function PlannerPage() {
         <div className="space-y-6">
           <div className="bg-white/60 backdrop-blur-md border border-amber-900/10 rounded-xl p-6 shadow-sm text-center">
             <h2 className="font-bold text-amber-950 mb-6 flex items-center justify-center gap-2">
-              <Clock className="h-5 w-5 text-rose-500" /> Focus Timer
+              <Clock className="h-5 w-5 text-indigo-500" /> Focus Timer
             </h2>
             
             <div className="flex justify-center gap-4 mb-6">
               <button 
                 onClick={() => { setMode('focus'); setTimeLeft(25 * 60); setIsRunning(false); }}
-                className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${mode === 'focus' ? 'bg-rose-100/80 text-rose-800' : 'text-amber-900/60 hover:bg-white/50'}`}
+                className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${mode === 'focus' ? 'bg-indigo-100/80 text-indigo-800' : 'text-amber-900/60 hover:bg-white/50'}`}
               >
                 Pomodoro
               </button>
@@ -123,7 +123,7 @@ export default function PlannerPage() {
             <div className="flex justify-center gap-4">
               <button 
                 onClick={toggleTimer}
-                className={`flex-1 py-3 rounded-lg flex items-center justify-center gap-2 font-bold text-white transition-colors shadow-md ${isRunning ? 'bg-rose-500 hover:bg-rose-600' : 'bg-amber-800 hover:bg-amber-900'}`}
+                className={`flex-1 py-3 rounded-lg flex items-center justify-center gap-2 font-bold text-white transition-colors shadow-md ${isRunning ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-amber-800 hover:bg-amber-900'}`}
               >
                 {isRunning ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                 {isRunning ? 'Pause' : 'Start'}

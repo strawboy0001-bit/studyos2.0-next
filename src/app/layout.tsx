@@ -33,13 +33,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col text-pink-950 font-sans bg-pink-50/30 selection:bg-pink-200">
+      <body className="min-h-full flex flex-col text-slate-900 font-sans bg-slate-50/30 selection:bg-blue-200">
         <CherryBlossomBackground />
         <OnboardingModal />
         <FloatingAssistant />
         <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
           <MobileHeader />
-          <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-xl bg-white/70 border-r border-pink-100 shadow-[4px_0_24px_rgba(253,164,175,0.1)]">
+          <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-xl bg-white/70 border-r border-blue-100 shadow-[4px_0_24px_rgba(59,130,246,0.08)]">
             <Sidebar />
           </div>
           <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0 overflow-hidden">

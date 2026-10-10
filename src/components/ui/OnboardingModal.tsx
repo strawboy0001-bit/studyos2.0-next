@@ -60,7 +60,7 @@ export function OnboardingModal() {
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Ayanokoji"
               required
-              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
+              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
             />
           </div>
           <div>
@@ -71,7 +71,7 @@ export function OnboardingModal() {
               onChange={(e) => setDegree(e.target.value)}
               placeholder="e.g. High School, B.S. Computer Science"
               required
-              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
+              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
             />
           </div>
           
