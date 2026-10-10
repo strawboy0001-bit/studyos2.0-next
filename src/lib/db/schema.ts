@@ -72,6 +72,7 @@ export const StudyMaterialSchema = z.object({
   fileName: z.string(),
   fileType: z.string(),
   fileSize: z.number(),
+  fileData: z.any().optional(), // ArrayBuffer
   subjectId: z.string().uuid().optional(),
   contentExtract: z.string().optional(),
   createdAt: z.date(),

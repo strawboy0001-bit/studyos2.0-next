@@ -19,9 +19,11 @@ export default function MaterialsPage() {
     
     setIsUploading(true);
 
+    const file = files[0];
+    const arrayBuffer = await file.arrayBuffer();
+
     // Simulate processing time
     setTimeout(async () => {
-      const file = files[0];
       
       await db.materials.add({
         id: uuidv4(),
@@ -29,6 +31,7 @@ export default function MaterialsPage() {
         fileName: file.name,
         fileType: file.type || 'unknown',
         fileSize: file.size,
+        fileData: arrayBuffer,
         subjectId: selectedSubjectId || undefined,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -44,6 +47,16 @@ export default function MaterialsPage() {
     if (confirm("Delete this material?")) {
       await db.materials.delete(id);
     }
+  };
+
+  const handleOpen = (material: any) => {
+    if (!material.fileData) {
+      alert("File content not available. This file might have been uploaded before the data storage feature was added.");
+      return;
+    }
+    const blob = new Blob([material.fileData], { type: material.fileType });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
   };
 
   const getFileIcon = (type: string) => {
@@ -116,12 +129,19 @@ export default function MaterialsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {materials.map((material) => (
             <div key={material.id} className="bg-white border rounded-xl p-5 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
-              <div className="bg-slate-50 p-3 rounded-lg border">
+              <div 
+                className="bg-slate-50 p-3 rounded-lg border cursor-pointer hover:bg-slate-100 transition-colors"
+                onClick={() => handleOpen(material)}
+              >
                 {getFileIcon(material.fileType)}
               </div>
               <div className="flex-1 overflow-hidden">
                 <div className="flex justify-between items-start">
-                  <h3 className="font-bold text-slate-800 truncate" title={material.title}>
+                  <h3 
+                    className="font-bold text-slate-800 truncate cursor-pointer hover:text-blue-600 transition-colors" 
+                    title={material.title}
+                    onClick={() => handleOpen(material)}
+                  >
                     {material.title}
                   </h3>
                   <button 
