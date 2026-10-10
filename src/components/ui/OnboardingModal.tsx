@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { GraduationCap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function OnboardingModal() {
   const profile = useLiveQuery(() => db.profile.get(1));
@@ -37,52 +38,93 @@ export function OnboardingModal() {
     setIsOpen(false);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-amber-950/20 backdrop-blur-sm">
-      <div className="bg-white/90 backdrop-blur-md border border-amber-900/10 p-8 rounded-2xl shadow-2xl max-w-md w-full animate-in fade-in zoom-in duration-300">
-        <div className="flex justify-center mb-6">
-          <div className="bg-amber-100/50 p-4 rounded-full text-amber-700">
-            <GraduationCap className="h-10 w-10" />
-          </div>
-        </div>
-        
-        <h2 className="text-2xl font-bold text-center text-amber-950 mb-2 font-serif">Welcome to StudyOS.</h2>
-        <p className="text-center text-amber-900/70 mb-8">Let's personalize your learning experience.</p>
-        
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-amber-950 mb-1">What is your name?</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Ayanokoji"
-              required
-              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-amber-950 mb-1">What are you studying?</label>
-            <input
-              type="text"
-              value={degree}
-              onChange={(e) => setDegree(e.target.value)}
-              placeholder="e.g. High School, B.S. Computer Science"
-              required
-              className="w-full px-4 py-3 bg-white/50 border border-amber-900/20 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-rose-400/20 transition-all text-amber-950"
-            />
-          </div>
-          
-          <button 
-            type="submit"
-            className="w-full bg-amber-800 text-white font-medium py-3 rounded-xl hover:bg-amber-900 transition-colors shadow-sm mt-4"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md"
+        >
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="bg-white/95 backdrop-blur-xl border border-blue-100 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-w-md w-full relative overflow-hidden"
           >
-            Begin Journey
-          </button>
-        </form>
-      </div>
-    </div>
+            {/* Decorative background circle */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500 rounded-full opacity-10 blur-3xl pointer-events-none"></div>
+
+            <div className="flex justify-center mb-6 relative z-10">
+              <motion.div 
+                initial={{ rotate: -180, scale: 0 }}
+                animate={{ rotate: 0, scale: 1 }}
+                transition={{ type: "spring", delay: 0.2, stiffness: 200 }}
+                className="bg-blue-100/80 p-4 rounded-2xl text-blue-600 shadow-sm"
+              >
+                <GraduationCap className="h-10 w-10" />
+              </motion.div>
+            </div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative z-10"
+            >
+              <h2 className="text-3xl font-black text-center text-slate-900 mb-2 tracking-tight">Welcome to StudyOS.</h2>
+              <p className="text-center text-slate-500 mb-8 font-medium">Let's personalize your learning experience.</p>
+            </motion.div>
+            
+            <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">What is your name?</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Alex"
+                  required
+                  className="w-full px-4 py-3 bg-white border border-blue-100 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">What are you studying?</label>
+                <input
+                  type="text"
+                  value={degree}
+                  onChange={(e) => setDegree(e.target.value)}
+                  placeholder="e.g. Computer Science"
+                  required
+                  className="w-full px-4 py-3 bg-white border border-blue-100 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all text-slate-900 shadow-sm font-medium"
+                />
+              </motion.div>
+              
+              <motion.button 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors shadow-md mt-6"
+              >
+                Begin Journey
+              </motion.button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
