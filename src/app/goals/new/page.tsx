@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Target, BookOpen, Clock, Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle } from "lucide-react";
+import { Target, BookOpen, Clock, Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { goalRepo, taskRepo } from "@/lib/db/repositories";
 
 export default function NewGoalWizard() {

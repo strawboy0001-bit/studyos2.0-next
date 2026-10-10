@@ -52,7 +52,7 @@ export default function GoalsPage() {
                   </div>
                   <h3 className="text-lg font-bold text-slate-800">{goal.title}</h3>
                 </div>
-                <button 
+                <button
                   onClick={() => handleComplete(goal.id, goal.status)}
                   className={`p-1 rounded-full ${goal.status === 'completed' ? 'text-green-500 hover:text-slate-400' : 'text-slate-300 hover:text-green-500'}`}
                 >
@@ -62,16 +62,16 @@ export default function GoalsPage() {
               <p className="text-sm text-slate-500 mt-2 line-clamp-2 min-h-[40px]">
                 {goal.description || "No description."}
               </p>
-              
+
               <div className="mt-6 flex flex-col gap-2">
                 <div className="flex justify-between text-sm text-slate-600">
                   <span>Progress</span>
                   <span className="font-medium">{goal.progress}%</span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full ${goal.status === 'completed' ? 'bg-green-500' : 'bg-purple-500'}`} 
-                    style={{ width: `${goal.progress}%` }} 
+                  <div
+                    className={`h-full ${goal.status === 'completed' ? 'bg-green-500' : 'bg-purple-500'}`}
+                    style={{ width: `${goal.progress}%` }}
                   />
                 </div>
               </div>
