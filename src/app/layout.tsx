@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth/AuthContext";
+import { AuthGatekeeper } from "@/components/auth/AuthGatekeeper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,15 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StudyOS",
-  description: "Personal academic operating system",
+  title: "StudyOS.Ai // Secure Academic Operating System",
+  description: "Next-generation AI academic workspace with verified Google Authentication, restricted document vault, and adaptive learning tools.",
 };
-
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MobileHeader } from "@/components/layout/MobileHeader";
-import { OnboardingModal } from "@/components/ui/OnboardingModal";
-import { CherryBlossomBackground } from "@/components/ui/CherryBlossomBackground";
-import { FloatingAssistant } from "@/components/ui/FloatingAssistant";
 
 export default function RootLayout({
   children,
@@ -31,23 +27,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col text-slate-800 font-sans bg-slate-50/10 selection:bg-violet-200">
-        <CherryBlossomBackground />
-        <OnboardingModal />
-        <FloatingAssistant />
-        <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
-          <MobileHeader />
-          <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-2xl bg-white/40 border-r border-white/60 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
-            <Sidebar />
-          </div>
-          <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0 overflow-hidden">
-            <main className="flex-1 overflow-y-auto p-4 md:p-8">
-              {children}
-            </main>
-          </div>
-        </div>
+      <body className="min-h-full flex flex-col text-slate-100 font-sans bg-[#070b19] selection:bg-blue-600/30 selection:text-white">
+        <AuthProvider>
+          <AuthGatekeeper>
+            {children}
+          </AuthGatekeeper>
+        </AuthProvider>
       </body>
     </html>
   );

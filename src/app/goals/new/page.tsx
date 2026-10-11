@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Target, BookOpen, Clock, Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { goalRepo, taskRepo } from "@/lib/db/repositories";
 
 export default function NewGoalWizard() {
@@ -23,7 +23,7 @@ export default function NewGoalWizard() {
     "Complete 3 practice exercises",
     "Test knowledge with a flashcard session"
   ]);
-  const [challenges, setChallenges] = useState([
+  const [challenges] = useState([
     { issue: "Procrastination due to overwhelming scope", solution: "Focus only on one 25-minute Pomodoro session at a time." },
     { issue: "Difficulty finding quality resources", solution: "Stick to verified University playlists or official documentation." }
   ]);
@@ -66,7 +66,7 @@ export default function NewGoalWizard() {
     <div className="max-w-3xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">Create a New Goal</h1>
-        <p className="text-slate-500 mt-1">We'll help you break down your objective into actionable steps.</p>
+        <p className="text-slate-500 mt-1">We&apos;ll help you break down your objective into actionable steps.</p>
       </div>
 
       {/* Progress Bar */}
@@ -187,7 +187,7 @@ export default function NewGoalWizard() {
             {dataSource === 'search' && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 text-amber-800 text-sm">
                 <Sparkles className="h-5 w-5 shrink-0" />
-                <p>We'll suggest a learning path and trusted resources based on the title <strong>"{title}"</strong>.</p>
+                <p>We&apos;ll suggest a learning path and trusted resources based on the title <strong>&quot;{title}&quot;</strong>.</p>
               </div>
             )}
 

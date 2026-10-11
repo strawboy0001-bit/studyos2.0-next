@@ -1,5 +1,5 @@
 import { db } from './index';
-import type { Subject, Task, Note, Goal, Resource } from './schema';
+import type { Subject, Task, Goal, Resource } from './schema';
 import { v4 as uuidv4 } from 'uuid';
 
 export const subjectRepo = {

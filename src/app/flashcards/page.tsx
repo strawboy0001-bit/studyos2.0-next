@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
-import { Layers, Plus, RotateCcw, Brain, Check, X } from "lucide-react";
+import { Layers, Plus, RotateCcw, Brain, X } from "lucide-react";
+import type { Flashcard } from "@/lib/db/schema";
 
 export default function FlashcardsPage() {
   const flashcards = useLiveQuery(() => db.flashcards.toArray());
@@ -15,7 +16,7 @@ export default function FlashcardsPage() {
   const [back, setBack] = useState("");
   const [selectedSubjectId, setSelectedSubjectId] = useState("");
 
-  const [activeReviewCard, setActiveReviewCard] = useState<any>(null);
+  const [activeReviewCard, setActiveReviewCard] = useState<Flashcard | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
 
   const dueCards = flashcards?.filter(c => new Date(c.nextReviewDate) <= new Date()) || [];

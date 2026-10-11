@@ -5,13 +5,14 @@ import { db } from "@/lib/db";
 import { Target, Plus, ChevronRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { goalRepo } from "@/lib/db/repositories";
+import type { Goal } from "@/lib/db/schema";
 
 export default function GoalsPage() {
   const goals = useLiveQuery(() => db.goals.toArray());
 
-  const handleComplete = async (id: string, currentStatus: string) => {
-    const newStatus = currentStatus === "completed" ? "active" : "completed";
-    await goalRepo.update(id, { status: newStatus as any });
+  const handleComplete = async (id: string, currentStatus: Goal["status"]) => {
+    const newStatus: Goal["status"] = currentStatus === "completed" ? "active" : "completed";
+    await goalRepo.update(id, { status: newStatus });
   };
 
   return (
@@ -36,7 +37,7 @@ export default function GoalsPage() {
         <div className="text-center py-16 bg-white border border-dashed rounded-xl flex flex-col items-center">
           <Target className="h-12 w-12 text-slate-300 mb-4" />
           <h3 className="text-lg font-medium text-slate-900">No active goals</h3>
-          <p className="text-slate-500 mt-1 mb-4">Tell us what you want to achieve, and we'll help you get there.</p>
+          <p className="text-slate-500 mt-1 mb-4">Tell us what you want to achieve, and we&apos;ll help you get there.</p>
           <Link href="/goals/new" className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 px-4 py-2 rounded-md font-medium hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors">
             Start a Goal
           </Link>

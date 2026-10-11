@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
-import { HelpCircle, Play, CheckCircle2, XCircle, BrainCircuit } from "lucide-react";
+import { HelpCircle, Play, BrainCircuit } from "lucide-react";
 
 export default function QuizzesPage() {
   const quizzes = useLiveQuery(() => db.quizzes.toArray());

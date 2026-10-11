@@ -15,24 +15,25 @@ export default function PlannerPage() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isRunning && timeLeft > 0) {
+    if (isRunning) {
       interval = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsRunning(false);
+            if (mode === "focus") {
+              setMode("break");
+              return 5 * 60;
+            } else {
+              setMode("focus");
+              return 25 * 60;
+            }
+          }
+          return prev - 1;
+        });
       }, 1000);
-    } else if (timeLeft === 0) {
-      setIsRunning(false);
-      if (mode === "focus") {
-        setMode("break");
-        setTimeLeft(5 * 60); // 5 min break
-        alert("Focus session complete! Time for a break.");
-      } else {
-        setMode("focus");
-        setTimeLeft(25 * 60);
-        alert("Break over! Ready to focus?");
-      }
     }
     return () => clearInterval(interval);
-  }, [isRunning, timeLeft, mode]);
+  }, [isRunning, mode]);
 
   const toggleTimer = () => setIsRunning(!isRunning);
   
@@ -64,7 +65,7 @@ export default function PlannerPage() {
           <div className="bg-white/60 backdrop-blur-md border border-amber-900/10 rounded-xl p-6 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold text-amber-950 flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5 text-amber-700" /> Today's Schedule
+                <CalendarIcon className="h-5 w-5 text-amber-700" /> Today&apos;s Schedule
               </h2>
               <button className="text-sm font-medium text-amber-700 hover:underline">Regenerate Plan</button>
             </div>
