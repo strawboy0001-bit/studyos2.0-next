@@ -36,6 +36,7 @@ export default function SettingsPage() {
   const [profileInstitution, setProfileInstitution] = useState(user?.institution || "");
   const [profileDegree, setProfileDegree] = useState(user?.degree || "");
   const [profileRole, setProfileRole] = useState(user?.role || "Student");
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState(user?.avatarUrl || "/gwen.png");
   const [profileSavedMessage, setProfileSavedMessage] = useState<string | null>(null);
 
   // AI Configuration state
@@ -96,6 +97,7 @@ export default function SettingsPage() {
       setProfileInstitution(user.institution);
       setProfileDegree(user.degree);
       setProfileRole(user.role);
+      if (user.avatarUrl) setProfileAvatarUrl(user.avatarUrl);
     }
   }, [user]);
 
@@ -109,9 +111,10 @@ export default function SettingsPage() {
       institution: profileInstitution.trim() || "Google Verified Academy",
       degree: profileDegree.trim() || "Academic Studies",
       role: profileRole as "Student" | "Researcher" | "Academic Fellow",
+      avatarUrl: profileAvatarUrl || "/gwen.png",
     });
 
-    setProfileSavedMessage("Profile updated successfully!");
+    setProfileSavedMessage("Profile and Earth-65 avatar updated successfully!");
     setTimeout(() => setProfileSavedMessage(null), 3000);
   };
 
@@ -299,13 +302,16 @@ export default function SettingsPage() {
       {/* Top Header */}
       <div>
         <div className="flex items-center gap-2.5">
-          <h1 className="text-3xl font-black tracking-tight text-white">Settings & Security</h1>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">
+          <h1 className="text-3xl font-black tracking-tight text-white">Settings & Workspace Config</h1>
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-semibold">
+            Earth-65 System
+          </span>
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-semibold">
             Google Identity
           </span>
         </div>
         <p className="text-slate-400 text-xs mt-1">
-          Manage your verified Google profile, Pomodoro study preferences, AI providers, and local backup vault.
+          Manage your verified Google profile, Gwen Stacy study presets, lightweight AI engines, and encrypted vault.
         </p>
       </div>
 
@@ -316,11 +322,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("security")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "security"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Shield className="w-4 h-4 text-blue-400" />
+            <Shield className="w-4 h-4 text-pink-400" />
             <span>Profile & Security</span>
           </button>
 
@@ -328,11 +334,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("pomodoro")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "pomodoro"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Clock className="w-4 h-4 text-amber-400" />
+            <Clock className="w-4 h-4 text-cyan-400" />
             <span>Study & Pomodoro</span>
           </button>
 
@@ -340,23 +346,23 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("ai")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "ai"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Bot className="w-4 h-4 text-purple-400" />
-            <span>AI Integrations</span>
+            <Bot className="w-4 h-4 text-pink-400" />
+            <span>Light AI Engine</span>
           </button>
 
           <button
             onClick={() => setActiveTab("vault")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "vault"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <HardDrive className="w-4 h-4 text-indigo-400" />
+            <HardDrive className="w-4 h-4 text-cyan-400" />
             <span>Upload Vault Policy</span>
           </button>
 
@@ -364,7 +370,7 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("data")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "data"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
@@ -450,6 +456,53 @@ export default function SettingsPage() {
                     )}
                   </div>
 
+                  <div className="space-y-2">
+                    <label className="block text-xs font-semibold text-slate-300">
+                      Earth-65 Avatar Badge
+                    </label>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setProfileAvatarUrl("/gwen.png")}
+                        className={`p-1.5 rounded-2xl border transition-all flex items-center gap-2.5 ${
+                          profileAvatarUrl === "/gwen.png"
+                            ? "border-pink-500 bg-pink-500/15 shadow-[0_0_15px_rgba(236,72,153,0.35)]"
+                            : "border-white/10 bg-white/5 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="w-9 h-9 rounded-xl overflow-hidden border border-pink-500/30">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src="/gwen.png" alt="Gwen Stacy" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="text-left pr-2">
+                          <p className="text-[11px] font-bold text-white">Gwen Stacy</p>
+                          <p className="text-[9px] text-pink-300 font-semibold">Earth-65 Hero</p>
+                        </div>
+                      </button>
+
+                      {user && (
+                        <button
+                          type="button"
+                          onClick={() => setProfileAvatarUrl(user.avatarUrl)}
+                          className={`p-1.5 rounded-2xl border transition-all flex items-center gap-2.5 ${
+                            profileAvatarUrl === user.avatarUrl
+                              ? "border-cyan-500 bg-cyan-500/15 shadow-[0_0_15px_rgba(6,182,212,0.35)]"
+                              : "border-white/10 bg-white/5 hover:border-white/20"
+                          }`}
+                        >
+                          <div className="w-9 h-9 rounded-xl overflow-hidden border border-white/20">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="text-left pr-2">
+                            <p className="text-[11px] font-bold text-white">Google Identity</p>
+                            <p className="text-[9px] text-cyan-300 font-semibold">OAuth Profile</p>
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">Full Name</label>
@@ -458,7 +511,7 @@ export default function SettingsPage() {
                         value={profileName}
                         onChange={(e) => setProfileName(e.target.value)}
                         required
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-blue-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
                       />
                     </div>
 
@@ -467,7 +520,7 @@ export default function SettingsPage() {
                       <select
                         value={profileRole}
                         onChange={(e) => setProfileRole(e.target.value as "Student" | "Researcher" | "Academic Fellow")}
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#070b19] border border-white/10 text-white text-xs outline-none focus:border-blue-500 cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#070b19] border border-white/10 text-white text-xs outline-none focus:border-pink-500 cursor-pointer"
                       >
                         <option value="Student">Student (Undergraduate / Graduate)</option>
                         <option value="Researcher">Researcher / Scholar</option>
@@ -482,7 +535,7 @@ export default function SettingsPage() {
                         value={profileDegree}
                         onChange={(e) => setProfileDegree(e.target.value)}
                         placeholder="e.g. Computer Science & AI"
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-blue-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
                       />
                     </div>
 
@@ -493,7 +546,7 @@ export default function SettingsPage() {
                         value={profileInstitution}
                         onChange={(e) => setProfileInstitution(e.target.value)}
                         placeholder="e.g. Stanford University"
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-blue-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
                       />
                     </div>
                   </div>
@@ -501,7 +554,7 @@ export default function SettingsPage() {
                   <div className="flex justify-end pt-1">
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5"
+                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 hover:brightness-110 text-white text-xs font-bold shadow-[0_0_20px_rgba(236,72,153,0.35)] transition-all flex items-center gap-1.5"
                     >
                       <Save className="w-3.5 h-3.5" />
                       <span>Save Profile Changes</span>

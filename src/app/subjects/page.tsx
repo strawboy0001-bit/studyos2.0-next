@@ -33,18 +33,45 @@ export default function SubjectsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-24 text-slate-100">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-white">Course Curriculum</h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl font-black tracking-tight text-white">Course Curriculum</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+              Earth-65 Matrix
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              Active Courses
+            </span>
+          </div>
           <p className="text-slate-400 text-xs mt-1">Manage your active academic courses and syllabus units.</p>
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-[0_0_20px_rgba(37,99,235,0.3)] text-white px-4 py-2.5 rounded-xl text-xs font-semibold hover:brightness-110 transition-all"
+          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 shadow-[0_0_20px_rgba(236,72,153,0.35)] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:brightness-110 transition-all"
         >
           <Plus className="h-4 w-4" />
           <span>Add Course</span>
         </button>
+      </div>
+
+      {/* Earth-65 Gwen Stacy Curriculum Card */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Curriculum</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Active Matrix</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Organize your syllabus units and map your flashcards and quizzes directly to their corresponding courses.
+            </p>
+          </div>
+        </div>
       </div>
 
       {isAdding && (

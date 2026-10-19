@@ -197,8 +197,11 @@ export default function PlannerPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-3xl font-black tracking-tight text-white">Study Planner & Pomodoro</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
-              <Flame className="w-3.5 h-3.5" /> High Productivity
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5" /> Spider-Sense Tempo
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              Earth-65 Protocol
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">
@@ -215,6 +218,25 @@ export default function PlannerPage() {
         </Link>
       </div>
 
+      {/* Earth-65 Gwen Stacy Focus Tempo Card */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Focus Tempo</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Reflex Rhythm</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Stay in the pocket. 25 minutes of unbroken focus followed by a 5-minute breather builds peak reflex stamina.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Pomodoro Focus Timer Card (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
@@ -225,17 +247,17 @@ export default function PlannerPage() {
                 onClick={() => switchMode("focus")}
                 className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all ${
                   mode === "focus"
-                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-sm"
+                    ? "bg-pink-500/20 text-pink-300 border border-pink-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                Pomodoro ({workDuration}m)
+                Sprint ({workDuration}m)
               </button>
               <button
                 onClick={() => switchMode("shortBreak")}
                 className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
                   mode === "shortBreak"
-                    ? "bg-teal-500/20 text-teal-300 border border-teal-500/30 shadow-sm"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -245,7 +267,7 @@ export default function PlannerPage() {
                 onClick={() => switchMode("longBreak")}
                 className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
                   mode === "longBreak"
-                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30 shadow-sm"
+                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -272,10 +294,10 @@ export default function PlannerPage() {
                   r="70"
                   className={
                     mode === "focus"
-                      ? "stroke-amber-400"
+                      ? "stroke-pink-500"
                       : mode === "shortBreak"
-                      ? "stroke-teal-400"
-                      : "stroke-blue-400"
+                      ? "stroke-cyan-400"
+                      : "stroke-purple-400"
                   }
                   strokeWidth="8"
                   strokeDasharray="440"
@@ -292,7 +314,7 @@ export default function PlannerPage() {
                   {formatTime(timeLeft)}
                 </span>
                 <span className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">
-                  {mode === "focus" ? "Deep Focus" : "Rest & Recharge"}
+                  {mode === "focus" ? "Spider-Sense Focus" : "Reflex Recharge"}
                 </span>
               </div>
             </div>
@@ -311,10 +333,10 @@ export default function PlannerPage() {
                 onClick={toggleTimer}
                 className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 ${
                   isRunning
-                    ? "bg-amber-600 hover:bg-amber-500 text-white"
+                    ? "bg-rose-600 hover:bg-rose-500 text-white"
                     : mode === "focus"
-                    ? "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-[0_0_25px_rgba(245,158,11,0.3)]"
-                    : "bg-blue-600 hover:bg-blue-500 text-white"
+                    ? "bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:brightness-110 text-white font-black shadow-[0_0_25px_rgba(236,72,153,0.4)]"
+                    : "bg-cyan-600 hover:bg-cyan-500 text-white"
                 }`}
               >
                 {isRunning ? (

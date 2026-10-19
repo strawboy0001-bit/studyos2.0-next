@@ -321,6 +321,23 @@ export default function FlashcardsPage() {
 
     return (
       <div className="max-w-3xl mx-auto py-8 px-4 text-slate-100 font-sans space-y-6">
+        {/* Gwen Spider-Sense Focus Banner */}
+        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-pink-950/40 via-[#0c1224] to-cyan-950/30 border border-pink-500/25 shadow-sm">
+          <div className="w-9 h-9 rounded-full overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_12px_rgba(236,72,153,0.3)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-black uppercase text-pink-400">Earth-65 • Gwen Stacy</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            </div>
+            <p className="text-xs text-slate-300">
+              Active recall works best before you peek. Trust your instincts!
+            </p>
+          </div>
+        </div>
+
         {/* Top Control Bar */}
         <div className="flex items-center justify-between">
           <button
@@ -337,26 +354,26 @@ export default function FlashcardsPage() {
             </span>
             <div className="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-blue-500 transition-all duration-300"
+                className="h-full bg-gradient-to-r from-pink-500 to-cyan-400 transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* 3D Flashcard Container */}
+        {/* 3D Flashcard Container with Spider-Gwen Glow */}
         <div
           onClick={() => setIsFlipped(!isFlipped)}
-          className="relative min-h-[340px] sm:min-h-[380px] rounded-3xl bg-[#0c1224] border border-white/10 hover:border-blue-500/40 p-8 shadow-[0_15px_40px_rgba(0,0,0,0.4)] cursor-pointer flex flex-col justify-between transition-all select-none group"
+          className="relative min-h-[340px] sm:min-h-[380px] rounded-3xl bg-[#0c1224] border border-white/10 hover:border-pink-500/50 p-8 shadow-[0_15px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_0_35px_rgba(236,72,153,0.2)] cursor-pointer flex flex-col justify-between transition-all select-none group"
         >
           {/* Card Top Pill */}
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 uppercase tracking-wider">
+            <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 uppercase tracking-wider">
               {isFlipped ? "Answer / Back" : "Question / Front"}
             </span>
 
             {currentCardSubject && (
-              <span className="text-[11px] font-semibold text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
+              <span className="text-[11px] font-semibold text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-full">
                 {currentCardSubject.name}
               </span>
             )}
@@ -398,17 +415,17 @@ export default function FlashcardsPage() {
 
             <button
               onClick={() => handleReviewAnswer(4)}
-              className="p-3.5 rounded-2xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+              className="p-3.5 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
             >
-              <span className="text-sm font-bold text-blue-400">3 • Good</span>
+              <span className="text-sm font-bold text-cyan-400">3 • Good</span>
               <span className="text-[10px] text-slate-400">Optimal pace</span>
             </button>
 
             <button
               onClick={() => handleReviewAnswer(5)}
-              className="p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+              className="p-3.5 rounded-2xl bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 text-pink-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
             >
-              <span className="text-sm font-bold text-emerald-400">4 • Easy</span>
+              <span className="text-sm font-bold text-pink-400">4 • Easy</span>
               <span className="text-[10px] text-slate-400">Mastered</span>
             </button>
           </div>
@@ -436,8 +453,11 @@ export default function FlashcardsPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-3xl font-black tracking-tight text-white">Adaptive Flashcards</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              SM-2 Algorithm
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+              SM-2 Reflex Algorithm
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              Earth-65 Grid
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">
@@ -449,7 +469,7 @@ export default function FlashcardsPage() {
           {dueCards.length > 0 && (
             <button
               onClick={() => startReviewSession(dueCards)}
-              className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+              className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-indigo-600 hover:brightness-110 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-[0_0_20px_rgba(236,72,153,0.35)]"
             >
               <RotateCcw className="h-4 w-4" />
               <span>Review Due ({dueCards.length})</span>
@@ -458,12 +478,40 @@ export default function FlashcardsPage() {
 
           <button
             onClick={handleOpenCreate}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm"
+            className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:brightness-110 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm"
           >
             <Plus className="h-4 w-4" />
             <span>New Flashcard</span>
           </button>
         </div>
+      </div>
+
+      {/* Earth-65 Gwen Stacy Deck Motivator Card */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Earth-65 • Spaced Recall Sync</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Light Reflex AI</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Rapid recall builds instinctual neural pathways. Clear your due cards before the curve decays.
+            </p>
+          </div>
+        </div>
+        {dueCards.length > 0 && (
+          <button
+            onClick={() => startReviewSession(dueCards)}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-bold shadow-[0_0_20px_rgba(236,72,153,0.35)] transition-all shrink-0 flex items-center gap-2"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Start Reflex Drill ({dueCards.length})</span>
+          </button>
+        )}
       </div>
 
       {/* Deck Stats Bar */}

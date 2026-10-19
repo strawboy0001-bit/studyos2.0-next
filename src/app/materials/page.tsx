@@ -162,8 +162,11 @@ export default function MaterialsPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-3xl font-black tracking-tight text-white">Study Materials Vault</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> Restricted Vault
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> Earth-65 Vault
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              Restricted & Sandboxed
             </span>
           </div>
           <p className="text-slate-400 text-sm mt-1">
@@ -174,7 +177,7 @@ export default function MaterialsPage() {
         {/* Security Vault Metric Cards */}
         <div className="flex items-center gap-3">
           <div className="px-4 py-2.5 rounded-2xl bg-[#0d1424] border border-white/10 flex items-center gap-3 shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+            <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/25 flex items-center justify-center text-pink-400">
               <HardDrive className="w-4 h-4" />
             </div>
             <div>
@@ -184,13 +187,32 @@ export default function MaterialsPage() {
           </div>
 
           <div className="px-4 py-2.5 rounded-2xl bg-[#0d1424] border border-white/10 flex items-center gap-3 shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400">
               <Lock className="w-4 h-4" />
             </div>
             <div>
               <p className="text-[10px] text-slate-400 font-medium">Data Privacy</p>
-              <p className="text-xs font-bold text-emerald-400">Client-Isolated</p>
+              <p className="text-xs font-bold text-cyan-300">Client-Isolated</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Earth-65 Gwen Stacy Vault Motivator Banner */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Archives</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Zero-Cloud Leak</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              All coursework, lecture slides, and research notes are cryptographically hashed and sandboxed on your device.
+            </p>
           </div>
         </div>
       </div>
@@ -241,8 +263,8 @@ export default function MaterialsPage() {
         onDrop={handleDrop}
         className={`relative rounded-3xl border-2 border-dashed p-8 text-center transition-all overflow-hidden ${
           isDragOver
-            ? "border-blue-400 bg-blue-600/10 shadow-[0_0_35px_rgba(37,99,235,0.25)]"
-            : "border-white/15 bg-[#0b1226]/80 hover:border-blue-500/40 hover:bg-[#0e162f]"
+            ? "border-pink-500 bg-pink-600/10 shadow-[0_0_35px_rgba(236,72,153,0.3)]"
+            : "border-white/15 bg-[#0b1226]/80 hover:border-pink-500/40 hover:bg-[#0e162f]"
         }`}
       >
         <input
@@ -254,23 +276,23 @@ export default function MaterialsPage() {
         />
 
         {isUploading ? (
-          <div className="py-8 flex flex-col items-center justify-center text-blue-400 space-y-3 z-10 relative">
+          <div className="py-8 flex flex-col items-center justify-center text-pink-400 space-y-3 z-10 relative">
             <div className="relative">
-              <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
-              <Lock className="h-5 w-5 text-blue-300 absolute inset-0 m-auto" />
+              <Loader2 className="h-12 w-12 animate-spin text-pink-500" />
+              <Lock className="h-5 w-5 text-pink-300 absolute inset-0 m-auto" />
             </div>
             <div className="space-y-1">
               <p className="font-bold text-white text-base">Security Inspection in Progress</p>
-              <p className="text-xs text-blue-300 font-mono">{scanStep}</p>
+              <p className="text-xs text-pink-300 font-mono">{scanStep}</p>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center relative z-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600/20 to-indigo-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 shadow-[0_0_20px_rgba(37,99,235,0.2)]">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-600/20 via-rose-600/20 to-cyan-600/20 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-4 shadow-[0_0_20px_rgba(236,72,153,0.25)]">
               <FileUp className="h-8 w-8" />
             </div>
             <h3 className="font-bold text-white text-lg mb-1">
-              Upload Document to Secure Vault
+              Upload Document to Secure Earth-65 Vault
             </h3>
             <p className="text-slate-400 text-xs mb-4">
               Drag & drop files here, or click to browse. Limited strictly to safe study formats.

@@ -45,25 +45,52 @@ export default function TasksPage() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-24 text-slate-100">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-white">Tasks & To-Dos</h1>
-          <p className="text-slate-400 text-xs mt-1">Manage your academic action items.</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl font-black tracking-tight text-white">Tasks & Mission Protocol</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+              Earth-65 Missions
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              Agile Action Grid
+            </span>
+          </div>
+          <p className="text-slate-400 text-xs mt-1">Manage, prioritize, and execute academic action items.</p>
         </div>
       </div>
 
-      <div className="bg-[#0d1424] rounded-2xl border border-white/10 p-3 shadow-sm">
+      {/* Gwen Stacy Mission Motivator Card */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Mission Strategy</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Agile Flow</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Knock out the rapid 5-minute action items first. Once you gain momentum, tackling major coursework becomes effortless.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-[#0d1424] rounded-2xl border border-white/10 p-3 shadow-sm hover:border-pink-500/30 transition-all">
         <form onSubmit={handleQuickAdd} className="flex gap-3 items-center">
           <input
             type="text"
-            placeholder="What needs to be accomplished today?"
+            placeholder="Add a new agile mission or study objective..."
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
-            className="flex-1 px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500/50"
+            className="flex-1 px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-slate-500 text-xs focus:outline-none focus:border-pink-500/50"
           />
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-500 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors shadow-sm"
+            className="bg-gradient-to-r from-pink-600 to-rose-600 hover:brightness-110 text-white p-2.5 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(236,72,153,0.3)]"
           >
             <Plus className="h-4 w-4" />
           </button>
@@ -77,7 +104,7 @@ export default function TasksPage() {
           <p className="text-slate-400 text-xs mt-1 mb-4">Add your first task above, or generate them from a Goal.</p>
           <Link
             href="/goals/new"
-            className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-600/30 transition-colors"
+            className="bg-pink-600/20 text-pink-300 border border-pink-500/30 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-pink-600/30 transition-colors"
           >
             Break Down a Goal
           </Link>

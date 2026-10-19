@@ -21,7 +21,10 @@ export default function GoalsPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-3xl font-black tracking-tight text-white">Academic Goals & Milestones</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+              Earth-65 Trajectory
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
               Milestone Tracking
             </span>
           </div>
@@ -29,11 +32,30 @@ export default function GoalsPage() {
         </div>
         <Link
           href="/goals/new"
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all"
+          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 hover:brightness-110 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-[0_0_20px_rgba(236,72,153,0.35)] transition-all"
         >
           <Plus className="h-4 w-4" />
           <span>Create New Goal</span>
         </Link>
+      </div>
+
+      {/* Earth-65 Gwen Stacy Goals Motivator Card */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Trajectory</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Semester Velocity</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Aim high, break it down, hit the targets. Big ambitions become reality when you execute milestones one day at a time.
+            </p>
+          </div>
+        </div>
       </div>
 
       {goals === undefined ? (

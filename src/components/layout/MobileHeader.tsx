@@ -14,11 +14,11 @@ export function MobileHeader() {
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between h-16 px-5 bg-[#0b1226]/90 backdrop-blur-2xl border-b border-white/10 z-30 relative shadow-sm shrink-0 w-full text-white">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-cyan-500 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.4)]">
             <GraduationCap className="h-4 w-4 text-white" />
           </div>
           <span className="text-lg font-black tracking-tight text-white font-sans">
-            StudyOS<span className="text-blue-400">.Ai</span>
+            StudyOS<span className="text-pink-400">.E65</span>
           </span>
         </div>
 

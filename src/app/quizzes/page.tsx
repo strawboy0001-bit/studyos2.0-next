@@ -725,36 +725,65 @@ export default function QuizzesPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Quiz & Assessment Centre</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <h1 className="text-3xl font-black tracking-tight text-white">Quiz & Reflex Assessment</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+              Earth-65 Exam Suite
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
               Detailed Explanations
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">
-            Test your conceptual understanding with AI-generated quizzes and in-depth performance reviews.
+            Test your conceptual understanding with lightweight AI reflex drills and comprehensive question reviews.
           </p>
         </div>
 
         <button
           onClick={() => setShowGeneratorModal(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 hover:brightness-110 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-[0_0_20px_rgba(236,72,153,0.35)]"
         >
           <BrainCircuit className="h-4 w-4" />
-          <span>Generate AI Quiz</span>
+          <span>Generate Reflex Exam</span>
+        </button>
+      </div>
+
+      {/* Earth-65 Gwen Stacy Quiz Motivator Banner */}
+      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Reflex Copilot</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Light Reflex AI</span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Reflex quizzes calibrate your problem-solving timing. Review mistakes right away to cement correct solutions.
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={() => setShowGeneratorModal(true)}
+          className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all shrink-0 flex items-center gap-2"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>New Reflex Drill</span>
         </button>
       </div>
 
       {/* AI Quiz Generator Modal */}
       {showGeneratorModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in">
-          <div className="w-full max-w-lg rounded-3xl bg-[#0c1224] border border-white/10 p-6 sm:p-8 space-y-6 shadow-2xl relative">
+          <div className="w-full max-w-lg rounded-3xl bg-[#0c1224] border border-pink-500/30 p-6 sm:p-8 space-y-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+                <div className="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/25 flex items-center justify-center text-pink-400">
                   <BrainCircuit className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">AI Quiz Generator</h3>
+                  <h3 className="text-base font-bold text-white">Earth-65 Reflex Exam Generator</h3>
                   <p className="text-xs text-slate-400">Select an academic preset or enter your syllabus topic</p>
                 </div>
               </div>

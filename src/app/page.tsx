@@ -170,6 +170,50 @@ export default function DashboardPage() {
         </Link>
       </div>
 
+      {/* Spider-Gwen Earth-65 Study Rhythm Widget */}
+      <div className="rounded-3xl bg-gradient-to-r from-[#190a1f] via-[#0c1224] to-[#0a1728] border border-pink-500/30 p-6 shadow-[0_10px_35px_rgba(236,72,153,0.15)] flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+        <div className="absolute -right-16 -bottom-16 w-48 h-48 bg-pink-500/10 blur-[70px] rounded-full pointer-events-none" />
+        <div className="absolute -left-16 -top-16 w-48 h-48 bg-cyan-500/10 blur-[70px] rounded-full pointer-events-none" />
+
+        <div className="flex items-center gap-4 z-10">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-pink-500/40 shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gwen.png" alt="Gwen Stacy" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+          </div>
+
+          <div className="space-y-1 text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black uppercase text-pink-400 bg-pink-500/15 border border-pink-500/30 px-2.5 py-0.5 rounded-full">
+                GWEN • EARTH-65
+              </span>
+              <span className="text-[10px] font-semibold text-cyan-400">Light AI Active</span>
+            </div>
+            <h3 className="text-base sm:text-lg font-black text-white leading-tight">
+              &quot;Stay in the groove. Sharp reflexes beat cramming.&quot;
+            </h3>
+            <p className="text-xs text-slate-300">
+              Web-linked task tracking and spaced repetition keep your retention at superhero peak.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0 z-10 w-full md:w-auto">
+          <Link
+            href="/planner"
+            className="flex-1 md:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-bold text-xs shadow-md transition-all hover:scale-105 active:scale-95 text-center"
+          >
+            Start Focus Sprint
+          </Link>
+          <Link
+            href="/quizzes"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-semibold text-xs transition-colors text-center"
+          >
+            Reflex Quiz
+          </Link>
+        </div>
+      </div>
+
       {/* Main Two-Column Hub */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Launchpad */}

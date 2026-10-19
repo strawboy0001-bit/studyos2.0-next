@@ -41,15 +41,15 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       {/* Brand Header */}
       <div className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-cyan-500 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.4)]">
             <GraduationCap className="h-4 w-4 text-white" />
           </div>
           <span className="text-lg font-black tracking-tight text-white font-sans">
-            StudyOS<span className="text-blue-400">.Ai</span>
+            StudyOS<span className="text-pink-400">.E65</span>
           </span>
         </Link>
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-          PRO
+        <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
+          SPIDER-VERSE
         </span>
       </div>
 
@@ -68,17 +68,32 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className={`flex items-center gap-x-3 rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
                 isActive
-                  ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.15)]"
+                  ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
                   : "text-slate-400 hover:text-slate-100 hover:bg-white/[0.04] border border-transparent"
               }`}
             >
-              <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
+              <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-pink-400" : "text-slate-400"}`} />
               <span>{item.name}</span>
             </Link>
           );
         })}
 
+        {/* Gwen Stacy Copilot Mini-Card */}
         <div className="pt-4 mt-auto">
+          <div className="my-2 p-2.5 rounded-2xl bg-gradient-to-r from-[#180a1c] to-[#0c1224] border border-pink-500/25 flex items-center gap-2.5 shadow-sm">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-pink-500/40 shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex-1 min-w-0 text-left">
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] font-black uppercase text-pink-400">Gwen • E-65</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              </div>
+              <p className="text-[9px] text-slate-400 truncate">Light AI Copilot Active</p>
+            </div>
+          </div>
+
           <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 px-3 mb-1">
             System
           </div>
@@ -87,7 +102,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
             onClick={onNavigate}
             className={`flex items-center gap-x-3 rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
               pathname === "/settings"
-                ? "bg-blue-600/20 text-blue-300 border border-blue-500/30"
+                ? "bg-gradient-to-r from-pink-500/20 to-cyan-500/10 text-pink-200 border border-pink-500/40"
                 : "text-slate-400 hover:text-slate-100 hover:bg-white/[0.04] border border-transparent"
             }`}
           >
@@ -99,7 +114,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         {/* User Card with Google Status */}
         {user && (
           <div className="pt-3 border-t border-white/5">
-            <div className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-blue-500/30 transition-all">
+            <div className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-pink-500/30 transition-all">
               <div className="flex items-center gap-2.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
