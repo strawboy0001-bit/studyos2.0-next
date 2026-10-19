@@ -2,7 +2,7 @@
 
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
-import { Target, Plus, ChevronRight, CheckCircle2 } from "lucide-react";
+import { Target, Plus, ChevronRight, CheckCircle2, Circle } from "lucide-react";
 import Link from "next/link";
 import { goalRepo } from "@/lib/db/repositories";
 import type { Goal } from "@/lib/db/schema";
@@ -16,77 +16,128 @@ export default function GoalsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8 max-w-7xl mx-auto pb-32 text-slate-100 font-sans">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">My Goals</h1>
-          <p className="text-slate-500 mt-1">Set targets and break them down into actionable steps.</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl font-black tracking-tight text-white">Academic Goals & Milestones</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">
+              Milestone Tracking
+            </span>
+          </div>
+          <p className="text-slate-400 text-xs mt-1">Set high-impact targets and monitor progress across your semester.</p>
         </div>
         <Link
           href="/goals/new"
-          className="flex items-center gap-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-4 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 transition-colors"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all"
         >
           <Plus className="h-4 w-4" />
-          Create New Goal
+          <span>Create New Goal</span>
         </Link>
       </div>
 
       {goals === undefined ? (
-        <div className="text-slate-500 text-center py-12">Loading goals...</div>
+        <div className="text-slate-400 text-center py-12 text-xs">Loading goals...</div>
       ) : goals.length === 0 ? (
-        <div className="text-center py-16 bg-white border border-dashed rounded-xl flex flex-col items-center">
-          <Target className="h-12 w-12 text-slate-300 mb-4" />
-          <h3 className="text-lg font-medium text-slate-900">No active goals</h3>
-          <p className="text-slate-500 mt-1 mb-4">Tell us what you want to achieve, and we&apos;ll help you get there.</p>
-          <Link href="/goals/new" className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] text-violet-700 px-4 py-2 rounded-md font-medium hover:bg-white/50 backdrop-blur-md border border-white/50 transition-colors">
-            Start a Goal
-          </Link>
+        <div className="text-center py-16 rounded-3xl bg-[#0c1224] border border-dashed border-white/10 p-8 space-y-3">
+          <Target className="h-12 w-12 text-slate-500 mx-auto" />
+          <h3 className="text-base font-bold text-white">No active goals yet</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            Define target grades, research milestones, or study streaks to break down into daily tasks.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/goals/new"
+              className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Start a Goal</span>
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {goals.map((goal) => (
-            <div key={goal.id} className="bg-white border rounded-xl p-6 shadow-sm flex flex-col">
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${goal.status === 'completed' ? 'bg-green-100 text-green-600' : 'bg-purple-100 text-purple-600'}`}>
-                    <Target className="h-5 w-5" />
+          {goals.map((goal) => {
+            const isDone = goal.status === "completed";
+
+            return (
+              <div
+                key={goal.id}
+                className="rounded-3xl bg-[#0c1224] border border-white/10 p-6 shadow-sm flex flex-col justify-between hover:border-blue-500/30 transition-all group"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`p-2.5 rounded-2xl border ${
+                          isDone
+                            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                            : "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                        }`}
+                      >
+                        <Target className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors">
+                          {goal.title}
+                        </h3>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mt-0.5 ${
+                            isDone
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                              : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                          }`}
+                        >
+                          {isDone ? "Completed" : "In Progress"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleComplete(goal.id, goal.status)}
+                      className={`p-1.5 rounded-xl transition-colors ${
+                        isDone ? "text-emerald-400 hover:text-slate-400" : "text-slate-500 hover:text-emerald-400"
+                      }`}
+                      title={isDone ? "Mark active" : "Mark completed"}
+                    >
+                      {isDone ? <CheckCircle2 className="h-5 w-5" /> : <Circle className="h-5 w-5" />}
+                    </button>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-800">{goal.title}</h3>
-                </div>
-                <button
-                  onClick={() => handleComplete(goal.id, goal.status)}
-                  className={`p-1 rounded-full ${goal.status === 'completed' ? 'text-green-500 hover:text-slate-400' : 'text-slate-300 hover:text-green-500'}`}
-                >
-                  <CheckCircle2 className="h-6 w-6" />
-                </button>
-              </div>
-              <p className="text-sm text-slate-500 mt-2 line-clamp-2 min-h-[40px]">
-                {goal.description || "No description."}
-              </p>
 
-              <div className="mt-6 flex flex-col gap-2">
-                <div className="flex justify-between text-sm text-slate-600">
-                  <span>Progress</span>
-                  <span className="font-medium">{goal.progress}%</span>
+                  <p className="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed min-h-[36px]">
+                    {goal.description || "Academic milestone objective."}
+                  </p>
                 </div>
-                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${goal.status === 'completed' ? 'bg-green-500' : 'bg-purple-500'}`}
-                    style={{ width: `${goal.progress}%` }}
-                  />
-                </div>
-              </div>
 
-              <div className="mt-6 pt-4 border-t flex justify-between items-center text-sm">
-                <span className="text-slate-500">
-                  {goal.targetDate ? `Target: ${new Date(goal.targetDate).toLocaleDateString()}` : "No specific target date"}
-                </span>
-                <Link href={`/goals/${goal.id}`} className="text-violet-700 hover:underline flex items-center font-medium">
-                  Details <ChevronRight className="h-4 w-4 ml-1" />
-                </Link>
+                <div className="mt-6 pt-4 border-t border-white/5 space-y-3">
+                  <div className="flex justify-between text-xs text-slate-400 font-medium">
+                    <span>Progress</span>
+                    <span className="font-bold text-white">{goal.progress}%</span>
+                  </div>
+
+                  <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${isDone ? "bg-emerald-400" : "bg-blue-500"}`}
+                      style={{ width: `${goal.progress}%` }}
+                    />
+                  </div>
+
+                  <div className="pt-2 flex justify-between items-center text-xs">
+                    <span className="text-slate-500 text-[11px]">
+                      {goal.targetDate ? `Target: ${new Date(goal.targetDate).toLocaleDateString()}` : "Ongoing milestone"}
+                    </span>
+                    <Link
+                      href={`/goals/${goal.id}`}
+                      className="text-blue-400 hover:text-blue-300 flex items-center font-semibold text-xs"
+                    >
+                      <span>Details</span>
+                      <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

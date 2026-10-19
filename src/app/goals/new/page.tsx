@@ -2,132 +2,172 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Loader2, Sparkles, CheckSquare, Search, FileText, AlertTriangle, CheckCircle2, ArrowLeft } from "lucide-react";
 import { goalRepo, taskRepo } from "@/lib/db/repositories";
+import Link from "next/link";
 
 export default function NewGoalWizard() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Goal Data
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [targetDate, setTargetDate] = useState("");
-  const [dataSource, setDataSource] = useState("manual"); // manual, upload, search
-  
+  const [dataSource, setDataSource] = useState("manual");
+
   // Generated Tasks & Challenges
   const [generatedTasks, setGeneratedTasks] = useState([
-    "Review core concepts and definitions",
-    "Find reliable video tutorials on the topic",
-    "Complete 3 practice exercises",
-    "Test knowledge with a flashcard session"
+    "Review core concepts and foundational definitions",
+    "Find trusted lecture series and documentation",
+    "Complete 3 practical problem sets or lab exercises",
+    "Test conceptual retention with flashcard reviews",
   ]);
   const [challenges] = useState([
-    { issue: "Procrastination due to overwhelming scope", solution: "Focus only on one 25-minute Pomodoro session at a time." },
-    { issue: "Difficulty finding quality resources", solution: "Stick to verified University playlists or official documentation." }
+    {
+      issue: "Procrastination due to overwhelming scope",
+      solution: "Focus strictly on one 25-minute Pomodoro session at a time.",
+    },
+    {
+      issue: "Difficulty finding quality resources",
+      solution: "Stick to verified university lecture syllabi and authoritative textbooks.",
+    },
   ]);
 
   const handleSimulateBreakdown = () => {
     setIsLoading(true);
-    // Simulate AI or processing delay
     setTimeout(() => {
       setIsLoading(false);
       setStep(3);
-    }, 1500);
+    }, 1200);
   };
 
   const handleSaveGoal = async () => {
-    if (!title) return;
-    
-    // Save Goal
+    if (!title.trim()) return;
+
     const goal = await goalRepo.create({
-      title,
-      description,
+      title: title.trim(),
+      description: description.trim() || undefined,
       targetDate: targetDate ? new Date(targetDate) : undefined,
       progress: 0,
-      status: "active"
+      status: "active",
     });
 
-    // Save Tasks linked to this goal
     for (const taskTitle of generatedTasks) {
-      await taskRepo.create({
-        title: taskTitle,
-        goalId: goal.id,
-        priority: "medium",
-        status: "pending"
-      });
+      if (taskTitle.trim()) {
+        await taskRepo.create({
+          title: taskTitle.trim(),
+          goalId: goal.id,
+          priority: "medium",
+          status: "pending",
+        });
+      }
     }
 
     router.push("/goals");
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Create a New Goal</h1>
-        <p className="text-slate-500 mt-1">We&apos;ll help you break down your objective into actionable steps.</p>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="flex items-center justify-between mb-8">
-        <div className={`flex flex-col items-center ${step >= 1 ? 'text-violet-700' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 1 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>1</div>
-          <span className="text-xs font-medium">Define</span>
-        </div>
-        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 2 ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20' : 'bg-slate-200'}`} />
-        <div className={`flex flex-col items-center ${step >= 2 ? 'text-violet-700' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 2 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>2</div>
-          <span className="text-xs font-medium">Data Source</span>
-        </div>
-        <div className={`flex-1 h-1 mx-4 rounded-full ${step >= 3 ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20' : 'bg-slate-200'}`} />
-        <div className={`flex flex-col items-center ${step >= 3 ? 'text-violet-700' : 'text-slate-400'}`}>
-          <div className={`h-8 w-8 rounded-full flex items-center justify-center mb-2 font-bold ${step >= 3 ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-400'}`}>3</div>
-          <span className="text-xs font-medium">Review Plan</span>
+    <div className="max-w-3xl mx-auto space-y-8 pb-32 text-slate-100 font-sans">
+      <div className="flex items-center gap-3">
+        <Link
+          href="/goals"
+          className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Link>
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Create a New Goal</h1>
+          <p className="text-slate-400 text-xs mt-0.5">
+            Break down broad objectives into structured tasks and daily milestones.
+          </p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border p-8">
+      {/* Progress Steps */}
+      <div className="flex items-center justify-between">
+        <div className={`flex flex-col items-center ${step >= 1 ? "text-blue-400" : "text-slate-500"}`}>
+          <div
+            className={`h-8 w-8 rounded-full flex items-center justify-center mb-1 text-xs font-bold border ${
+              step >= 1
+                ? "bg-blue-600/20 border-blue-500/40 text-blue-300"
+                : "bg-white/5 border-white/10 text-slate-500"
+            }`}
+          >
+            1
+          </div>
+          <span className="text-[11px] font-semibold">Define</span>
+        </div>
+        <div className={`flex-1 h-0.5 mx-3 rounded-full ${step >= 2 ? "bg-blue-500" : "bg-white/10"}`} />
+        <div className={`flex flex-col items-center ${step >= 2 ? "text-blue-400" : "text-slate-500"}`}>
+          <div
+            className={`h-8 w-8 rounded-full flex items-center justify-center mb-1 text-xs font-bold border ${
+              step >= 2
+                ? "bg-blue-600/20 border-blue-500/40 text-blue-300"
+                : "bg-white/5 border-white/10 text-slate-500"
+            }`}
+          >
+            2
+          </div>
+          <span className="text-[11px] font-semibold">Method</span>
+        </div>
+        <div className={`flex-1 h-0.5 mx-3 rounded-full ${step >= 3 ? "bg-blue-500" : "bg-white/10"}`} />
+        <div className={`flex flex-col items-center ${step >= 3 ? "text-blue-400" : "text-slate-500"}`}>
+          <div
+            className={`h-8 w-8 rounded-full flex items-center justify-center mb-1 text-xs font-bold border ${
+              step >= 3
+                ? "bg-blue-600/20 border-blue-500/40 text-blue-300"
+                : "bg-white/5 border-white/10 text-slate-500"
+            }`}
+          >
+            3
+          </div>
+          <span className="text-[11px] font-semibold">Review Plan</span>
+        </div>
+      </div>
+
+      <div className="bg-[#0c1224] rounded-3xl shadow-sm border border-white/10 p-6 sm:p-8">
         {step === 1 && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">What do you want to achieve?</h2>
-            
+          <div className="space-y-5">
+            <h2 className="text-lg font-bold text-white">What is your academic objective?</h2>
+
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Goal Title</label>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">Goal Title</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Master React Hooks, Prepare for Midterm"
-                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Description (Optional)</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add some context about why this is important..."
-                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none"
+                placeholder="e.g. Master Distributed Systems CS402, Prepare for Midterm"
+                className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 focus:border-blue-500 text-white text-xs outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Target Completion Date</label>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">Description (Optional)</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Add context on syllabus requirements, grading weights, or key concepts..."
+                className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 focus:border-blue-500 text-white text-xs outline-none h-24 resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">Target Completion Date</label>
               <input
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 focus:border-blue-500 text-white text-xs outline-none"
               />
             </div>
 
             <div className="pt-4 flex justify-end">
-              <button 
+              <button
                 onClick={() => setStep(2)}
-                disabled={!title}
-                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-6 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 disabled:opacity-50 transition-colors"
+                disabled={!title.trim()}
+                className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-6 py-2.5 rounded-xl disabled:opacity-50 transition-all shadow-sm"
               >
                 Next Step
               </button>
@@ -137,76 +177,78 @@ export default function NewGoalWizard() {
 
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">How should we create your plan?</h2>
-            <p className="text-slate-500 text-sm">Provide context to generate accurate sub-tasks and resources.</p>
+            <h2 className="text-lg font-bold text-white">How should we synthesize your action plan?</h2>
+            <p className="text-xs text-slate-400">Choose how sub-tasks and milestones should be populated.</p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button 
-                onClick={() => setDataSource('manual')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'manual' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <button
+                onClick={() => setDataSource("manual")}
+                className={`p-4 rounded-2xl border text-left flex flex-col gap-2 transition-all ${
+                  dataSource === "manual"
+                    ? "border-blue-500 bg-blue-600/10 text-white"
+                    : "border-white/10 bg-white/[0.02] text-slate-400 hover:text-white"
+                }`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'manual' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
+                <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 w-fit">
                   <CheckSquare className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-slate-800">Manual Entry</h3>
-                <p className="text-xs text-slate-500">I will break down the tasks myself or start from scratch.</p>
+                <h3 className="font-bold text-xs text-white">Manual / Structured</h3>
+                <p className="text-[11px] text-slate-400">Build tasks yourself or adjust templates.</p>
               </button>
 
-              <button 
-                onClick={() => setDataSource('upload')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'upload' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
+              <button
+                onClick={() => setDataSource("upload")}
+                className={`p-4 rounded-2xl border text-left flex flex-col gap-2 transition-all ${
+                  dataSource === "upload"
+                    ? "border-blue-500 bg-blue-600/10 text-white"
+                    : "border-white/10 bg-white/[0.02] text-slate-400 hover:text-white"
+                }`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'upload' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
+                <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 w-fit">
                   <FileText className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-slate-800">Upload Syllabus</h3>
-                <p className="text-xs text-slate-500">Extract tasks automatically from a PDF or DOCX file.</p>
+                <h3 className="font-bold text-xs text-white">From Vault Material</h3>
+                <p className="text-[11px] text-slate-400">Sync from your uploaded PDF or DOCX syllabus.</p>
               </button>
 
-              <button 
-                onClick={() => setDataSource('search')}
-                className={`p-4 rounded-xl border-2 text-left flex flex-col gap-2 transition-colors ${dataSource === 'search' ? 'border-blue-500 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]' : 'border-slate-200 hover:border-slate-300'}`}
+              <button
+                onClick={() => setDataSource("search")}
+                className={`p-4 rounded-2xl border text-left flex flex-col gap-2 transition-all ${
+                  dataSource === "search"
+                    ? "border-blue-500 bg-blue-600/10 text-white"
+                    : "border-white/10 bg-white/[0.02] text-slate-400 hover:text-white"
+                }`}
               >
-                <div className={`p-2 rounded-lg w-fit ${dataSource === 'search' ? 'bg-white/50 backdrop-blur-md border border-white/50 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
+                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 w-fit">
                   <Search className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-slate-800">Web Resources</h3>
-                <p className="text-xs text-slate-500">Find YouTube videos and articles to build a plan.</p>
+                <h3 className="font-bold text-xs text-white">AI Learning Path</h3>
+                <p className="text-[11px] text-slate-400">Generate milestones for &quot;{title}&quot;.</p>
               </button>
             </div>
 
-            {dataSource === 'upload' && (
-              <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-slate-50">
-                <FileText className="h-8 w-8 text-slate-400 mx-auto mb-3" />
-                <p className="text-sm text-slate-600 mb-2">Drag and drop your syllabus file here</p>
-                <p className="text-xs text-slate-400 mb-4">Supports PDF, DOCX, TXT</p>
-                <button className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-md text-sm font-medium">Browse Files</button>
-              </div>
-            )}
-
-            {dataSource === 'search' && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 text-amber-800 text-sm">
-                <Sparkles className="h-5 w-5 shrink-0" />
-                <p>We&apos;ll suggest a learning path and trusted resources based on the title <strong>&quot;{title}&quot;</strong>.</p>
-              </div>
-            )}
-
             <div className="pt-4 flex justify-between">
-              <button 
+              <button
                 onClick={() => setStep(1)}
-                className="text-slate-500 px-4 py-2 hover:text-slate-700 transition-colors"
+                className="text-xs text-slate-400 hover:text-white px-4 py-2 transition-colors"
               >
                 Back
               </button>
-              <button 
+              <button
                 onClick={handleSimulateBreakdown}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_4px_16px_rgba(139,92,246,0.3)] border border-white/20 text-white px-6 py-2 rounded-md hover:from-violet-600 hover:to-fuchsia-600 transition-colors flex items-center gap-2"
+                className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm"
               >
                 {isLoading ? (
-                  <><Loader2 className="h-4 w-4 animate-spin" /> Processing...</>
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Synthesizing...</span>
+                  </>
                 ) : (
-                  <><Sparkles className="h-4 w-4" /> Generate Plan</>
+                  <>
+                    <Sparkles className="h-4 w-4" />
+                    <span>Generate Action Plan</span>
+                  </>
                 )}
               </button>
             </div>
@@ -215,75 +257,72 @@ export default function NewGoalWizard() {
 
         {step === 3 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">Your Action Plan</h2>
-            <p className="text-slate-500 text-sm">Review and edit the breakdown for <strong>{title}</strong>.</p>
+            <h2 className="text-lg font-bold text-white">Your Action Plan</h2>
+            <p className="text-xs text-slate-400">
+              Review and customize the task breakdown for <strong className="text-white">{title}</strong>.
+            </p>
 
-            <div className="bg-slate-50 rounded-lg p-4 border space-y-3">
-              <h3 className="font-semibold text-slate-700 flex items-center gap-2">
-                <CheckSquare className="h-4 w-4" /> Generated Tasks
+            <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3">
+              <h3 className="font-bold text-xs uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <CheckSquare className="h-4 w-4 text-blue-400" /> Action Items
               </h3>
               {generatedTasks.map((task, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-3 rounded border shadow-sm">
-                  <input type="text" value={task} onChange={(e) => {
-                    const newTasks = [...generatedTasks];
-                    newTasks[idx] = e.target.value;
-                    setGeneratedTasks(newTasks);
-                  }} className="flex-1 outline-none text-sm" />
-                  <button onClick={() => setGeneratedTasks(generatedTasks.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500 text-sm">Remove</button>
+                <div key={idx} className="flex gap-2 items-center bg-white/[0.04] p-3 rounded-xl border border-white/10">
+                  <input
+                    type="text"
+                    value={task}
+                    onChange={(e) => {
+                      const newTasks = [...generatedTasks];
+                      newTasks[idx] = e.target.value;
+                      setGeneratedTasks(newTasks);
+                    }}
+                    className="flex-1 outline-none text-xs text-white bg-transparent"
+                  />
+                  <button
+                    onClick={() => setGeneratedTasks(generatedTasks.filter((_, i) => i !== idx))}
+                    className="text-slate-500 hover:text-red-400 text-xs px-2"
+                  >
+                    Remove
+                  </button>
                 </div>
               ))}
-              <button 
-                onClick={() => setGeneratedTasks([...generatedTasks, "New Task"])}
-                className="text-sm text-violet-700 font-medium hover:underline mt-2 inline-block"
+              <button
+                onClick={() => setGeneratedTasks([...generatedTasks, "New Action Item"])}
+                className="text-xs text-blue-400 font-semibold hover:underline mt-1 inline-block"
               >
                 + Add another task
               </button>
             </div>
 
-            {dataSource === 'search' && (
-              <div className="bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)] border border-white/60 rounded-lg p-4 space-y-3">
-                <h3 className="font-semibold text-slate-700 flex items-center gap-2">
-                  <Search className="h-4 w-4 text-violet-700" /> Suggested Resources
-                </h3>
-                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-white/60 flex justify-between">
-                  <span>Introduction to {title || "Topic"} (YouTube)</span>
-                  <span className="text-xs bg-white/50 backdrop-blur-md border border-white/50 px-2 py-1 rounded">Video</span>
-                </div>
-                <div className="text-sm text-blue-800 bg-white p-3 rounded shadow-sm border border-white/60 flex justify-between">
-                  <span>Official Documentation Guide</span>
-                  <span className="text-xs bg-white/50 backdrop-blur-md border border-white/50 px-2 py-1 rounded">Article</span>
-                </div>
-                <p className="text-xs text-violet-600 italic">These resources will be saved to your Goal details.</p>
-              </div>
-            )}
-
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 space-y-3">
-              <h3 className="font-semibold text-orange-800 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" /> Anticipated Challenges & Solutions
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 space-y-2">
+              <h3 className="font-bold text-xs text-amber-300 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-400" /> Anticipated Study Challenges & Solutions
               </h3>
-              <p className="text-xs text-orange-700 mb-2">Watch out for these common pitfalls.</p>
-              <div className="space-y-3">
+              <div className="space-y-2 pt-1">
                 {challenges.map((c, idx) => (
-                  <div key={idx} className="bg-white p-3 rounded shadow-sm border border-orange-100 text-sm">
-                    <p className="font-semibold text-slate-800 mb-1">Issue: {c.issue}</p>
-                    <p className="text-slate-600"><strong>Solution:</strong> {c.solution}</p>
+                  <div key={idx} className="bg-white/[0.03] p-3 rounded-xl border border-amber-500/10 text-xs space-y-1">
+                    <p className="font-bold text-amber-200">Pitfall: {c.issue}</p>
+                    <p className="text-slate-300">
+                      <strong>Solution:</strong> {c.solution}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="pt-4 flex justify-between">
-              <button 
+              <button
                 onClick={() => setStep(2)}
-                className="text-slate-500 px-4 py-2 hover:text-slate-700 transition-colors"
+                className="text-xs text-slate-400 hover:text-white px-4 py-2 transition-colors"
               >
                 Back
               </button>
-              <button 
+              <button
                 onClick={handleSaveGoal}
-                className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm"
               >
-                <CheckCircle2 className="h-4 w-4" /> Save Goal & Plan
+                <CheckCircle2 className="h-4 w-4" />
+                <span>Save Goal & Tasks</span>
               </button>
             </div>
           </div>

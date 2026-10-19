@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { AuthGatekeeper } from "@/components/auth/AuthGatekeeper";
@@ -31,9 +32,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col text-slate-100 font-sans bg-[#070b19] selection:bg-blue-600/30 selection:text-white">
         <AuthProvider>
-          <AuthGatekeeper>
-            {children}
-          </AuthGatekeeper>
+          <Suspense fallback={null}>
+            <AuthGatekeeper>
+              {children}
+            </AuthGatekeeper>
+          </Suspense>
         </AuthProvider>
       </body>
     </html>

@@ -105,7 +105,8 @@ export const QuizSchema = z.object({
     question: z.string(),
     options: z.array(z.string()).optional(),
     correctAnswer: z.string(),
-    type: z.enum(["mcq", "true-false", "short-answer"])
+    type: z.enum(["mcq", "true-false", "short-answer"]),
+    explanation: z.string().optional(),
   })),
   createdAt: z.date(),
 });
@@ -117,6 +118,7 @@ export const QuizAttemptSchema = z.object({
   quizId: z.string().uuid(),
   score: z.number(),
   totalQuestions: z.number(),
+  userAnswers: z.record(z.string(), z.string()).optional(),
   completedAt: z.date(),
 });
 

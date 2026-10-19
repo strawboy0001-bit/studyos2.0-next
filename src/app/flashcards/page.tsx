@@ -1,231 +1,833 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
-import { Layers, Plus, RotateCcw, Brain, X } from "lucide-react";
+import {
+  Layers,
+  Plus,
+  RotateCcw,
+  Brain,
+  X,
+  Search,
+  Trash2,
+  Edit2,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+  BookOpen,
+  Code2,
+  HelpCircle,
+  BookmarkCheck,
+  ChevronRight,
+  ArrowLeft
+} from "lucide-react";
 import type { Flashcard } from "@/lib/db/schema";
+
+interface Template {
+  id: string;
+  name: string;
+  icon: React.ElementType;
+  frontPlaceholder: string;
+  backPlaceholder: string;
+}
+
+const TEMPLATES: Template[] = [
+  {
+    id: "qa",
+    name: "Question & Answer",
+    icon: HelpCircle,
+    frontPlaceholder: "e.g., What is Amdahl's Law in parallel computing?",
+    backPlaceholder: "e.g., Amdahl's Law predicts the theoretical speedup in latency of the execution of a task at fixed workload that can be expected of a system whose resources are improved.",
+  },
+  {
+    id: "concept",
+    name: "Concept & Definition",
+    icon: BookmarkCheck,
+    frontPlaceholder: "e.g., Dijkstra's Algorithm",
+    backPlaceholder: "Definition: An algorithm for finding the shortest paths between nodes in a weighted graph.\n\nTime Complexity: O(V^2) or O(E + V log V) with min-priority queue.",
+  },
+  {
+    id: "formula",
+    name: "Formula & Law",
+    icon: Sparkles,
+    frontPlaceholder: "e.g., Bayes' Theorem Formula",
+    backPlaceholder: "P(A|B) = [P(B|A) * P(A)] / P(B)\n\nWhere:\n• P(A|B) = Posterior probability\n• P(B|A) = Likelihood\n• P(A) = Prior probability",
+  },
+  {
+    id: "code",
+    name: "Code & Syntax",
+    icon: Code2,
+    frontPlaceholder: "e.g., Binary Search implementation in Python",
+    backPlaceholder: "def binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    while low <= high:\n        mid = (low + high) // 2\n        if arr[mid] == target: return mid\n        elif arr[mid] < target: low = mid + 1\n        else: high = mid - 1\n    return -1",
+  },
+];
 
 export default function FlashcardsPage() {
   const flashcards = useLiveQuery(() => db.flashcards.toArray());
   const subjects = useLiveQuery(() => db.subjects.toArray());
 
+  // Management State
   const [isCreating, setIsCreating] = useState(false);
+  const [editingCard, setEditingCard] = useState<Flashcard | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("qa");
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [selectedSubjectId, setSelectedSubjectId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "due" | "mastered">("all");
+  const [isSaving, setIsSaving] = useState(false);
+  const [previewSide, setPreviewSide] = useState<"front" | "back">("front");
 
-  const [activeReviewCard, setActiveReviewCard] = useState<Flashcard | null>(null);
+  // Review Session State
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [reviewDeck, setReviewDeck] = useState<Flashcard[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [sessionCompleted, setSessionCompleted] = useState(false);
+  const [sessionStats, setSessionStats] = useState({ reviewed: 0, remembered: 0, forgot: 0 });
 
-  const dueCards = flashcards?.filter(c => new Date(c.nextReviewDate) <= new Date()) || [];
+  const activeReviewCard = reviewDeck[currentIndex] || null;
 
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!front.trim() || !back.trim()) return;
+  // Due cards calculation
+  const dueCards = flashcards?.filter((c) => new Date(c.nextReviewDate) <= new Date()) || [];
+  const masteredCards = flashcards?.filter((c) => c.interval > 21) || [];
 
-    await db.flashcards.add({
-      id: uuidv4(),
-      subjectId: selectedSubjectId || undefined,
-      front,
-      back,
-      nextReviewDate: new Date(), // due immediately
-      interval: 0,
-      easeFactor: 2.5,
-      repetitions: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+  // Filtered list of cards
+  const filteredCards = flashcards?.filter((card) => {
+    const matchesSearch =
+      card.front.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.back.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!matchesSearch) return false;
 
+    if (subjectFilter !== "all" && card.subjectId !== subjectFilter) return false;
+
+    if (statusFilter === "due") return new Date(card.nextReviewDate) <= new Date();
+    if (statusFilter === "mastered") return card.interval > 21;
+
+    return true;
+  });
+
+  // Handle template selection
+  const handleSelectTemplate = (tplId: string) => {
+    setSelectedTemplate(tplId);
+  };
+
+  const handleOpenCreate = () => {
+    setEditingCard(null);
     setFront("");
     setBack("");
-    setIsCreating(false);
+    setSelectedSubjectId("");
+    setPreviewSide("front");
+    setIsCreating(true);
   };
 
-  const startReview = () => {
-    if (dueCards.length > 0) {
-      setActiveReviewCard(dueCards[0]);
-      setIsFlipped(false);
+  const handleOpenEdit = (card: Flashcard) => {
+    setEditingCard(card);
+    setFront(card.front);
+    setBack(card.back);
+    setSelectedSubjectId(card.subjectId || "");
+    setPreviewSide("front");
+    setIsCreating(true);
+  };
+
+  const handleSaveCard = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSaving) return;
+    if (!front.trim() || !back.trim()) return;
+
+    setIsSaving(true);
+    try {
+      if (editingCard) {
+        // Update existing
+        await db.flashcards.update(editingCard.id, {
+          front: front.trim(),
+          back: back.trim(),
+          subjectId: selectedSubjectId || undefined,
+          updatedAt: new Date(),
+        });
+      } else {
+        // Create new
+        await db.flashcards.add({
+          id: uuidv4(),
+          subjectId: selectedSubjectId || undefined,
+          front: front.trim(),
+          back: back.trim(),
+          nextReviewDate: new Date(), // due immediately
+          interval: 0,
+          easeFactor: 2.5,
+          repetitions: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+
+      setFront("");
+      setBack("");
+      setEditingCard(null);
+      setIsCreating(false);
+    } catch {
+      // Error handling
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const handleReviewAnswer = async (quality: number) => {
-    // Basic Spaced Repetition (SuperMemo-2 inspired)
-    if (!activeReviewCard) return;
-
-    let { interval, easeFactor, repetitions } = activeReviewCard;
-
-    if (quality >= 3) {
-      if (repetitions === 0) interval = 1;
-      else if (repetitions === 1) interval = 6;
-      else interval = Math.round(interval * easeFactor);
-      
-      repetitions += 1;
-      easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-    } else {
-      repetitions = 0;
-      interval = 1;
-    }
-
-    if (easeFactor < 1.3) easeFactor = 1.3;
-
-    const nextReviewDate = new Date();
-    nextReviewDate.setDate(nextReviewDate.getDate() + interval);
-
-    await db.flashcards.update(activeReviewCard.id, {
-      interval,
-      easeFactor,
-      repetitions,
-      nextReviewDate,
-      updatedAt: new Date()
-    });
-
-    // Move to next card
-    const nextDueCards = flashcards?.filter(c => 
-      c.id !== activeReviewCard.id && new Date(c.nextReviewDate) <= new Date()
-    ) || [];
-
-    if (nextDueCards.length > 0) {
-      setActiveReviewCard(nextDueCards[0]);
-      setIsFlipped(false);
-    } else {
-      setActiveReviewCard(null);
+  const handleDeleteCard = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm("Are you sure you want to delete this flashcard?")) {
+      await db.flashcards.delete(id);
     }
   };
 
-  if (activeReviewCard) {
+  // Start Review Session
+  const startReviewSession = (cardsToReview?: Flashcard[]) => {
+    const deck = cardsToReview && cardsToReview.length > 0 ? cardsToReview : dueCards.length > 0 ? dueCards : flashcards || [];
+    if (deck.length === 0) return;
+
+    setReviewDeck(deck);
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    setSessionCompleted(false);
+    setSessionStats({ reviewed: 0, remembered: 0, forgot: 0 });
+    setIsReviewing(true);
+  };
+
+  // SM-2 Review Algorithm
+  const handleReviewAnswer = useCallback(
+    async (quality: number) => {
+      if (!activeReviewCard) return;
+
+      let { interval, easeFactor, repetitions } = activeReviewCard;
+
+      const isRemembered = quality >= 3;
+      setSessionStats((prev) => ({
+        reviewed: prev.reviewed + 1,
+        remembered: prev.remembered + (isRemembered ? 1 : 0),
+        forgot: prev.forgot + (!isRemembered ? 1 : 0),
+      }));
+
+      if (quality >= 3) {
+        if (repetitions === 0) interval = 1;
+        else if (repetitions === 1) interval = 6;
+        else interval = Math.round(interval * easeFactor);
+
+        repetitions += 1;
+        easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+      } else {
+        repetitions = 0;
+        interval = 1;
+      }
+
+      if (easeFactor < 1.3) easeFactor = 1.3;
+
+      const nextReviewDate = new Date();
+      nextReviewDate.setDate(nextReviewDate.getDate() + interval);
+
+      await db.flashcards.update(activeReviewCard.id, {
+        interval,
+        easeFactor,
+        repetitions,
+        nextReviewDate,
+        updatedAt: new Date(),
+      });
+
+      if (currentIndex < reviewDeck.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+        setIsFlipped(false);
+      } else {
+        setSessionCompleted(true);
+      }
+    },
+    [activeReviewCard, currentIndex, reviewDeck.length]
+  );
+
+  // Keyboard shortcut listener for review session
+  useEffect(() => {
+    if (!isReviewing || sessionCompleted) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        setIsFlipped((prev) => !prev);
+      } else if (isFlipped) {
+        if (e.key === "1") handleReviewAnswer(1);
+        else if (e.key === "2") handleReviewAnswer(3);
+        else if (e.key === "3") handleReviewAnswer(4);
+        else if (e.key === "4") handleReviewAnswer(5);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isReviewing, isFlipped, sessionCompleted, handleReviewAnswer]);
+
+  // Review Mode View
+  if (isReviewing) {
+    if (sessionCompleted) {
+      return (
+        <div className="max-w-2xl mx-auto py-16 px-4 text-slate-100 font-sans">
+          <div className="bg-[#0c1224] border border-white/10 rounded-3xl p-8 sm:p-10 shadow-sm text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+              <CheckCircle2 className="w-9 h-9" />
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-black text-white">Review Session Complete!</h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Your spaced repetition intervals have been recalculated.
+              </p>
+            </div>
+
+            {/* Session Stats */}
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                <p className="text-[10px] uppercase font-bold text-slate-400">Cards Reviewed</p>
+                <p className="text-2xl font-black text-white mt-1">{sessionStats.reviewed}</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                <p className="text-[10px] uppercase font-bold text-emerald-400">Remembered</p>
+                <p className="text-2xl font-black text-emerald-400 mt-1">{sessionStats.remembered}</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                <p className="text-[10px] uppercase font-bold text-amber-400">Needs Review</p>
+                <p className="text-2xl font-black text-amber-400 mt-1">{sessionStats.forgot}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-3 pt-4">
+              <button
+                onClick={() => startReviewSession(reviewDeck)}
+                className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 transition-colors"
+              >
+                Review Again
+              </button>
+              <button
+                onClick={() => setIsReviewing(false)}
+                className="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition-all"
+              >
+                Return to Decks
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const currentCardSubject = subjects?.find((s) => s.id === activeReviewCard?.subjectId);
+    const progressPercent = Math.round(((currentIndex + 1) / reviewDeck.length) * 100);
+
     return (
-      <div className="max-w-2xl mx-auto space-y-8 flex flex-col h-full items-center justify-center py-12">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-800">Review Session</h2>
-          <p className="text-slate-500">How well do you know this?</p>
+      <div className="max-w-3xl mx-auto py-8 px-4 text-slate-100 font-sans space-y-6">
+        {/* Top Control Bar */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setIsReviewing(false)}
+            className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Exit Review</span>
+          </button>
+
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-slate-400 font-medium">
+              Card {currentIndex + 1} of {reviewDeck.length}
+            </span>
+            <div className="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
         </div>
 
-        <div 
-          className="w-full aspect-video bg-white border-2 border-slate-200 rounded-2xl shadow-sm flex items-center justify-center p-8 cursor-pointer text-center hover:border-purple-300 transition-colors"
+        {/* 3D Flashcard Container */}
+        <div
           onClick={() => setIsFlipped(!isFlipped)}
+          className="relative min-h-[340px] sm:min-h-[380px] rounded-3xl bg-[#0c1224] border border-white/10 hover:border-blue-500/40 p-8 shadow-[0_15px_40px_rgba(0,0,0,0.4)] cursor-pointer flex flex-col justify-between transition-all select-none group"
         >
-          <p className="text-2xl font-medium text-slate-800">
-            {isFlipped ? activeReviewCard.back : activeReviewCard.front}
-          </p>
+          {/* Card Top Pill */}
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 uppercase tracking-wider">
+              {isFlipped ? "Answer / Back" : "Question / Front"}
+            </span>
+
+            {currentCardSubject && (
+              <span className="text-[11px] font-semibold text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
+                {currentCardSubject.name}
+              </span>
+            )}
+          </div>
+
+          {/* Card Center Content */}
+          <div className="py-8 my-auto text-center flex flex-col items-center justify-center">
+            <p className="text-xl sm:text-2xl font-bold text-white leading-relaxed max-w-xl whitespace-pre-line">
+              {isFlipped ? activeReviewCard?.back : activeReviewCard?.front}
+            </p>
+          </div>
+
+          {/* Card Bottom Hint */}
+          <div className="text-center">
+            <p className="text-xs text-slate-500 font-medium">
+              {isFlipped ? "Select your rating below or press keys 1 - 4" : "Click anywhere or press Space to reveal answer"}
+            </p>
+          </div>
         </div>
-        
-        {!isFlipped ? (
-          <p className="text-slate-400 text-sm animate-pulse">Click the card to flip</p>
+
+        {/* Rating Controls (Shown after flip) */}
+        {isFlipped ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <button
+              onClick={() => handleReviewAnswer(1)}
+              className="p-3.5 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+            >
+              <span className="text-sm font-bold text-red-400">1 • Again</span>
+              <span className="text-[10px] text-slate-400">Forgot (1 day)</span>
+            </button>
+
+            <button
+              onClick={() => handleReviewAnswer(3)}
+              className="p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+            >
+              <span className="text-sm font-bold text-amber-400">2 • Hard</span>
+              <span className="text-[10px] text-slate-400">Hesitated</span>
+            </button>
+
+            <button
+              onClick={() => handleReviewAnswer(4)}
+              className="p-3.5 rounded-2xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+            >
+              <span className="text-sm font-bold text-blue-400">3 • Good</span>
+              <span className="text-[10px] text-slate-400">Optimal pace</span>
+            </button>
+
+            <button
+              onClick={() => handleReviewAnswer(5)}
+              className="p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-semibold text-xs transition-all flex flex-col items-center gap-1 group"
+            >
+              <span className="text-sm font-bold text-emerald-400">4 • Easy</span>
+              <span className="text-[10px] text-slate-400">Mastered</span>
+            </button>
+          </div>
         ) : (
-          <div className="flex gap-4 w-full justify-center">
-            <button onClick={() => handleReviewAnswer(1)} className="flex-1 bg-red-100 text-red-700 py-3 rounded-lg font-medium hover:bg-red-200">Again (Forgot)</button>
-            <button onClick={() => handleReviewAnswer(3)} className="flex-1 bg-amber-100 text-amber-700 py-3 rounded-lg font-medium hover:bg-amber-200">Hard</button>
-            <button onClick={() => handleReviewAnswer(4)} className="flex-1 bg-white/50 backdrop-blur-md border border-white/50 text-blue-700 py-3 rounded-lg font-medium hover:bg-blue-200">Good</button>
-            <button onClick={() => handleReviewAnswer(5)} className="flex-1 bg-green-100 text-green-700 py-3 rounded-lg font-medium hover:bg-green-200">Easy</button>
+          <div className="flex justify-center">
+            <button
+              onClick={() => setIsFlipped(true)}
+              className="px-6 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 transition-colors"
+            >
+              Reveal Answer (Space)
+            </button>
           </div>
         )}
       </div>
     );
   }
 
+  // Main Flashcards Dashboard
+  const currentTpl = TEMPLATES.find((t) => t.id === selectedTemplate) || TEMPLATES[0];
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8 max-w-7xl mx-auto pb-24 text-slate-100 font-sans">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Flashcards</h1>
-          <p className="text-slate-500 mt-1">Memorize concepts efficiently using spaced repetition.</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl font-black tracking-tight text-white">Adaptive Flashcards</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              SM-2 Algorithm
+            </span>
+          </div>
+          <p className="text-slate-400 text-xs mt-1">
+            Strengthen long-term memory with spaced intervals and structured templates.
+          </p>
         </div>
-        <button
-          onClick={() => setIsCreating(!isCreating)}
-          className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
-        >
-          {isCreating ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-          {isCreating ? 'Cancel' : 'Create Card'}
-        </button>
+
+        <div className="flex items-center gap-2.5">
+          {dueCards.length > 0 && (
+            <button
+              onClick={() => startReviewSession(dueCards)}
+              className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Review Due ({dueCards.length})</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleOpenCreate}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm"
+          >
+            <Plus className="h-4 w-4" />
+            <span>New Flashcard</span>
+          </button>
+        </div>
       </div>
 
-      {isCreating && (
-        <form onSubmit={handleCreate} className="bg-white p-6 border rounded-xl shadow-sm space-y-4">
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Front (Question/Prompt)</label>
-              <textarea
-                value={front}
-                onChange={(e) => setFront(e.target.value)}
-                required
-                className="w-full px-4 py-2 border rounded-md outline-none focus:border-purple-500 h-20 resize-none"
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Back (Answer)</label>
-              <textarea
-                value={back}
-                onChange={(e) => setBack(e.target.value)}
-                required
-                className="w-full px-4 py-2 border rounded-md outline-none focus:border-purple-500 h-20 resize-none"
-              />
-            </div>
+      {/* Deck Stats Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="p-5 rounded-2xl bg-[#0c1224] border border-white/10 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Total Cards</p>
+            <p className="text-2xl font-black text-white mt-1">{flashcards?.length || 0}</p>
           </div>
-          <div className="flex justify-between items-center">
-            <select 
-              value={selectedSubjectId}
-              onChange={(e) => setSelectedSubjectId(e.target.value)}
-              className="border rounded-md px-3 py-2 text-sm outline-none"
+          <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+            <Layers className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-[#0c1224] border border-white/10 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Due for Review</p>
+            <p className="text-2xl font-black text-purple-400 mt-1">{dueCards.length}</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+            <Clock className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-[#0c1224] border border-white/10 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Mastered (21d+)</p>
+            <p className="text-2xl font-black text-emerald-400 mt-1">{masteredCards.length}</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-[#0c1224] border border-white/10 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-slate-400">Subjects Linked</p>
+            <p className="text-2xl font-black text-cyan-400 mt-1">{subjects?.length || 0}</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+            <BookOpen className="w-5 h-5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Creation / Edit Modal */}
+      {isCreating && (
+        <div className="p-6 rounded-3xl bg-[#0c1224] border border-blue-500/30 shadow-[0_10px_35px_rgba(0,0,0,0.5)] space-y-5 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              <h3 className="text-base font-bold text-white">
+                {editingCard ? "Edit Flashcard" : "Create New Flashcard"}
+              </h3>
+            </div>
+            <button
+              onClick={() => setIsCreating(false)}
+              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5"
             >
-              <option value="">No Subject</option>
-              {subjects?.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-            <button type="submit" className="bg-slate-900 text-white px-6 py-2 rounded-md hover:bg-slate-800">
-              Save Flashcard
+              <X className="w-4 h-4" />
             </button>
           </div>
-        </form>
+
+          {/* Template Selection Chips */}
+          <div>
+            <p className="text-xs font-semibold text-slate-400 mb-2">Select Template:</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {TEMPLATES.map((tpl) => {
+                const IconComponent = tpl.icon;
+                const isSelected = selectedTemplate === tpl.id;
+                return (
+                  <button
+                    key={tpl.id}
+                    type="button"
+                    onClick={() => handleSelectTemplate(tpl.id)}
+                    className={`p-2.5 rounded-xl border text-left flex items-center gap-2 text-xs font-semibold transition-all ${
+                      isSelected
+                        ? "bg-blue-600/20 border-blue-500/40 text-blue-300"
+                        : "bg-white/[0.02] border-white/10 text-slate-400 hover:text-white hover:bg-white/[0.05]"
+                    }`}
+                  >
+                    <IconComponent className="w-4 h-4 shrink-0 text-blue-400" />
+                    <span className="truncate">{tpl.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Input Form */}
+          <form onSubmit={handleSaveCard} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                  Front (Question / Prompt / Term)
+                </label>
+                <textarea
+                  value={front}
+                  onChange={(e) => setFront(e.target.value)}
+                  required
+                  rows={4}
+                  placeholder={currentTpl.frontPlaceholder}
+                  className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 focus:border-blue-500 text-white text-xs outline-none resize-none placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                  Back (Answer / Definition / Derivation)
+                </label>
+                <textarea
+                  value={back}
+                  onChange={(e) => setBack(e.target.value)}
+                  required
+                  rows={4}
+                  placeholder={currentTpl.backPlaceholder}
+                  className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 focus:border-blue-500 text-white text-xs outline-none resize-none placeholder-slate-500"
+                />
+              </div>
+            </div>
+
+            {/* Live Interactive Card Preview */}
+            {(front.trim() || back.trim()) && (
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 space-y-2">
+                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                  <span className="font-semibold uppercase tracking-wider text-slate-400">Card Live Preview</span>
+                  <div className="flex items-center gap-1 bg-white/5 p-0.5 rounded-lg border border-white/10">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewSide("front")}
+                      className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-colors ${
+                        previewSide === "front" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      Front (Prompt)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewSide("back")}
+                      className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-colors ${
+                        previewSide === "back" ? "bg-purple-600 text-white" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      Back (Answer)
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  onClick={() => setPreviewSide(previewSide === "front" ? "back" : "front")}
+                  className={`p-5 rounded-2xl border transition-all cursor-pointer min-h-[100px] flex flex-col justify-between ${
+                    previewSide === "front"
+                      ? "bg-[#0b1020] border-blue-500/30"
+                      : "bg-[#140b24] border-purple-500/30"
+                  }`}
+                >
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-2">
+                    <span className="font-medium text-slate-400">
+                      {previewSide === "front" ? "FRONT PROMPT" : "BACK ANSWER"}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Click to flip preview</span>
+                  </div>
+
+                  <p className="text-white text-xs font-medium leading-relaxed whitespace-pre-wrap">
+                    {previewSide === "front"
+                      ? front.trim() || "(Empty prompt)"
+                      : back.trim() || "(Empty answer)"}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-slate-400 font-medium">Course Subject:</label>
+                <select
+                  value={selectedSubjectId}
+                  onChange={(e) => setSelectedSubjectId(e.target.value)}
+                  className="bg-[#070b19] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white outline-none cursor-pointer"
+                >
+                  <option value="">-- No Subject (General) --</option>
+                  {subjects?.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCreating(false)}
+                  disabled={isSaving}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSaving || !front.trim() || !back.trim()}
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                >
+                  {isSaving ? (
+                    <span>Saving Card...</span>
+                  ) : (
+                    <span>{editingCard ? "Save Changes" : "Add to Deck"}</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       )}
 
-      {flashcards === undefined ? (
-        <div className="text-center py-12 text-slate-500">Loading flashcards...</div>
-      ) : flashcards.length === 0 ? (
-        <div className="text-center py-16 bg-white border border-dashed rounded-xl flex flex-col items-center">
-          <Layers className="h-12 w-12 text-slate-300 mb-4" />
-          <h3 className="text-lg font-medium text-slate-900">No flashcards yet</h3>
-          <p className="text-slate-500 mt-1">Create your first card to start memorizing.</p>
+      {/* Filter and Search Bar */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+        <div className="relative w-full sm:w-80">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search cards by question or answer..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 rounded-2xl bg-[#0c1224] border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-500"
+          />
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-purple-50 border border-purple-100 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-            <Brain className="h-12 w-12 text-purple-500 mb-4" />
-            <h3 className="text-xl font-bold text-slate-800 mb-2">Review Session</h3>
-            <p className="text-slate-600 mb-6">
-              You have <strong className="text-purple-700">{dueCards.length}</strong> cards due for review today.
-            </p>
-            <button 
-              onClick={startReview}
-              disabled={dueCards.length === 0}
-              className="bg-purple-600 text-white px-8 py-3 rounded-full font-medium hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Status Filter */}
+          <div className="flex items-center gap-1 p-1 rounded-2xl bg-[#0c1224] border border-white/10 text-xs">
+            <button
+              onClick={() => setStatusFilter("all")}
+              className={`px-3 py-1 rounded-xl font-semibold transition-colors ${
+                statusFilter === "all" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+              }`}
             >
-              <RotateCcw className="h-5 w-5" />
-              {dueCards.length > 0 ? 'Start Review' : 'All Caught Up!'}
+              All ({flashcards?.length || 0})
+            </button>
+            <button
+              onClick={() => setStatusFilter("due")}
+              className={`px-3 py-1 rounded-xl font-semibold transition-colors ${
+                statusFilter === "due" ? "bg-purple-600 text-white" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Due ({dueCards.length})
+            </button>
+            <button
+              onClick={() => setStatusFilter("mastered")}
+              className={`px-3 py-1 rounded-xl font-semibold transition-colors ${
+                statusFilter === "mastered" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Mastered ({masteredCards.length})
             </button>
           </div>
 
-          <div className="bg-white border rounded-xl p-6">
-            <h3 className="font-bold text-slate-800 mb-4">Deck Statistics</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center border-b pb-2">
-                <span className="text-slate-600">Total Cards</span>
-                <span className="font-bold text-slate-900">{flashcards.length}</span>
-              </div>
-              <div className="flex justify-between items-center border-b pb-2">
-                <span className="text-slate-600">Due for Review</span>
-                <span className="font-bold text-purple-600">{dueCards.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-600">Mastered (Interval &gt; 21d)</span>
-                <span className="font-bold text-green-600">
-                  {flashcards.filter(c => c.interval > 21).length}
-                </span>
-              </div>
-            </div>
+          {/* Subject Filter */}
+          {subjects && subjects.length > 0 && (
+            <select
+              value={subjectFilter}
+              onChange={(e) => setSubjectFilter(e.target.value)}
+              className="bg-[#0c1224] border border-white/10 rounded-2xl px-3 py-1.5 text-xs text-white outline-none"
+            >
+              <option value="all">All Subjects</option>
+              {subjects.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
+
+      {/* Cards Grid */}
+      {flashcards === undefined ? (
+        <div className="text-center py-12 text-slate-400 text-xs">Loading flashcards...</div>
+      ) : flashcards.length === 0 ? (
+        <div className="text-center py-16 rounded-3xl bg-[#0c1224] border border-dashed border-white/10 p-8 space-y-3">
+          <Brain className="w-12 h-12 text-purple-400 mx-auto" />
+          <h3 className="text-base font-bold text-white">No flashcards yet</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            Create structured flashcards from formulas, lecture notes, or key concepts using our templates.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={handleOpenCreate}
+              className="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all shadow-sm"
+            >
+              Create First Card
+            </button>
           </div>
+        </div>
+      ) : filteredCards?.length === 0 ? (
+        <div className="text-center py-12 text-slate-400 text-xs">
+          No flashcards match your search or filter.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredCards?.map((card) => {
+            const cardSubject = subjects?.find((s) => s.id === card.subjectId);
+            const isDue = new Date(card.nextReviewDate) <= new Date();
+
+            return (
+              <div
+                key={card.id}
+                onClick={() => handleOpenEdit(card)}
+                className="p-5 rounded-3xl bg-[#0c1224] border border-white/10 hover:border-blue-500/30 transition-all flex flex-col justify-between group cursor-pointer shadow-sm min-h-[200px]"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                        isDue
+                          ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                          : card.interval > 21
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                      }`}
+                    >
+                      {isDue ? "Due Today" : card.interval > 21 ? "Mastered" : `Interval: ${card.interval}d`}
+                    </span>
+
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEdit(card);
+                        }}
+                        className="text-slate-400 hover:text-white p-1 rounded"
+                        title="Edit card"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => handleDeleteCard(card.id, e)}
+                        className="text-slate-400 hover:text-red-400 p-1 rounded"
+                        title="Delete card"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <h4 className="font-bold text-white text-sm line-clamp-2 leading-snug">
+                    {card.front}
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                    {card.back}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="truncate max-w-[150px]">
+                    {cardSubject ? cardSubject.name : "General"}
+                  </span>
+                  <span className="text-blue-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5 font-medium">
+                    Edit <ChevronRight className="w-3 h-3" />
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -44,6 +44,9 @@ export const taskRepo = {
   },
   async updateStatus(id: string, status: Task['status']) {
     await db.tasks.update(id, { status, updatedAt: new Date() });
+  },
+  async delete(id: string) {
+    await db.tasks.delete(id);
   }
 };
 

@@ -1,31 +1,120 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Play, Pause, Square, Calendar as CalendarIcon, Clock, Settings2 } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Clock,
+  Settings2,
+  CheckCircle2,
+  Circle,
+  Plus,
+  Flame,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  Target
+} from "lucide-react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/lib/db";
+import { taskRepo } from "@/lib/db/repositories";
+import Link from "next/link";
+import type { Task } from "@/lib/db/schema";
 
 export default function PlannerPage() {
   const tasks = useLiveQuery(() => db.tasks.toArray());
-  
-  // Focus Timer State
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 mins
-  const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState<"focus" | "break">("focus");
+  const subjects = useLiveQuery(() => db.subjects.toArray());
 
+  // Focus Timer Config
+  const [workDuration, setWorkDuration] = useState(25);
+  const [shortBreakDuration, setShortBreakDuration] = useState(5);
+  const [longBreakDuration, setLongBreakDuration] = useState(15);
+  const [dailyGoalHours, setDailyGoalHours] = useState(4);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Focus Timer Runtime State
+  const [mode, setMode] = useState<"focus" | "shortBreak" | "longBreak">("focus");
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [sessionsCompleted, setSessionsCompleted] = useState(0);
+  const [newQuickTaskTitle, setNewQuickTaskTitle] = useState("");
+
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Play audio chime using Web Audio API synthesis
+  const playChime = useCallback(() => {
+    if (!soundEnabled) return;
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3); // A5
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.8);
+    } catch {
+      // Audio autoplay restrictions fallback gracefully
+    }
+  }, [soundEnabled]);
+
+  // Load preferences from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("studyos_pomodoro_settings");
+      if (stored) {
+        try {
+          const cfg = JSON.parse(stored);
+          if (cfg.work) {
+            setWorkDuration(cfg.work);
+            setTimeLeft(cfg.work * 60);
+          }
+          if (cfg.shortBreak) setShortBreakDuration(cfg.shortBreak);
+          if (cfg.longBreak) setLongBreakDuration(cfg.longBreak);
+          if (cfg.dailyGoal) setDailyGoalHours(cfg.dailyGoal);
+          if (typeof cfg.sound === "boolean") setSoundEnabled(cfg.sound);
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }, []);
+
+  // Timer Tick Hook
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning) {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
+            playChime();
             setIsRunning(false);
+
             if (mode === "focus") {
-              setMode("break");
-              return 5 * 60;
+              const newCount = sessionsCompleted + 1;
+              setSessionsCompleted(newCount);
+              // Every 4 focus sessions, trigger long break
+              if (newCount % 4 === 0) {
+                setMode("longBreak");
+                return longBreakDuration * 60;
+              } else {
+                setMode("shortBreak");
+                return shortBreakDuration * 60;
+              }
             } else {
               setMode("focus");
-              return 25 * 60;
+              return workDuration * 60;
             }
           }
           return prev - 1;
@@ -33,128 +122,382 @@ export default function PlannerPage() {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isRunning, mode]);
+  }, [isRunning, mode, sessionsCompleted, workDuration, shortBreakDuration, longBreakDuration, playChime]);
 
   const toggleTimer = () => setIsRunning(!isRunning);
-  
+
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(mode === "focus" ? 25 * 60 : 5 * 60);
+    if (mode === "focus") setTimeLeft(workDuration * 60);
+    else if (mode === "shortBreak") setTimeLeft(shortBreakDuration * 60);
+    else setTimeLeft(longBreakDuration * 60);
+  };
+
+  const switchMode = (newMode: "focus" | "shortBreak" | "longBreak") => {
+    setIsRunning(false);
+    setMode(newMode);
+    if (newMode === "focus") setTimeLeft(workDuration * 60);
+    else if (newMode === "shortBreak") setTimeLeft(shortBreakDuration * 60);
+    else setTimeLeft(longBreakDuration * 60);
+  };
+
+  const skipSession = () => {
+    setIsRunning(false);
+    if (mode === "focus") {
+      setMode("shortBreak");
+      setTimeLeft(shortBreakDuration * 60);
+    } else {
+      setMode("focus");
+      setTimeLeft(workDuration * 60);
+    }
   };
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
-  const pendingTasks = tasks?.filter(t => t.status !== "completed") || [];
+  const handleToggleTask = async (id: string, currentStatus: Task["status"]) => {
+    const newStatus: Task["status"] = currentStatus === "completed" ? "pending" : "completed";
+    await taskRepo.updateStatus(id, newStatus);
+  };
+
+  const handleAddQuickTask = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newQuickTaskTitle.trim()) return;
+
+    await taskRepo.create({
+      title: newQuickTaskTitle.trim(),
+      priority: "high",
+      status: "pending",
+    });
+    setNewQuickTaskTitle("");
+  };
+
+  const pendingTasks = tasks?.filter((t) => t.status !== "completed") || [];
+  const completedTasks = tasks?.filter((t) => t.status === "completed") || [];
+
+  // Total timer seconds for calculating circular progress
+  const totalSeconds =
+    mode === "focus"
+      ? workDuration * 60
+      : mode === "shortBreak"
+      ? shortBreakDuration * 60
+      : longBreakDuration * 60;
+  const progressRatio = Math.max(0, Math.min(1, 1 - timeLeft / totalSeconds));
+  const strokeDashoffset = 440 * (1 - progressRatio);
+
+  const focusedHours = ((sessionsCompleted * workDuration) / 60).toFixed(1);
 
   return (
-    <div className="space-y-6 font-serif">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8 max-w-7xl mx-auto pb-32 text-slate-100 font-sans">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-amber-950">Study Planner</h1>
-          <p className="text-amber-900/70 mt-1">Manage your time and focus sessions.</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl font-black tracking-tight text-white">Study Planner & Pomodoro</h1>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5" /> High Productivity
+            </span>
+          </div>
+          <p className="text-slate-400 text-xs mt-1">
+            Focus sprints paired with scheduled daily milestones to maximize deep academic retention.
+          </p>
         </div>
+
+        <Link
+          href="/settings"
+          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+        >
+          <Settings2 className="w-4 h-4 text-slate-400" />
+          <span>Timer Settings</span>
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Planner View */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white/60 backdrop-blur-md border border-amber-900/10 rounded-xl p-6 shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold text-amber-950 flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5 text-amber-700" /> Today&apos;s Schedule
-              </h2>
-              <button className="text-sm font-medium text-amber-700 hover:underline">Regenerate Plan</button>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Pomodoro Focus Timer Card (5 Cols) */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[#0c1224] border border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.3)] flex flex-col items-center text-center relative overflow-hidden">
+            {/* Top Mode Pills */}
+            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#070b19] border border-white/10 text-xs mb-8">
+              <button
+                onClick={() => switchMode("focus")}
+                className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all ${
+                  mode === "focus"
+                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Pomodoro ({workDuration}m)
+              </button>
+              <button
+                onClick={() => switchMode("shortBreak")}
+                className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
+                  mode === "shortBreak"
+                    ? "bg-teal-500/20 text-teal-300 border border-teal-500/30 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Break ({shortBreakDuration}m)
+              </button>
+              <button
+                onClick={() => switchMode("longBreak")}
+                className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
+                  mode === "longBreak"
+                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Rest ({longBreakDuration}m)
+              </button>
             </div>
-            
-            {pendingTasks.length === 0 ? (
-              <div className="text-center py-8 text-amber-900/50">
-                No tasks scheduled for today.
+
+            {/* Circular Progress Ring */}
+            <div className="relative w-64 h-64 flex items-center justify-center my-2 select-none">
+              <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 160 160">
+                {/* Background Ring */}
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  className="stroke-white/5"
+                  strokeWidth="8"
+                  fill="transparent"
+                />
+                {/* Progress Ring */}
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  className={
+                    mode === "focus"
+                      ? "stroke-amber-400"
+                      : mode === "shortBreak"
+                      ? "stroke-teal-400"
+                      : "stroke-blue-400"
+                  }
+                  strokeWidth="8"
+                  strokeDasharray="440"
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  fill="transparent"
+                  style={{ transition: "stroke-dashoffset 0.8s ease" }}
+                />
+              </svg>
+
+              {/* Time Display Center */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-5xl font-black tracking-tight text-white font-mono">
+                  {formatTime(timeLeft)}
+                </span>
+                <span className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">
+                  {mode === "focus" ? "Deep Focus" : "Rest & Recharge"}
+                </span>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="relative pl-6 border-l-2 border-amber-900/10 space-y-8">
-                  {pendingTasks.map((task, idx) => (
-                    <div key={task.id} className="relative">
-                      <div className="absolute -left-[31px] bg-white border-2 border-amber-300 rounded-full h-4 w-4 top-1 shadow-sm" />
-                      <div className="bg-white/80 border border-amber-900/5 rounded-lg p-4 hover:border-amber-300 transition-colors shadow-sm">
-                        <div className="text-xs font-semibold text-amber-700/60 mb-1">
-                          {9 + idx}:00 AM - {10 + idx}:00 AM
-                        </div>
-                        <h3 className="font-medium text-amber-950">{task.title}</h3>
-                        <p className="text-sm text-amber-900/60 mt-1">Estimated: 1 hour • Priority: {task.priority}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            </div>
+
+            {/* Controls Bar */}
+            <div className="flex items-center justify-center gap-3 mt-6 w-full max-w-xs">
+              <button
+                onClick={resetTimer}
+                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                title="Reset timer"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={toggleTimer}
+                className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 ${
+                  isRunning
+                    ? "bg-amber-600 hover:bg-amber-500 text-white"
+                    : mode === "focus"
+                    ? "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-[0_0_25px_rgba(245,158,11,0.3)]"
+                    : "bg-blue-600 hover:bg-blue-500 text-white"
+                }`}
+              >
+                {isRunning ? (
+                  <>
+                    <Pause className="w-4 h-4" />
+                    <span>Pause</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 fill-current" />
+                    <span>Start Focus</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={skipSession}
+                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                title="Skip to next session"
+              >
+                <SkipForward className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => setSoundEnabled(!soundEnabled)}
+                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                title={soundEnabled ? "Mute chimes" : "Enable chimes"}
+              >
+                {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Daily Sessions Stats */}
+            <div className="mt-8 pt-6 border-t border-white/5 w-full grid grid-cols-2 gap-3 text-center">
+              <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/5">
+                <p className="text-[10px] uppercase font-bold text-slate-400">Pomodoros Done</p>
+                <p className="text-xl font-black text-amber-400 mt-0.5">{sessionsCompleted}</p>
               </div>
-            )}
+
+              <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/5">
+                <p className="text-[10px] uppercase font-bold text-slate-400">Focused Time</p>
+                <p className="text-xl font-black text-teal-400 mt-0.5">{focusedHours} hrs</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Unseen Power Focus Artwork Card */}
+          <div className="p-5 rounded-3xl bg-[#0c1224] border border-red-500/20 shadow-sm relative overflow-hidden flex items-center gap-4 group">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-red-500/30 shadow-md">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/unseen.png"
+                alt="UNSEEN Power"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-[9px] font-black uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">
+                UNSEEN POWER • 085
+              </span>
+              <h4 className="text-xs font-bold text-white mt-1 leading-snug">
+                &quot;Covered, but never contained.&quot;
+              </h4>
+              <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-2">
+                Transformation quietly begins in silent, uninterrupted focus.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Sidebar: Focus Timer & Stats */}
-        <div className="space-y-6">
-          <div className="bg-white/60 backdrop-blur-md border border-amber-900/10 rounded-xl p-6 shadow-sm text-center">
-            <h2 className="font-bold text-amber-950 mb-6 flex items-center justify-center gap-2">
-              <Clock className="h-5 w-5 text-teal-500" /> Focus Timer
-            </h2>
-            
-            <div className="flex justify-center gap-4 mb-6">
-              <button 
-                onClick={() => { setMode('focus'); setTimeLeft(25 * 60); setIsRunning(false); }}
-                className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${mode === 'focus' ? 'bg-indigo-100/80 text-indigo-800' : 'text-amber-900/60 hover:bg-white/50'}`}
-              >
-                Pomodoro
-              </button>
-              <button 
-                onClick={() => { setMode('break'); setTimeLeft(5 * 60); setIsRunning(false); }}
-                className={`text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${mode === 'break' ? 'bg-amber-100 text-amber-800' : 'text-amber-900/60 hover:bg-white/50'}`}
-              >
-                Short Break
-              </button>
+        {/* Right Column: Daily Focus Schedule & Tasks (7 Cols) */}
+        <div className="lg:col-span-7 space-y-6">
+          {/* Daily Goal Card */}
+          <div className="p-6 rounded-3xl bg-[#0c1224] border border-white/10 flex items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Target className="w-4 h-4 text-teal-400" />
+                <h3 className="text-sm font-bold text-white">Daily Target Progress</h3>
+              </div>
+              <p className="text-xs text-slate-400">
+                {focusedHours} of {dailyGoalHours} hours completed today
+              </p>
             </div>
 
-            <div className="text-6xl font-black text-amber-950 mb-8 tracking-tight font-sans">
-              {formatTime(timeLeft)}
-            </div>
-
-            <div className="flex justify-center gap-4">
-              <button 
-                onClick={toggleTimer}
-                className={`flex-1 py-3 rounded-lg flex items-center justify-center gap-2 font-bold text-white transition-colors shadow-md ${isRunning ? 'bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_4px_16px_rgba(0,0,0,0.02)]0 hover:bg-indigo-600' : 'bg-amber-800 hover:bg-amber-900'}`}
-              >
-                {isRunning ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-                {isRunning ? 'Pause' : 'Start'}
-              </button>
-              <button 
-                onClick={resetTimer}
-                className="p-3 bg-white border border-amber-900/10 text-amber-900/60 rounded-lg hover:bg-amber-50 transition-colors shadow-sm"
-                title="Reset Timer"
-              >
-                <Square className="h-5 w-5" />
-              </button>
+            <div className="w-48 space-y-1 text-right">
+              <span className="text-xs font-bold text-teal-400">
+                {Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%
+              </span>
+              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-teal-400 transition-all duration-300"
+                  style={{
+                    width: `${Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%`,
+                  }}
+                />
+              </div>
             </div>
           </div>
-          
-          <div className="bg-white/40 backdrop-blur-sm border border-amber-900/5 rounded-xl p-6">
-            <h3 className="font-semibold text-amber-950 flex items-center gap-2 mb-4">
-              <Settings2 className="h-4 w-4 text-amber-700" /> Daily Availability
-            </h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between items-center bg-white/70 p-3 rounded shadow-sm border border-amber-900/5">
-                <span className="text-amber-900/70">Max Study Hours</span>
-                <span className="font-medium text-amber-950">4 hrs</span>
+
+          {/* Today's Schedule & Action Items */}
+          <div className="p-6 rounded-3xl bg-[#0c1224] border border-white/10 space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-400" />
+                <h3 className="text-base font-bold text-white">Active Focus Schedule</h3>
               </div>
-              <div className="flex justify-between items-center bg-white/70 p-3 rounded shadow-sm border border-amber-900/5">
-                <span className="text-amber-900/70">Preferred Time</span>
-                <span className="font-medium text-amber-950">Morning</span>
-              </div>
-              <button className="w-full text-amber-700 font-medium hover:underline text-center mt-2">
-                Edit Preferences
+              <span className="text-xs text-slate-400">
+                {pendingTasks.length} pending • {completedTasks.length} done
+              </span>
+            </div>
+
+            {/* Quick Add Focus Task Form */}
+            <form onSubmit={handleAddQuickTask} className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Add a priority task to tackle in your next Pomodoro..."
+                value={newQuickTaskTitle}
+                onChange={(e) => setNewQuickTaskTitle(e.target.value)}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center gap-1 shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Task</span>
               </button>
+            </form>
+
+            {/* Task Timeline */}
+            <div className="space-y-3 pt-1">
+              {pendingTasks.length === 0 ? (
+                <div className="text-center py-12 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+                  <p className="text-sm font-bold text-white">All scheduled tasks completed!</p>
+                  <p className="text-xs text-slate-500">Add a new task above or relax during your break.</p>
+                </div>
+              ) : (
+                pendingTasks.map((task, idx) => {
+                  const linkedSubject = subjects?.find((s) => s.id === task.subjectId);
+                  return (
+                    <div
+                      key={task.id}
+                      className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-amber-500/30 transition-all flex items-start justify-between gap-3 group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <button
+                          onClick={() => handleToggleTask(task.id, task.status)}
+                          className="mt-0.5 text-slate-500 hover:text-amber-400 transition-colors"
+                          title="Mark complete"
+                        >
+                          <Circle className="w-4 h-4" />
+                        </button>
+                        <div>
+                          <p className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
+                            {task.title}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-[10px] text-slate-500">
+                              Block #{idx + 1} (est. {workDuration}m)
+                            </span>
+                            {linkedSubject && (
+                              <span className="text-[10px] text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                                {linkedSubject.name}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded capitalize ${
+                          task.priority === "high"
+                            ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                            : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

@@ -18,13 +18,13 @@ export default function NewNotePage() {
 
     const parsedTags = tags
       .split(",")
-      .map(t => t.trim())
-      .filter(t => t.length > 0);
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
 
     await db.notes.add({
       id: uuidv4(),
-      title,
-      content,
+      title: title.trim(),
+      content: content.trim(),
       tags: parsedTags,
       isAiGenerated: false,
       createdAt: new Date(),
@@ -35,46 +35,51 @@ export default function NewNotePage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 h-full flex flex-col">
+    <div className="max-w-4xl mx-auto space-y-6 pb-24 text-slate-100 font-sans flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <Link href="/notes" className="text-slate-500 hover:text-slate-800 flex items-center gap-2">
-          <ArrowLeft className="h-4 w-4" /> Back to Notes
+        <Link
+          href="/notes"
+          className="text-xs font-semibold text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to Notes</span>
         </Link>
         <button
           onClick={handleSave}
-          disabled={!title || !content}
-          className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors disabled:opacity-50 flex items-center gap-2 font-medium"
+          disabled={!title.trim() || !content.trim()}
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all disabled:opacity-40 flex items-center gap-2"
         >
-          <Save className="h-4 w-4" /> Save Note
+          <Save className="h-4 w-4" />
+          <span>Save Note</span>
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border flex flex-col flex-1 overflow-hidden min-h-[500px]">
-        <div className="p-6 border-b space-y-4">
+      <div className="bg-[#0c1224] rounded-3xl border border-white/10 shadow-sm flex flex-col flex-1 overflow-hidden min-h-[520px]">
+        <div className="p-6 border-b border-white/10 space-y-3">
           <input
             type="text"
             placeholder="Note Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-3xl font-bold text-slate-900 outline-none placeholder:text-slate-300"
+            className="w-full text-2xl sm:text-3xl font-black text-white outline-none placeholder:text-slate-600 bg-transparent"
             autoFocus
           />
-          <div className="flex items-center gap-3 text-slate-500">
-            <Tag className="h-4 w-4 shrink-0" />
+          <div className="flex items-center gap-2.5 text-slate-400 text-xs">
+            <Tag className="h-4 w-4 shrink-0 text-blue-400" />
             <input
               type="text"
-              placeholder="Add tags separated by commas (e.g. biology, exam-prep)"
+              placeholder="Add tags separated by commas (e.g. distributed-systems, exam-review, algorithms)"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              className="flex-1 text-sm outline-none placeholder:text-slate-300"
+              className="flex-1 text-xs outline-none placeholder:text-slate-600 bg-transparent text-slate-200"
             />
           </div>
         </div>
         <textarea
-          placeholder="Start writing your notes here..."
+          placeholder="Start writing lecture notes, summaries, or code explanations..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="flex-1 w-full p-6 outline-none resize-none text-slate-700 leading-relaxed"
+          className="flex-1 w-full p-6 outline-none resize-none text-slate-200 bg-transparent text-sm leading-relaxed placeholder:text-slate-600"
         />
       </div>
     </div>

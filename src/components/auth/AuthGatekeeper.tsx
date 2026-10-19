@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthContext";
 import { AuthLandingGateway } from "./AuthLandingGateway";
 import { WorkspaceLockScreen } from "./WorkspaceLockScreen";
@@ -11,7 +12,13 @@ import { SecurityMeshBackground } from "@/components/ui/SecurityMeshBackground";
 import { GraduationCap, Shield } from "lucide-react";
 
 export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const { isAuthenticated, isLoading, isLocked } = useAuth();
+
+  // If user is directly visiting public routes like /login or an API route, allow direct render
+  if (pathname?.startsWith("/login") || pathname?.startsWith("/api")) {
+    return <>{children}</>;
+  }
 
   if (isLoading) {
     return (
