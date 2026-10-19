@@ -43,9 +43,15 @@ export default function DashboardPage() {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-300">
-              <GoogleIcon className="w-3.5 h-3.5" />
-              <span>Google Identity Verified • Local Client Sandbox</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-300">
+                <GoogleIcon className="w-3.5 h-3.5" />
+                <span>Google Identity Verified</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-[10px] font-black text-pink-300 uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse" />
+                <span>Earth-65 • Light AI Copilot</span>
+              </div>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
               {user ? `Welcome back, ${user.name}` : "Academic Workspace"}

@@ -250,6 +250,63 @@ export function AuthLandingGateway() {
           </div>
         </motion.div>
 
+        {/* Earth-65 Spider-Gwen Companion Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38 }}
+          className="mt-10 max-w-4xl mx-auto rounded-3xl bg-gradient-to-r from-[#0c1224] via-[#1a081a] to-[#0a1424] border border-pink-500/30 p-6 sm:p-8 shadow-[0_20px_60px_rgba(236,72,153,0.18)] flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group"
+        >
+          {/* Ambient Spider-Verse pink & cyan glow */}
+          <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-pink-600/15 blur-[100px] rounded-full pointer-events-none" />
+          <div className="absolute -right-20 -top-20 w-64 h-64 bg-cyan-500/15 blur-[100px] rounded-full pointer-events-none" />
+
+          {/* Gwen Stacy Poster Image Container */}
+          <div className="relative shrink-0 w-48 sm:w-56 rounded-2xl overflow-hidden border-2 border-pink-500/40 shadow-2xl group-hover:scale-[1.03] transition-transform duration-300">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/gwen.png"
+              alt="Gwen Stacy • Earth-65 Spider-Verse"
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            <span className="absolute bottom-2.5 left-3 text-[10px] font-black uppercase tracking-wider text-pink-300 bg-black/70 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-pink-500/40">
+              GWEN • EARTH-65
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 text-left space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-pink-500 animate-ping" />
+              <span>SPIDER-VERSE STUDY COMPANION</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+              Agile Neural Reflexes. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-cyan-300">
+                Glide Through Complex Courses.
+              </span>
+            </h2>
+
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              StudyOS pairs high-precision focus intervals with lightweight adaptive recall. Your intelligent Earth-65 copilot keeps your spider-sense sharp, alert, and on tempo without overwhelming your workspace with AI clutter.
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold">
+              <span className="text-pink-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-pink-500" /> Web-Linked Tasks
+              </span>
+              <span className="text-cyan-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> Lightweight Assistant
+              </span>
+              <span className="text-slate-400">
+                Zero AI Clutter • Pure Flow
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Hero Feature Cards Showcase */}
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {/* 1 */}

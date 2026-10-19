@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { SecuritySentinelWidget } from "@/components/ui/SecuritySentinelWidget";
 import { SecurityMeshBackground } from "@/components/ui/SecurityMeshBackground";
+import { FloatingAssistant } from "@/components/ui/FloatingAssistant";
 import { GraduationCap, Shield } from "lucide-react";
 
 export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
@@ -58,6 +59,7 @@ export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
       <SecurityMeshBackground />
       {isLocked && <WorkspaceLockScreen />}
       <SecuritySentinelWidget />
+      <FloatingAssistant />
       <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
         <MobileHeader />
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-2xl bg-[#0b1226]/80 border-r border-white/10 shadow-[4px_0_30px_rgba(0,0,0,0.5)]">
