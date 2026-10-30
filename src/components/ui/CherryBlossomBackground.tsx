@@ -1,52 +1,158 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-// Deterministic pseudo-random seed helper for pure React renders
-function pseudoRandom(seed: number) {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
+interface Petal {
+  x: number;
+  y: number;
+  size: number;
+  speedY: number;
+  speedX: number;
+  rotation: number;
+  rotationSpeed: number;
+  flip: number;
+  flipSpeed: number;
+  opacity: number;
+  swayAmplitude: number;
+  swaySpeed: number;
+  swayOffset: number;
 }
 
-const STATIC_PETALS = Array.from({ length: 40 }).map((_, i) => ({
-  id: i,
-  left: pseudoRandom(i * 13 + 7) * 100,
-  duration: 10 + pseudoRandom(i * 17 + 3) * 15,
-  delay: pseudoRandom(i * 23 + 5) * 8,
-  size: 8 + pseudoRandom(i * 29 + 11) * 8,
-}));
-
 export function CherryBlossomBackground() {
-  const compId = useId();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [enabled, setEnabled] = useState(true);
+
+  // Check user preference on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("studyos_zen_sakura");
+      if (stored !== null) {
+        setEnabled(stored === "true");
+      }
+
+      const handleToggle = (e: CustomEvent<{ enabled: boolean }>) => {
+        setEnabled(e.detail.enabled);
+        localStorage.setItem("studyos_zen_sakura", String(e.detail.enabled));
+      };
+
+      window.addEventListener("studyos:toggle-sakura" as any, handleToggle);
+      return () => {
+        window.removeEventListener("studyos:toggle-sakura" as any, handleToggle);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Number of subtle petals
+    const PETAL_COUNT = Math.min(30, Math.floor(width / 45));
+    const petals: Petal[] = [];
+
+    const createPetal = (initialY = -20): Petal => ({
+      x: Math.random() * width,
+      y: initialY === -20 ? Math.random() * -50 : initialY,
+      size: Math.random() * 8 + 7,
+      speedY: Math.random() * 0.75 + 0.45,
+      speedX: Math.random() * 0.4 - 0.1,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.015,
+      flip: Math.random() * Math.PI,
+      flipSpeed: Math.random() * 0.02 + 0.01,
+      opacity: Math.random() * 0.35 + 0.25,
+      swayAmplitude: Math.random() * 1.5 + 0.5,
+      swaySpeed: Math.random() * 0.02 + 0.01,
+      swayOffset: Math.random() * Math.PI * 2,
+    });
+
+    // Seed initial petals distributed across viewport
+    for (let i = 0; i < PETAL_COUNT; i++) {
+      petals.push(createPetal(Math.random() * height));
+    }
+
+    let time = 0;
+
+    const render = () => {
+      time += 0.015;
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i];
+
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(time * p.swaySpeed + p.swayOffset) * p.swayAmplitude * 0.5;
+        p.rotation += p.rotationSpeed;
+        p.flip += p.flipSpeed;
+
+        // Reset if offscreen
+        if (p.y > height + 20) {
+          petals[i] = createPetal(-20);
+          continue;
+        }
+        if (p.x > width + 20) p.x = -20;
+        if (p.x < -20) p.x = width + 20;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.scale(1, Math.cos(p.flip));
+
+        // Soft, organic petal shape
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(p.size * 0.5, -p.size * 0.8, p.size * 1.1, -p.size * 0.3, p.size, p.size * 0.6);
+        ctx.bezierCurveTo(p.size * 0.8, p.size * 1.2, p.size * 0.2, p.size * 1.1, 0, p.size * 0.5);
+        ctx.bezierCurveTo(-p.size * 0.2, p.size * 1.1, -p.size * 0.8, p.size * 1.2, -p.size, p.size * 0.6);
+        ctx.bezierCurveTo(-p.size * 1.1, -p.size * 0.3, -p.size * 0.5, -p.size * 0.8, 0, 0);
+        ctx.closePath();
+
+        // Delicate Sakura gradient: soft powder pink with subtle translucent white core
+        const grad = ctx.createRadialGradient(0, p.size * 0.2, 0, 0, p.size * 0.2, p.size);
+        grad.addColorStop(0, `rgba(255, 225, 235, ${p.opacity})`);
+        grad.addColorStop(0.7, `rgba(255, 192, 203, ${p.opacity * 0.8})`);
+        grad.addColorStop(1, `rgba(244, 143, 177, ${p.opacity * 0.4})`);
+
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
-    <div 
-      className="fixed inset-0 pointer-events-none overflow-hidden z-[-1]" 
-      style={{ backgroundColor: '#070b19' }}
-    >
-      <div className="absolute inset-0 bg-blue-950/20" />
-
-      {STATIC_PETALS.map((petal) => (
-        <div
-          key={`${compId}-${petal.id}`}
-          className="absolute top-[-10%] rounded-full opacity-40"
-          style={{
-            left: `${petal.left}%`,
-            width: `${petal.size}px`,
-            height: `${petal.size}px`,
-            backgroundColor: '#60a5fa',
-            animation: `fall ${petal.duration}s linear ${petal.delay}s infinite`,
-            boxShadow: '0 0 6px rgba(96, 165, 250, 0.4)',
-          }}
-        />
-      ))}
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes fall {
-          0% { top: -10%; transform: translateX(0px); }
-          100% { top: 110%; transform: translateX(40px); }
-        }
-      `}} />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-[1] select-none"
+      aria-hidden="true"
+    />
   );
 }

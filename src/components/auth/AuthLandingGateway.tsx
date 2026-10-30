@@ -23,20 +23,19 @@ import { useAuth } from "@/lib/auth/AuthContext";
 
 export function AuthLandingGateway() {
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { loginAsGuest, loginWithGoogle, savedAccounts } = useAuth();
-  const [isGuestLoading, setIsGuestLoading] = useState(false);
+  const { loginWithGoogle, savedAccounts } = useAuth();
+  const [sakuraEnabled, setSakuraEnabled] = useState(true);
 
-  const handleInstantGuest = async () => {
-    setIsGuestLoading(true);
-    try {
-      await loginAsGuest();
-    } finally {
-      setIsGuestLoading(false);
+  const toggleSakura = () => {
+    const next = !sakuraEnabled;
+    setSakuraEnabled(next);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("studyos:toggle-sakura", { detail: { enabled: next } }));
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#070b19] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#070b16] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans overflow-x-hidden relative">
       <GoogleAuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
@@ -67,20 +66,29 @@ export function AuthLandingGateway() {
         <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={handleInstantGuest}
-            disabled={isGuestLoading}
-            className="bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-200 font-medium text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+            onClick={toggleSakura}
+            className="surface-2 hairline-border text-slate-300 hover:text-white font-medium text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Toggle Zen Sakura Petals"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>{isGuestLoading ? "Entering..." : "Instant Demo"}</span>
+            <span className="text-sm leading-none">🌸</span>
+            <span>{sakuraEnabled ? "Sakura: On" : "Sakura: Off"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowAuthModal(true)}
+            className="surface-2 hairline-border text-slate-200 hover:text-white font-medium text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <Fingerprint className="w-3.5 h-3.5 text-blue-400" />
+            <span>Google ID</span>
           </button>
 
           <Link
             href="/login"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs px-4 py-1.5 rounded-xl flex items-center gap-2 transition-colors"
+            className="bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors"
           >
             <GoogleIcon className="w-3.5 h-3.5" />
-            <span>Google Login</span>
+            <span>Sign In</span>
           </Link>
         </div>
       </header>
@@ -91,7 +99,7 @@ export function AuthLandingGateway() {
           {/* Outline Tag */}
           <div className="inline-flex">
             <span className="tag-outline">
-              ACADEMIC OPERATING SYSTEM 2.0 • LOCAL SANDBOX
+              ACADEMIC OPERATING SYSTEM 2.0 • GOOGLE VERIFIED
             </span>
           </div>
 
@@ -106,53 +114,44 @@ export function AuthLandingGateway() {
             Organize study materials, generate adaptive flashcards, practice comprehensive quizzes, and boost your daily focus with Pomodoro task planning.
           </p>
 
-          {/* Quick Resume if previously saved */}
+          {/* Quick Resume if previously authenticated */}
           {savedAccounts.length > 0 && (
-            <div className="inline-flex items-center gap-3 p-2 px-4 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs text-white">
-              <span>Welcome back, <strong>{savedAccounts[0].name}</strong></span>
+            <div className="inline-flex items-center gap-3 p-2 px-4 rounded-xl surface-1 hairline-border text-xs text-white">
+              <span>Verified Google Account: <strong>{savedAccounts[0].name}</strong></span>
               <button
                 onClick={() => loginWithGoogle({ name: savedAccounts[0].name, email: savedAccounts[0].email })}
                 className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 font-medium text-[11px] transition-colors"
               >
-                Resume Session
+                Enter Workspace
               </button>
             </div>
           )}
 
-          {/* Primary CTA Buttons: One Flat Accent */}
+          {/* Primary CTA Buttons: Pure Flat Accent */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            {/* Instant Demo */}
-            <button
-              type="button"
-              onClick={handleInstantGuest}
-              disabled={isGuestLoading}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <span>{isGuestLoading ? "Launching..." : "Explore Interactive Demo"}</span>
-              <ArrowRight className="w-4 h-4 text-white/80" />
-            </button>
-
-            {/* Google Login */}
+            {/* Direct Google OAuth Login */}
             <Link
               href="/login"
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-200 hover:text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
             >
               <GoogleIcon className="w-4 h-4" />
               <span>Sign In with Google</span>
+              <ArrowRight className="w-4 h-4 text-white/80" />
             </Link>
 
-            {/* Fast Modal Dialog */}
+            {/* Google ID Input Modal */}
             <button
               onClick={() => setShowAuthModal(true)}
-              className="w-full sm:w-auto px-4 py-3 rounded-xl bg-transparent hover:bg-white/[0.04] text-slate-400 hover:text-white text-xs font-medium transition-colors"
+              className="w-full sm:w-auto px-5 py-3 rounded-xl surface-2 hairline-border text-slate-200 hover:text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              Quick Login Pass
+              <Fingerprint className="w-4 h-4 text-blue-400" />
+              <span>Enter with Google ID</span>
             </button>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 pt-2">
             <span className="flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-slate-400" /> Isolated Local Sandbox
+              <Lock className="w-3.5 h-3.5 text-blue-400" /> Google OAuth 2.0 Security
             </span>
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Max {MAX_FILE_SIZE_LABEL} Restricted Vault

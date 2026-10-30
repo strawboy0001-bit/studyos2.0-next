@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -35,6 +36,22 @@ const navigation = [
 export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { user, logout, lockWorkspace } = useAuth();
+  const [sakuraEnabled, setSakuraEnabled] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("studyos_zen_sakura");
+      if (stored !== null) setSakuraEnabled(stored === "true");
+    }
+  }, []);
+
+  const toggleSakura = () => {
+    const next = !sakuraEnabled;
+    setSakuraEnabled(next);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("studyos:toggle-sakura", { detail: { enabled: next } }));
+    }
+  };
 
   return (
     <div className="flex h-full w-full flex-col bg-[#080d1a] text-slate-200 border-r border-white/[0.08]">
@@ -102,6 +119,27 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3 mb-1.5">
             System
           </div>
+          <button
+            type="button"
+            onClick={toggleSakura}
+            className="w-full flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] transition-colors cursor-pointer"
+            title="Toggle Zen Sakura Petals Animation"
+          >
+            <span className="flex items-center gap-2.5">
+              <span className="text-sm">🌸</span>
+              <span>Zen Sakura Petals</span>
+            </span>
+            <span
+              className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                sakuraEnabled
+                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                  : "bg-white/[0.05] text-slate-500 border border-white/[0.06]"
+              }`}
+            >
+              {sakuraEnabled ? "ON" : "OFF"}
+            </span>
+          </button>
+
           <Link
             href="/settings"
             onClick={onNavigate}

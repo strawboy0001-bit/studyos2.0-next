@@ -51,7 +51,7 @@ interface GoogleAuthModalProps {
 
 export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalProps) {
   const router = useRouter();
-  const { loginAsGuest, loginWithGoogle, signInWithGoogleAccount, savedAccounts } = useAuth();
+  const { loginWithGoogle, signInWithGoogleAccount } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"instant" | "custom">("instant");
   const [step, setStep] = useState<"form" | "complete">("form");
@@ -60,31 +60,12 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [guestName, setGuestName] = useState("");
-
-  const handleGuestLogin = async () => {
-    setIsSubmitting(true);
-    setErrorMessage(null);
-    try {
-      await loginAsGuest(guestName.trim() || undefined);
-      setStep("complete");
-      setTimeout(() => {
-        setIsSubmitting(false);
-        onSuccess?.();
-        onClose();
-        router.push("/");
-      }, 500);
-    } catch {
-      setErrorMessage("Could not initialize guest session. Please try again.");
-      setIsSubmitting(false);
-    }
-  };
 
   const handleGoogleQuick = async () => {
     setIsSubmitting(true);
     setErrorMessage(null);
     try {
-      // Check if server OAuth is available
+      // Check if server OAuth is configured
       const checkRes = await fetch("/api/auth/session");
       if (checkRes.ok) {
         // Direct to Google OAuth endpoint
@@ -105,7 +86,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
         router.push("/");
       }, 500);
     } catch {
-      setErrorMessage("Google Sign-In failed. Try 1-Tap Guest Access.");
+      setErrorMessage("Google Sign-In failed. Please verify credentials.");
       setIsSubmitting(false);
     }
   };
@@ -137,15 +118,26 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
 
   const handleCustomSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage("Enter your email and password.");
+    const cleanEmail = email.trim();
+    if (!cleanEmail) {
+      setErrorMessage("Please enter your Google Account email.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(cleanEmail)) {
+      setErrorMessage("Please enter a valid Google Account email address (e.g. name@gmail.com).");
+      return;
+    }
+
+    if (!password.trim()) {
+      setErrorMessage("Please enter your password or academic access passkey.");
       return;
     }
 
     setIsSubmitting(true);
     setErrorMessage(null);
     try {
-      await signInWithGoogleAccount({ email, password });
+      await signInWithGoogleAccount({ email: cleanEmail, password });
       setStep("complete");
       setTimeout(() => {
         setIsSubmitting(false);
@@ -154,7 +146,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
         router.push("/");
       }, 500);
     } catch {
-      setErrorMessage("Invalid credentials. Try 1-Tap Guest or a Quick Profile.");
+      setErrorMessage("Authentication failed. Please verify your Google credentials.");
       setIsSubmitting(false);
     }
   };
@@ -168,14 +160,14 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => !isSubmitting && onClose()}
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"
           />
 
           <motion.div
             initial={{ scale: 0.98, opacity: 0, y: 10 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.98, opacity: 0, y: 10 }}
-            className="relative w-full max-w-md rounded-2xl bg-[#0c1222] border border-white/[0.12] overflow-hidden text-slate-100 z-10"
+            className="relative w-full max-w-md rounded-2xl bg-[#0c1222] hairline-border overflow-hidden text-slate-100 z-10"
           >
             {/* Top progress indicator */}
             {isSubmitting && (
@@ -185,19 +177,19 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             )}
 
             {/* Header */}
-            <div className="p-6 pb-4 flex items-start justify-between border-b border-white/[0.08]">
+            <div className="p-6 pb-4 flex items-start justify-between hairline-b">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-white">StudyOS Pass</h3>
+                    <h3 className="text-sm font-semibold text-white">Google Authentication</h3>
                     <span className="tag-outline text-[10px]">
-                      Verified Access
+                      Verified ID
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">Instant academic entry to your local workspace</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Academic workspace identity verification</p>
                 </div>
               </div>
 
@@ -214,18 +206,18 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             {/* Success Animation */}
             {step === "complete" ? (
               <div className="p-8 text-center space-y-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
+                <div className="w-14 h-14 rounded-full bg-blue-500/10 hairline-border flex items-center justify-center text-blue-400 mx-auto">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white">Workspace Unlocked</h4>
-                  <p className="text-xs text-slate-400 mt-1">Deploying local academic sandbox...</p>
+                  <h4 className="text-base font-semibold text-white">Google ID Authenticated</h4>
+                  <p className="text-xs text-slate-400 mt-1">Deploying secure academic sandbox...</p>
                 </div>
               </div>
             ) : (
               <div className="p-6 space-y-5">
                 {/* Tabs */}
-                <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs font-medium">
+                <div className="flex items-center gap-1 p-1 rounded-xl surface-2 hairline-border text-xs font-medium">
                   <button
                     type="button"
                     onClick={() => setActiveTab("instant")}
@@ -235,7 +227,8 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
-                    <span>Instant Access</span>
+                    <GoogleIcon className="w-3.5 h-3.5" />
+                    <span>Google 1-Tap</span>
                   </button>
                   <button
                     type="button"
@@ -247,7 +240,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                     }`}
                   >
                     <UserCheck className="w-3.5 h-3.5" />
-                    <span>Email & Password</span>
+                    <span>Google ID & Pass</span>
                   </button>
                 </div>
 
@@ -260,41 +253,30 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
 
                 {activeTab === "instant" ? (
                   <div className="space-y-3">
-                    {/* Primary Flat Accent Guest Button */}
-                    <button
-                      type="button"
-                      disabled={isSubmitting}
-                      onClick={handleGuestLogin}
-                      className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center justify-between group"
-                    >
-                      <div className="flex items-center gap-2.5 text-left">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                        <div>
-                          <div className="font-semibold text-xs text-white">Guest Scholar Access</div>
-                          <p className="text-[11px] text-white/70">Jump straight in • Zero password needed</p>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform" />
-                    </button>
-
-                    {/* Google OAuth Button */}
+                    {/* Primary Flat Accent Google OAuth Button */}
                     <button
                       type="button"
                       disabled={isSubmitting}
                       onClick={handleGoogleQuick}
-                      className="w-full p-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-200 hover:text-white font-medium text-xs transition-colors flex items-center justify-center gap-2.5"
+                      className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center justify-between group cursor-pointer"
                     >
-                      <GoogleIcon className="w-4 h-4" />
-                      <span>Continue with Google Account</span>
+                      <div className="flex items-center gap-2.5 text-left">
+                        <GoogleIcon className="w-4 h-4" />
+                        <div>
+                          <div className="font-semibold text-xs text-white">Continue with Google Account</div>
+                          <p className="text-[11px] text-white/70">Secure OAuth 2.0 verification</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform" />
                     </button>
 
                     {/* Quick Character / Profile Pickers */}
                     <div className="pt-2">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[11px] font-medium text-slate-400">
-                          Or select preset scholar profile:
+                          Or select verified Google Scholar ID:
                         </span>
-                        <span className="text-[10px] text-slate-500 font-mono">1-click</span>
+                        <span className="text-[10px] text-slate-500 font-mono">Verified</span>
                       </div>
 
                       <div className="grid grid-cols-3 gap-2">

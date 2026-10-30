@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { SecuritySentinelWidget } from "@/components/ui/SecuritySentinelWidget";
 import { SecurityMeshBackground } from "@/components/ui/SecurityMeshBackground";
+import { CherryBlossomBackground } from "@/components/ui/CherryBlossomBackground";
 import { FloatingAssistant } from "@/components/ui/FloatingAssistant";
 import { GraduationCap, Shield } from "lucide-react";
 
@@ -18,25 +19,31 @@ export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
 
   // If user is directly visiting public routes like /login or an API route, allow direct render
   if (pathname?.startsWith("/login") || pathname?.startsWith("/api")) {
-    return <>{children}</>;
+    return (
+      <>
+        <CherryBlossomBackground />
+        {children}
+      </>
+    );
   }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#070b19] flex flex-col items-center justify-center text-white select-none">
+      <div className="min-h-screen bg-[#070b16] flex flex-col items-center justify-center text-white select-none">
         <SecurityMeshBackground />
+        <CherryBlossomBackground />
         <div className="relative flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_0_40px_rgba(37,99,235,0.6)]">
-              <GraduationCap className="w-8 h-8 text-white" />
+            <div className="w-14 h-14 rounded-xl bg-blue-600 hairline-border flex items-center justify-center">
+              <GraduationCap className="w-7 h-7 text-white" />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-blue-500 border-2 border-[#070b19] flex items-center justify-center">
-              <Shield className="w-3.5 h-3.5 text-white" />
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-slate-900 hairline-border flex items-center justify-center">
+              <Shield className="w-3 h-3 text-blue-400" />
             </div>
           </div>
           <div className="text-center">
-            <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-1 justify-center">
-              StudyOS<span className="text-blue-400">.Ai</span>
+            <h2 className="text-base font-bold tracking-tight text-white flex items-center gap-1 justify-center">
+              StudyOS<span className="text-blue-400">.ai</span>
             </h2>
             <p className="text-xs text-slate-400 mt-1">Verifying encrypted academic session...</p>
           </div>
@@ -50,19 +57,25 @@ export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
 
   // Not authenticated: Show landing gateway with Google Auth
   if (!isAuthenticated) {
-    return <AuthLandingGateway />;
+    return (
+      <>
+        <CherryBlossomBackground />
+        <AuthLandingGateway />
+      </>
+    );
   }
 
   // Authenticated workspace
   return (
     <>
       <SecurityMeshBackground />
+      <CherryBlossomBackground />
       {isLocked && <WorkspaceLockScreen />}
       <SecuritySentinelWidget />
       <FloatingAssistant />
       <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
         <MobileHeader />
-        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 backdrop-blur-2xl bg-[#0b1226]/80 border-r border-white/10 shadow-[4px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 bg-[#0b1226]/90 hairline-border border-r border-t-0 border-b-0 border-l-0">
           <Sidebar />
         </div>
         <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0 overflow-hidden">

@@ -11,7 +11,7 @@ export interface GoogleUser {
   degree: string;
   institution: string;
   role: "Student" | "Researcher" | "Academic Fellow";
-  authProvider: "google" | "guest" | "local";
+  authProvider: "google";
   token: string;
   verified: boolean;
   lastLogin: string;
@@ -117,7 +117,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        // Security gate: strictly disallow guest or unverified sessions
+        if (parsed.authProvider === "guest" || parsed.id?.startsWith("guest_") || !parsed.email) {
+          localStorage.removeItem(STORAGE_KEY);
+          return null;
+        }
+        return parsed;
       }
     } catch {
       localStorage.removeItem(STORAGE_KEY);
@@ -129,7 +135,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(SAVED_ACCOUNTS_KEY);
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed: SavedAccount[] = JSON.parse(stored);
+        // Filter out any legacy guest entries
+        return parsed.filter((a) => !a.id.startsWith("guest_") && !a.email.includes("@studyos.local"));
+      }
     } catch {
       // ignore
     }
@@ -314,47 +324,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const loginAsGuest = useCallback(
-    async (nickname?: string): Promise<GoogleUser> => {
-      const guestCode = Math.floor(1000 + Math.random() * 9000);
-      const guestName = nickname?.trim() || `Cadet #${guestCode}`;
-      const guestId = `guest_${Date.now()}`;
-      const token = `guest_token_${Math.random().toString(36).substring(2)}`;
-
-      const loggedUser: GoogleUser = {
-        id: guestId,
-        name: guestName,
-        email: `cadet.${guestCode}@studyos.local`,
-        avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=Cadet${guestCode}`,
-        degree: "Autonomous Scholar",
-        institution: "StudyOS Field Station",
-        role: "Student",
-        authProvider: "guest",
-        token,
-        verified: true,
-        lastLogin: new Date().toISOString(),
-        securityScore: 92,
-        twoFactorEnabled: false,
-      };
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(loggedUser));
-      setUser(loggedUser);
-      setIsLocked(false);
-      saveToHistory(loggedUser);
-
-      try {
-        await db.profile.put({
-          id: 1,
-          name: loggedUser.name,
-          degree: `${loggedUser.degree} • ${loggedUser.institution}`,
-          createdAt: new Date(),
-        });
-      } catch {
-        // IndexedDB sync is best-effort
-      }
-
-      return loggedUser;
+    async (): Promise<GoogleUser> => {
+      throw new Error("Guest mode has been disabled for workspace security. Please authenticate with your Google ID.");
     },
-    [saveToHistory]
+    []
   );
 
   const removeSavedAccount = useCallback((id: string) => {

@@ -21,6 +21,7 @@ import { db } from "@/lib/db";
 import { taskRepo } from "@/lib/db/repositories";
 import Link from "next/link";
 import type { Task } from "@/lib/db/schema";
+import { FocusFrequencyPlayer } from "@/components/planner/FocusFrequencyPlayer";
 
 export default function PlannerPage() {
   const tasks = useLiveQuery(() => db.tasks.toArray());
@@ -512,6 +513,9 @@ export default function PlannerPage() {
           </div>
         </div>
       </div>
+
+      {/* Focus Audio Engine (40 Hz, 425 Hz, 528 Hz, Rain, Brown Noise) */}
+      <FocusFrequencyPlayer />
     </div>
   );
 }

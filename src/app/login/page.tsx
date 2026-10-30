@@ -22,7 +22,7 @@ import Link from "next/link";
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { signInWithGoogleAccount, loginAsGuest, loginWithGoogle, savedAccounts, removeSavedAccount } = useAuth();
+  const { signInWithGoogleAccount, loginWithGoogle, savedAccounts, removeSavedAccount } = useAuth();
 
   const urlError = searchParams.get("error");
   const urlDetail = searchParams.get("detail");
@@ -38,25 +38,13 @@ function LoginContent() {
   const [errorMessage, setErrorMessage] = useState<string | null>(() => {
     if (urlError === "cancelled") return "Google Sign-In was cancelled or access was denied.";
     if (urlError === "missing_credentials")
-      return "Google OAuth credentials not configured in .env.local yet. Use 1-Tap Guest Access or a Preset Scholar below.";
+      return "Google OAuth credentials not configured in .env.local. Authenticate using your Google ID or verified Scholar profile below.";
     if (urlError === "invalid_state") return "Security state mismatch detected. Please try signing in again.";
     if (urlError) return `Authentication notice: ${urlError.replace(/_/g, " ")}`;
     return null;
   });
 
   const [showConfigGuide, setShowConfigGuide] = useState(false);
-
-  const handleInstantGuest = async () => {
-    setIsSubmitting(true);
-    setErrorMessage(null);
-    try {
-      await loginAsGuest();
-      router.push("/");
-    } catch {
-      setErrorMessage("Guest entry failed. Please try again.");
-      setIsSubmitting(false);
-    }
-  };
 
   const handleInstantPersona = async (pName: string, pEmail: string, pDegree: string, pInst: string, pAvatar: string) => {
     setIsSubmitting(true);
@@ -210,36 +198,21 @@ function LoginContent() {
           </div>
         )}
 
-        {/* Free Fire Style Fast 1-Tap Guest Access */}
+        {/* Official Google OAuth 2.0 Sign-In */}
         {step === "email" && (
           <div className="space-y-3 mb-6">
-            <button
-              type="button"
-              disabled={isSubmitting}
-              onClick={handleInstantGuest}
-              className="w-full p-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs shadow-[0_0_25px_rgba(79,70,229,0.4)] flex items-center justify-between transition-all hover:scale-[1.01] active:scale-[0.99] group cursor-pointer"
-            >
-              <div className="flex items-center gap-3 text-left">
-                <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-300 animate-ping" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-black">1-Tap Guest Access</span>
-                    <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded uppercase">Fastest</span>
-                  </div>
-                  <p className="text-[10px] text-white/80 font-normal">Play & study immediately • Zero setup</p>
-                </div>
-              </div>
-              <span className="text-xs font-bold text-white/90 group-hover:translate-x-1 transition-transform">Enter ▶</span>
-            </button>
-
             <a
               href="/api/auth/google"
-              className="w-full py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center gap-3 transition-all shadow-[0_2px_15px_rgba(255,255,255,0.15)] hover:scale-[1.01] active:scale-[0.99]"
+              className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center justify-between transition-colors group cursor-pointer"
             >
-              <GoogleIcon className="w-4 h-4" />
-              <span>Launch Google OAuth 2.0 Sign-In</span>
+              <div className="flex items-center gap-3 text-left">
+                <GoogleIcon className="w-4 h-4" />
+                <div>
+                  <div className="font-semibold text-xs text-white">Continue with Google Account</div>
+                  <p className="text-[11px] text-white/70">Official Google OAuth 2.0 Identity Protocol</p>
+                </div>
+              </div>
+              <span className="text-xs text-white/90 group-hover:translate-x-0.5 transition-transform">▶</span>
             </a>
 
             {/* Quick Preset Characters */}
