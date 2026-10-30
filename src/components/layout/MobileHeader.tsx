@@ -12,16 +12,16 @@ export function MobileHeader() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between h-16 px-5 bg-[#080d1a] border-b border-white/[0.08] z-30 relative shrink-0 w-full text-white">
+      <div className="md:hidden flex items-center justify-between h-16 px-5 bg-[#040f26]/95 border-b border-sky-500/15 z-30 relative shrink-0 w-full text-white backdrop-blur-md">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+          <div className="w-8 h-8 rounded-xl bg-[#0084ff] flex items-center justify-center text-white shadow-sm">
             <GraduationCap className="h-4 w-4" />
           </div>
           <div className="flex items-baseline gap-1">
             <span className="text-base font-bold tracking-tight text-white font-sans">
               StudyOS
             </span>
-            <span className="text-[11px] font-semibold text-blue-400 font-mono">
+            <span className="text-[11px] font-semibold text-sky-400 font-mono">
               .ai
             </span>
           </div>
@@ -33,7 +33,7 @@ export function MobileHeader() {
             <img
               src={user.avatarUrl}
               alt={user.name}
-              className="w-7 h-7 rounded-full object-cover border border-white/20"
+              className="w-7 h-7 rounded-full object-cover border border-sky-400/30"
             />
           )}
           <button
@@ -55,7 +55,7 @@ export function MobileHeader() {
           />
 
           {/* Sidebar panel */}
-          <div className="relative flex w-72 flex-col bg-[#080d1a] border-r border-white/[0.08] h-full z-50 animate-in slide-in-from-left duration-200">
+          <div className="relative flex w-72 flex-col bg-[#040f26] border-r border-sky-500/15 h-full z-50 animate-in slide-in-from-left duration-200">
             <div className="absolute top-3 right-3 z-10">
               <button
                 type="button"

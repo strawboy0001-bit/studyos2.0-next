@@ -37,7 +37,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-24 text-slate-100 font-sans">
       {/* Welcome Banner */}
-      <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 sm:p-8">
+      <div className="rounded-2xl surface-1 p-6 sm:p-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -63,21 +63,21 @@ export default function DashboardPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/planner"
-              className="px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
+              className="px-3.5 py-2 rounded-xl surface-2 hover:bg-sky-500/10 hairline-border text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
             >
               <Clock className="w-4 h-4 text-slate-400" />
               <span>Pomodoro</span>
             </Link>
             <Link
               href="/materials"
-              className="px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
+              className="px-3.5 py-2 rounded-xl surface-2 hover:bg-sky-500/10 hairline-border text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
             >
               <Files className="w-4 h-4 text-slate-400" />
               <span>Vault</span>
             </Link>
             <Link
               href="/tasks"
-              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#0084ff] hover:bg-[#0074e0] text-white font-medium text-xs transition-colors flex items-center gap-1.5 shadow-sm"
             >
               <Plus className="w-4 h-4" />
               <span>New Task</span>
@@ -86,16 +86,16 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats Overview Grid: Neutral + One Flat Accent */}
+      {/* Stats Overview Grid: Azure Sky & Deep Ocean Surfaces */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Courses */}
         <Link
           href="/subjects"
-          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
+          className="rounded-2xl surface-1 hover:border-sky-400/35 p-5 transition-all group"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-              <BookOpen className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <BookOpen className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
               <span>Curriculum Courses</span>
             </div>
             <span className="tag-outline text-[10px]">
@@ -109,11 +109,11 @@ export default function DashboardPage() {
         {/* Pending Tasks */}
         <Link
           href="/tasks"
-          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
+          className="rounded-2xl surface-1 hover:border-sky-400/35 p-5 transition-all group"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-              <Target className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <Target className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
               <span>Pending Tasks</span>
             </div>
             <span className="tag-outline text-[10px]">
@@ -127,11 +127,11 @@ export default function DashboardPage() {
         {/* Flashcards */}
         <Link
           href="/flashcards"
-          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
+          className="rounded-2xl surface-1 hover:border-sky-400/35 p-5 transition-all group"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-              <Layers className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <Layers className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
               <span>Flashcard Cards</span>
             </div>
             <span className="tag-outline text-[10px]">
@@ -145,11 +145,11 @@ export default function DashboardPage() {
         {/* Materials Vault */}
         <Link
           href="/materials"
-          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
+          className="rounded-2xl surface-1 hover:border-sky-400/35 p-5 transition-all group"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-              <HardDrive className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <HardDrive className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
               <span>Vault Documents</span>
             </div>
             <span className="tag-outline text-[10px]">
@@ -161,10 +161,10 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* Study Rhythm Companion Module: Restrained & Sophisticated */}
-      <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* Study Rhythm Companion Module */}
+      <div className="rounded-2xl surface-1 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border border-white/20 shrink-0">
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border border-sky-400/30 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen Stacy" className="w-full h-full object-cover" />
           </div>
@@ -188,13 +188,13 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2.5 shrink-0 w-full md:w-auto">
           <Link
             href="/planner"
-            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors text-center"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-[#0084ff] hover:bg-[#0074e0] text-white font-medium text-xs transition-colors text-center shadow-sm"
           >
             Start Focus Sprint
           </Link>
           <Link
             href="/quizzes"
-            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white font-medium text-xs transition-colors text-center"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl surface-2 hover:bg-sky-500/10 hairline-border text-slate-300 hover:text-white font-medium text-xs transition-colors text-center"
           >
             Reflex Quiz
           </Link>
@@ -204,8 +204,8 @@ export default function DashboardPage() {
       {/* Main Two-Column Hub */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Launchpad */}
-        <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+        <div className="rounded-2xl surface-1 p-6 space-y-4">
+          <div className="flex items-center justify-between pb-3 hairline-b">
             <h3 className="font-semibold text-white text-sm">Academic Launchpad</h3>
             <span className="tag-outline text-[10px]">Ready</span>
           </div>
@@ -213,9 +213,9 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 gap-3">
             <Link
               href="/planner"
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
+              className="p-4 rounded-xl surface-2 hairline-border hover:border-sky-400/30 transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+              <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                 <Clock className="w-4 h-4" />
               </div>
               <div>
@@ -226,9 +226,9 @@ export default function DashboardPage() {
 
             <Link
               href="/quizzes"
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
+              className="p-4 rounded-xl surface-2 hairline-border hover:border-sky-400/30 transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+              <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                 <BrainCircuit className="w-4 h-4" />
               </div>
               <div>
@@ -239,9 +239,9 @@ export default function DashboardPage() {
 
             <Link
               href="/flashcards"
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
+              className="p-4 rounded-xl surface-2 hairline-border hover:border-sky-400/30 transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+              <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                 <Layers className="w-4 h-4" />
               </div>
               <div>
@@ -252,9 +252,9 @@ export default function DashboardPage() {
 
             <Link
               href="/notes"
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
+              className="p-4 rounded-xl surface-2 hairline-border hover:border-sky-400/30 transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+              <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                 <BookOpen className="w-4 h-4" />
               </div>
               <div>
@@ -264,22 +264,22 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs text-slate-400">
+          <div className="p-3 rounded-xl surface-2 hairline-border flex items-center justify-between text-xs text-slate-400">
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>Current Streak Active</span>
             </span>
-            <Link href="/planner" className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 transition-colors">
+            <Link href="/planner" className="text-sky-400 hover:text-sky-300 font-medium flex items-center gap-1 transition-colors">
               Focus Session <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
         </div>
 
         {/* Priority Action Items */}
-        <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 space-y-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+        <div className="rounded-2xl surface-1 p-6 space-y-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-3 hairline-b">
             <h3 className="font-semibold text-white text-sm">Priority Action Items</h3>
-            <Link href="/tasks" className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors">
+            <Link href="/tasks" className="text-xs font-medium text-sky-400 hover:text-sky-300 transition-colors">
               View all ({tasks?.length || 0})
             </Link>
           </div>
@@ -290,7 +290,7 @@ export default function DashboardPage() {
                 {pendingTasks.slice(0, 4).map((task) => (
                   <div
                     key={task.id}
-                    className="p-3 bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] rounded-xl flex justify-between items-center transition-colors"
+                    className="p-3 surface-2 hairline-border hover:border-sky-400/30 rounded-xl flex justify-between items-center transition-colors"
                   >
                     <span className="font-medium text-xs text-white truncate max-w-xs">{task.title}</span>
                     <span className="tag-outline text-[10px] capitalize">
@@ -301,7 +301,7 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="text-center py-6">
-                <div className="h-9 w-9 bg-white/[0.04] border border-white/[0.08] rounded-xl flex items-center justify-center mx-auto mb-2 text-slate-400">
+                <div className="h-9 w-9 surface-3 hairline-border rounded-xl flex items-center justify-center mx-auto mb-2 text-slate-400">
                   <CheckSquare className="h-4 w-4" />
                 </div>
                 <p className="text-slate-300 font-medium text-xs">All tasks completed</p>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
           <div className="pt-2">
             <Link
               href="/tasks"
-              className="w-full py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-medium text-slate-300 hover:text-white transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl surface-2 hover:bg-sky-500/10 hairline-border text-xs font-medium text-slate-300 hover:text-white transition-colors flex items-center justify-center gap-2"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add New Assignment</span>

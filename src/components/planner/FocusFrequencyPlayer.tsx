@@ -53,15 +53,15 @@ export function FocusFrequencyPlayer() {
   const getTrackIcon = (id: FocusSoundType) => {
     switch (id) {
       case "40hz":
-        return <Brain className="w-3.5 h-3.5 text-blue-400" />;
+        return <Brain className="w-3.5 h-3.5 text-sky-400" />;
       case "425hz":
-        return <Waves className="w-3.5 h-3.5 text-blue-400" />;
+        return <Waves className="w-3.5 h-3.5 text-sky-400" />;
       case "528hz":
-        return <Sparkles className="w-3.5 h-3.5 text-blue-400" />;
+        return <Sparkles className="w-3.5 h-3.5 text-sky-400" />;
       case "rain":
-        return <CloudRain className="w-3.5 h-3.5 text-blue-400" />;
+        return <CloudRain className="w-3.5 h-3.5 text-sky-400" />;
       case "brownNoise":
-        return <Radio className="w-3.5 h-3.5 text-blue-400" />;
+        return <Radio className="w-3.5 h-3.5 text-sky-400" />;
     }
   };
 
@@ -70,15 +70,15 @@ export function FocusFrequencyPlayer() {
       {/* Header */}
       <div className="flex items-center justify-between pb-3 hairline-b">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg surface-2 hairline-border flex items-center justify-center text-blue-400">
+          <div className="w-8 h-8 rounded-lg surface-2 hairline-border flex items-center justify-center text-sky-400">
             <Radio className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-semibold text-white">Focus Audio Engine</h3>
               {isPlaying && (
-                <span className="flex items-center gap-1 text-[10px] text-blue-400 font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span className="flex items-center gap-1 text-[10px] text-sky-400 font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
                   LIVE
                 </span>
               )}
@@ -95,7 +95,7 @@ export function FocusFrequencyPlayer() {
           className={`px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
             isPlaying
               ? "bg-rose-600 hover:bg-rose-500 text-white"
-              : "bg-blue-600 hover:bg-blue-500 text-white"
+              : "bg-[#0084ff] hover:bg-[#0074e0] text-white shadow-sm"
           }`}
         >
           {isPlaying ? (
@@ -122,7 +122,7 @@ export function FocusFrequencyPlayer() {
               onClick={() => handleSelectTrack(track.id)}
               className={`p-3 rounded-xl text-left transition-all hairline-border flex flex-col justify-between cursor-pointer ${
                 isSelected
-                  ? "bg-blue-600/15 border-blue-500 text-white"
+                  ? "bg-sky-500/15 border-sky-400 text-white"
                   : "surface-2 hover:bg-white/[0.05] text-slate-300"
               }`}
             >
@@ -135,9 +135,9 @@ export function FocusFrequencyPlayer() {
                 </div>
                 {isSelected && (
                   <div className="flex items-end gap-0.5 h-3">
-                    <span className="w-0.5 h-3 bg-blue-400 animate-[pulse_0.8s_ease-in-out_infinite]" />
-                    <span className="w-0.5 h-2 bg-blue-400 animate-[pulse_0.5s_ease-in-out_infinite]" />
-                    <span className="w-0.5 h-3.5 bg-blue-400 animate-[pulse_0.9s_ease-in-out_infinite]" />
+                    <span className="w-0.5 h-3 bg-sky-400 animate-[pulse_0.8s_ease-in-out_infinite]" />
+                    <span className="w-0.5 h-2 bg-sky-400 animate-[pulse_0.5s_ease-in-out_infinite]" />
+                    <span className="w-0.5 h-3.5 bg-sky-400 animate-[pulse_0.9s_ease-in-out_infinite]" />
                   </div>
                 )}
               </div>
@@ -148,7 +148,7 @@ export function FocusFrequencyPlayer() {
 
               <div className="mt-2 pt-2 hairline-t flex items-center justify-between text-[10px] font-mono text-slate-400">
                 <span>{track.badge}</span>
-                <span className={isSelected ? "text-blue-400 font-semibold" : ""}>
+                <span className={isSelected ? "text-sky-400 font-semibold" : ""}>
                   {track.frequencyLabel}
                 </span>
               </div>
@@ -163,7 +163,7 @@ export function FocusFrequencyPlayer() {
           {volume === 0 ? (
             <VolumeX className="w-4 h-4 text-slate-500" />
           ) : (
-            <Volume2 className="w-4 h-4 text-blue-400" />
+            <Volume2 className="w-4 h-4 text-sky-400" />
           )}
           <span className="text-[11px] font-medium text-slate-300 shrink-0">
             Audio Volume: {Math.round(volume * 100)}%
@@ -175,7 +175,7 @@ export function FocusFrequencyPlayer() {
             step="0.01"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-full sm:w-36 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            className="w-full sm:w-36 h-1.5 bg-sky-950/60 rounded-lg appearance-none cursor-pointer accent-sky-400"
           />
         </div>
 

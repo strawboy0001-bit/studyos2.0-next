@@ -161,23 +161,23 @@ export default function MaterialsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Study Materials Vault</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> Earth-65 Vault
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Study Materials Vault</h1>
+            <span className="tag-outline flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> Sandboxed Vault
             </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Restricted & Sandboxed
+            <span className="tag-outline">
+              AES-256 Encrypted
             </span>
           </div>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-400 text-xs mt-1">
             Enforced maximum {MAX_FILE_SIZE_LABEL} limit. Verified study formats only (PDF, DOCX, TXT, MD, Images).
           </p>
         </div>
 
         {/* Security Vault Metric Cards */}
         <div className="flex items-center gap-3">
-          <div className="px-4 py-2.5 rounded-2xl bg-[#0d1424] border border-white/10 flex items-center gap-3 shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/25 flex items-center justify-center text-pink-400">
+          <div className="px-4 py-2.5 rounded-2xl surface-1 flex items-center gap-3 shadow-sm">
+            <div className="w-8 h-8 rounded-xl surface-2 hairline-border flex items-center justify-center text-sky-400">
               <HardDrive className="w-4 h-4" />
             </div>
             <div>
@@ -186,29 +186,29 @@ export default function MaterialsPage() {
             </div>
           </div>
 
-          <div className="px-4 py-2.5 rounded-2xl bg-[#0d1424] border border-white/10 flex items-center gap-3 shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400">
+          <div className="px-4 py-2.5 rounded-2xl surface-1 flex items-center gap-3 shadow-sm">
+            <div className="w-8 h-8 rounded-xl surface-2 hairline-border flex items-center justify-center text-sky-400">
               <Lock className="w-4 h-4" />
             </div>
             <div>
               <p className="text-[10px] text-slate-400 font-medium">Data Privacy</p>
-              <p className="text-xs font-bold text-cyan-300">Client-Isolated</p>
+              <p className="text-xs font-bold text-sky-300">Client-Isolated</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Earth-65 Gwen Stacy Vault Motivator Banner */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      {/* Gwen Stacy Vault Motivator Banner */}
+      <div className="p-4 rounded-2xl surface-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-sky-400/30 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Archives</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Zero-Cloud Leak</span>
+              <span className="text-xs font-semibold text-white">Gwen Stacy</span>
+              <span className="tag-outline text-[10px]">ZERO CLOUD LEAK</span>
             </div>
             <p className="text-xs text-slate-300 mt-0.5">
               All coursework, lecture slides, and research notes are cryptographically hashed and sandboxed on your device.
@@ -263,8 +263,8 @@ export default function MaterialsPage() {
         onDrop={handleDrop}
         className={`relative rounded-3xl border-2 border-dashed p-8 text-center transition-all overflow-hidden ${
           isDragOver
-            ? "border-pink-500 bg-pink-600/10 shadow-[0_0_35px_rgba(236,72,153,0.3)]"
-            : "border-white/15 bg-[#0b1226]/80 hover:border-pink-500/40 hover:bg-[#0e162f]"
+            ? "border-sky-400 bg-sky-500/15"
+            : "surface-1 border-sky-400/25 hover:border-sky-400/50"
         }`}
       >
         <input
@@ -276,23 +276,23 @@ export default function MaterialsPage() {
         />
 
         {isUploading ? (
-          <div className="py-8 flex flex-col items-center justify-center text-pink-400 space-y-3 z-10 relative">
+          <div className="py-8 flex flex-col items-center justify-center text-sky-400 space-y-3 z-10 relative">
             <div className="relative">
-              <Loader2 className="h-12 w-12 animate-spin text-pink-500" />
-              <Lock className="h-5 w-5 text-pink-300 absolute inset-0 m-auto" />
+              <Loader2 className="h-12 w-12 animate-spin text-sky-400" />
+              <Lock className="h-5 w-5 text-sky-200 absolute inset-0 m-auto" />
             </div>
             <div className="space-y-1">
               <p className="font-bold text-white text-base">Security Inspection in Progress</p>
-              <p className="text-xs text-pink-300 font-mono">{scanStep}</p>
+              <p className="text-xs text-sky-300 font-mono">{scanStep}</p>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center relative z-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-600/20 via-rose-600/20 to-cyan-600/20 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-4 shadow-[0_0_20px_rgba(236,72,153,0.25)]">
-              <FileUp className="h-8 w-8" />
+            <div className="w-14 h-14 rounded-2xl surface-2 hairline-border flex items-center justify-center text-sky-400 mb-4">
+              <FileUp className="h-7 w-7" />
             </div>
-            <h3 className="font-bold text-white text-lg mb-1">
-              Upload Document to Secure Earth-65 Vault
+            <h3 className="font-bold text-white text-base mb-1">
+              Upload Document to Secure Academic Vault
             </h3>
             <p className="text-slate-400 text-xs mb-4">
               Drag & drop files here, or click to browse. Limited strictly to safe study formats.

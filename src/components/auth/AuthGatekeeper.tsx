@@ -29,26 +29,26 @@ export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#070b16] flex flex-col items-center justify-center text-white select-none">
+      <div className="min-h-screen bg-[#030c20] flex flex-col items-center justify-center text-white select-none">
         <SecurityMeshBackground />
         <CherryBlossomBackground />
         <div className="relative flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="w-14 h-14 rounded-xl bg-blue-600 hairline-border flex items-center justify-center">
+            <div className="w-14 h-14 rounded-xl bg-[#0084ff] hairline-border flex items-center justify-center shadow-md">
               <GraduationCap className="w-7 h-7 text-white" />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-slate-900 hairline-border flex items-center justify-center">
-              <Shield className="w-3 h-3 text-blue-400" />
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#030c20] border border-sky-400/40 flex items-center justify-center">
+              <Shield className="w-3 h-3 text-sky-400" />
             </div>
           </div>
           <div className="text-center">
             <h2 className="text-base font-bold tracking-tight text-white flex items-center gap-1 justify-center">
-              StudyOS<span className="text-blue-400">.ai</span>
+              StudyOS<span className="text-sky-400">.ai</span>
             </h2>
-            <p className="text-xs text-slate-400 mt-1">Verifying encrypted academic session...</p>
+            <p className="text-xs text-sky-200/70 mt-1">Verifying encrypted academic session...</p>
           </div>
-          <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
-            <div className="w-full h-full bg-blue-500 animate-[pulse_1.5s_ease-in-out_infinite]" />
+          <div className="w-32 h-1 bg-sky-950 rounded-full overflow-hidden border border-sky-500/20">
+            <div className="w-full h-full bg-sky-400 animate-[pulse_1.5s_ease-in-out_infinite]" />
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@ export function AuthGatekeeper({ children }: { children: React.ReactNode }) {
       <FloatingAssistant />
       <div className="flex flex-col md:flex-row h-screen overflow-hidden relative z-10 w-full">
         <MobileHeader />
-        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 bg-[#0b1226]/90 hairline-border border-r border-t-0 border-b-0 border-l-0">
+        <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-20 bg-[#040f26]/95 border-r border-sky-500/15">
           <Sidebar />
         </div>
         <div className="md:pl-64 flex flex-col flex-1 h-full w-full z-0 overflow-hidden">

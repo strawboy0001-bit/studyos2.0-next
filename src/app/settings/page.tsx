@@ -302,11 +302,11 @@ export default function SettingsPage() {
       {/* Top Header */}
       <div>
         <div className="flex items-center gap-2.5">
-          <h1 className="text-3xl font-black tracking-tight text-white">Settings & Workspace Config</h1>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-semibold">
-            Earth-65 System
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Settings & Workspace Config</h1>
+          <span className="tag-outline">
+            Academic System
           </span>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-semibold">
+          <span className="tag-outline">
             Google Identity
           </span>
         </div>
@@ -322,11 +322,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("security")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "security"
-                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
+                ? "bg-sky-500/15 text-white border border-sky-400/30 shadow-sm"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Shield className="w-4 h-4 text-pink-400" />
+            <Shield className="w-4 h-4 text-sky-400" />
             <span>Profile & Security</span>
           </button>
 
@@ -334,11 +334,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("pomodoro")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "pomodoro"
-                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
+                ? "bg-sky-500/15 text-white border border-sky-400/30 shadow-sm"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Clock className="w-4 h-4 text-cyan-400" />
+            <Clock className="w-4 h-4 text-sky-400" />
             <span>Study & Pomodoro</span>
           </button>
 
@@ -346,11 +346,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("ai")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "ai"
-                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
+                ? "bg-sky-500/15 text-white border border-sky-400/30 shadow-sm"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Bot className="w-4 h-4 text-pink-400" />
+            <Bot className="w-4 h-4 text-sky-400" />
             <span>Light AI Engine</span>
           </button>
 
@@ -358,11 +358,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("vault")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "vault"
-                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
+                ? "bg-sky-500/15 text-white border border-sky-400/30 shadow-sm"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <HardDrive className="w-4 h-4 text-cyan-400" />
+            <HardDrive className="w-4 h-4 text-sky-400" />
             <span>Upload Vault Policy</span>
           </button>
 
@@ -370,11 +370,11 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("data")}
             className={`w-full text-left px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2.5 ${
               activeTab === "data"
-                ? "bg-gradient-to-r from-pink-500/20 via-pink-500/10 to-cyan-500/10 text-pink-200 border border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.18)]"
+                ? "bg-sky-500/15 text-white border border-sky-400/30 shadow-sm"
                 : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Download className="w-4 h-4 text-teal-400" />
+            <Download className="w-4 h-4 text-sky-400" />
             <span>Backup & Restore</span>
           </button>
         </div>
@@ -511,7 +511,7 @@ export default function SettingsPage() {
                         value={profileName}
                         onChange={(e) => setProfileName(e.target.value)}
                         required
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-sky-400"
                       />
                     </div>
 
@@ -520,7 +520,7 @@ export default function SettingsPage() {
                       <select
                         value={profileRole}
                         onChange={(e) => setProfileRole(e.target.value as "Student" | "Researcher" | "Academic Fellow")}
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#070b19] border border-white/10 text-white text-xs outline-none focus:border-pink-500 cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#030d22] border border-white/10 text-white text-xs outline-none focus:border-sky-400 cursor-pointer"
                       >
                         <option value="Student">Student (Undergraduate / Graduate)</option>
                         <option value="Researcher">Researcher / Scholar</option>
@@ -535,7 +535,7 @@ export default function SettingsPage() {
                         value={profileDegree}
                         onChange={(e) => setProfileDegree(e.target.value)}
                         placeholder="e.g. Computer Science & AI"
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-sky-400"
                       />
                     </div>
 
@@ -546,7 +546,7 @@ export default function SettingsPage() {
                         value={profileInstitution}
                         onChange={(e) => setProfileInstitution(e.target.value)}
                         placeholder="e.g. Stanford University"
-                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-pink-500"
+                        className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs outline-none focus:border-sky-400"
                       />
                     </div>
                   </div>
@@ -554,7 +554,7 @@ export default function SettingsPage() {
                   <div className="flex justify-end pt-1">
                     <button
                       type="submit"
-                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 hover:brightness-110 text-white text-xs font-bold shadow-[0_0_20px_rgba(236,72,153,0.35)] transition-all flex items-center gap-1.5"
+                      className="px-5 py-2.5 rounded-xl bg-[#0084ff] hover:bg-[#0074e0] text-white text-xs font-medium shadow-sm transition-colors flex items-center gap-1.5"
                     >
                       <Save className="w-3.5 h-3.5" />
                       <span>Save Profile Changes</span>

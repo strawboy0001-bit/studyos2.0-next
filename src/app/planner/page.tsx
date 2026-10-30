@@ -244,7 +244,7 @@ export default function PlannerPage() {
                 onClick={() => switchMode("focus")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "focus"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#0084ff] text-white shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -254,7 +254,7 @@ export default function PlannerPage() {
                 onClick={() => switchMode("shortBreak")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "shortBreak"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#0084ff] text-white shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -264,7 +264,7 @@ export default function PlannerPage() {
                 onClick={() => switchMode("longBreak")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "longBreak"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#0084ff] text-white shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -280,7 +280,7 @@ export default function PlannerPage() {
                   cx="80"
                   cy="80"
                   r="70"
-                  className="stroke-white/5"
+                  className="stroke-sky-950/40"
                   strokeWidth="6"
                   fill="transparent"
                 />
@@ -289,7 +289,7 @@ export default function PlannerPage() {
                   cx="80"
                   cy="80"
                   r="70"
-                  className="stroke-blue-500"
+                  className="stroke-[#0084ff]"
                   strokeWidth="6"
                   strokeDasharray="440"
                   strokeDashoffset={strokeDashoffset}
@@ -325,7 +325,7 @@ export default function PlannerPage() {
                 className={`flex-1 py-2.5 px-5 rounded-xl font-medium text-xs transition-colors flex items-center justify-center gap-2 ${
                   isRunning
                     ? "bg-rose-600 hover:bg-rose-500 text-white"
-                    : "bg-blue-600 hover:bg-blue-500 text-white"
+                    : "bg-[#0084ff] hover:bg-[#0074e0] text-white shadow-sm"
                 }`}
               >
                 {isRunning ? (
@@ -354,7 +354,7 @@ export default function PlannerPage() {
                 className="p-2.5 rounded-xl surface-2 hairline-border text-slate-400 hover:text-white transition-colors"
                 title={soundEnabled ? "Mute chimes" : "Enable chimes"}
               >
-                {soundEnabled ? <Volume2 className="w-4 h-4 text-blue-400" /> : <VolumeX className="w-4 h-4" />}
+                {soundEnabled ? <Volume2 className="w-4 h-4 text-sky-400" /> : <VolumeX className="w-4 h-4" />}
               </button>
             </div>
 
@@ -367,7 +367,7 @@ export default function PlannerPage() {
 
               <div className="p-3 rounded-xl surface-2 hairline-border">
                 <p className="text-[10px] uppercase font-semibold text-slate-400">Focused Time</p>
-                <p className="text-xl font-bold text-blue-400 mt-0.5">{focusedHours} hrs</p>
+                <p className="text-xl font-bold text-sky-400 mt-0.5">{focusedHours} hrs</p>
               </div>
             </div>
           </div>
@@ -402,7 +402,7 @@ export default function PlannerPage() {
           <div className="p-5 rounded-xl surface-1 hairline-border flex items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-blue-400" />
+                <Target className="w-4 h-4 text-sky-400" />
                 <h3 className="text-sm font-semibold text-white">Daily Target Progress</h3>
               </div>
               <p className="text-xs text-slate-400">
@@ -411,12 +411,12 @@ export default function PlannerPage() {
             </div>
 
             <div className="w-44 space-y-1.5 text-right">
-              <span className="text-xs font-medium text-blue-400">
+              <span className="text-xs font-medium text-sky-400">
                 {Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%
               </span>
-              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-sky-950/40 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-600 transition-all duration-300"
+                  className="h-full bg-[#0084ff] transition-all duration-300"
                   style={{
                     width: `${Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%`,
                   }}
@@ -427,9 +427,9 @@ export default function PlannerPage() {
 
           {/* Today's Schedule & Action Items */}
           <div className="p-5 rounded-xl surface-1 hairline-border space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            <div className="flex items-center justify-between pb-3 hairline-b">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-400" />
+                <Clock className="w-4 h-4 text-sky-400" />
                 <h3 className="text-base font-bold text-white">Active Focus Schedule</h3>
               </div>
               <span className="text-xs text-slate-400">
@@ -444,11 +444,11 @@ export default function PlannerPage() {
                 placeholder="Add a priority task to tackle in your next Pomodoro..."
                 value={newQuickTaskTitle}
                 onChange={(e) => setNewQuickTaskTitle(e.target.value)}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+                className="flex-1 px-4 py-2.5 rounded-xl surface-2 hairline-border text-white placeholder-slate-500 text-xs outline-none focus:border-sky-400"
               />
               <button
                 type="submit"
-                className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center gap-1 shrink-0"
+                className="px-4 py-2.5 rounded-xl bg-[#0084ff] hover:bg-[#0074e0] text-white font-semibold text-xs transition-colors flex items-center gap-1 shrink-0 shadow-sm"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Task</span>
@@ -458,10 +458,10 @@ export default function PlannerPage() {
             {/* Task Timeline */}
             <div className="space-y-3 pt-1">
               {pendingTasks.length === 0 ? (
-                <div className="text-center py-12 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+                <div className="text-center py-12 rounded-2xl surface-2 hairline-border space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
                   <p className="text-sm font-bold text-white">All scheduled tasks completed!</p>
-                  <p className="text-xs text-slate-500">Add a new task above or relax during your break.</p>
+                  <p className="text-xs text-slate-400">Add a new task above or relax during your break.</p>
                 </div>
               ) : (
                 pendingTasks.map((task, idx) => {
@@ -469,26 +469,26 @@ export default function PlannerPage() {
                   return (
                     <div
                       key={task.id}
-                      className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-amber-500/30 transition-all flex items-start justify-between gap-3 group"
+                      className="p-4 rounded-2xl surface-2 hairline-border hover:border-sky-400/35 transition-all flex items-start justify-between gap-3 group"
                     >
                       <div className="flex items-start gap-3">
                         <button
                           onClick={() => handleToggleTask(task.id, task.status)}
-                          className="mt-0.5 text-slate-500 hover:text-amber-400 transition-colors"
+                          className="mt-0.5 text-slate-500 hover:text-sky-400 transition-colors"
                           title="Mark complete"
                         >
                           <Circle className="w-4 h-4" />
                         </button>
                         <div>
-                          <p className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
+                          <p className="text-xs font-bold text-white group-hover:text-sky-300 transition-colors">
                             {task.title}
                           </p>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[10px] text-slate-500">
+                            <span className="text-[10px] text-slate-400">
                               Block #{idx + 1} (est. {workDuration}m)
                             </span>
                             {linkedSubject && (
-                              <span className="text-[10px] text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                              <span className="text-[10px] text-sky-300 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
                                 {linkedSubject.name}
                               </span>
                             )}
@@ -499,8 +499,8 @@ export default function PlannerPage() {
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded capitalize ${
                           task.priority === "high"
-                            ? "bg-red-500/10 text-red-400 border border-red-500/20"
-                            : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                            ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                            : "bg-sky-500/10 text-sky-400 border border-sky-500/20"
                         }`}
                       >
                         {task.priority}

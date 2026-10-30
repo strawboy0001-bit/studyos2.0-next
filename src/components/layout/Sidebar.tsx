@@ -54,18 +54,18 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#080d1a] text-slate-200 border-r border-white/[0.08]">
+    <div className="flex h-full w-full flex-col bg-[#040f26]/90 backdrop-blur-md text-slate-200 border-r border-sky-500/15">
       {/* Brand Header */}
-      <div className="flex h-16 shrink-0 items-center justify-between px-5 border-b border-white/[0.08]">
+      <div className="flex h-16 shrink-0 items-center justify-between px-5 border-b border-sky-500/15">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white transition-transform group-hover:scale-105">
+          <div className="w-8 h-8 rounded-xl bg-[#0084ff] flex items-center justify-center text-white transition-transform group-hover:scale-105 shadow-sm">
             <GraduationCap className="h-4 w-4" />
           </div>
           <div className="flex items-baseline gap-1">
             <span className="text-base font-bold tracking-tight text-white font-sans">
               StudyOS
             </span>
-            <span className="text-[11px] font-semibold text-blue-400 font-mono">
+            <span className="text-[11px] font-semibold text-sky-400 font-mono">
               .ai
             </span>
           </div>
@@ -77,7 +77,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col px-3 py-4 overflow-y-auto space-y-1">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3 mb-1.5">
+        <div className="text-[10px] font-bold uppercase tracking-wider text-sky-300/60 px-3 mb-1.5">
           Workspace
         </div>
 
@@ -90,11 +90,11 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className={`flex items-center gap-x-3 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
                 isActive
-                  ? "bg-blue-600/10 text-white border border-blue-500/25"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent"
+                  ? "bg-sky-500/15 text-white border border-sky-400/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/[0.04] border border-transparent"
               }`}
             >
-              <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
+              <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-sky-400" : "text-slate-400"}`} />
               <span className="truncate">{item.name}</span>
             </Link>
           );
@@ -102,8 +102,8 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
         {/* Gwen Stacy Copilot Companion Mini-Card */}
         <div className="pt-4 mt-auto">
-          <div className="my-2 p-3 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0">
+          <div className="my-2 p-3 rounded-2xl surface-1 hairline-border flex items-center gap-3">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-sky-400/30 shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
             </div>

@@ -36,7 +36,7 @@ export default function NotesPage() {
         </div>
         <Link
           href="/notes/new"
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors shrink-0"
+          className="flex items-center gap-2 bg-[#0084ff] hover:bg-[#0074e0] text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors shrink-0 shadow-sm"
         >
           <Plus className="h-4 w-4" />
           <span>New Note</span>
@@ -44,9 +44,9 @@ export default function NotesPage() {
       </div>
 
       {/* Gwen Stacy Notes Card */}
-      <div className="p-4 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl surface-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/20 shrink-0">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-sky-400/30 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
@@ -62,7 +62,7 @@ export default function NotesPage() {
         </div>
       </div>
 
-      <div className="bg-[#0c1222] border border-white/[0.08] rounded-xl p-3 flex gap-3 items-center">
+      <div className="surface-1 rounded-xl p-3 flex gap-3 items-center">
         <Search className="h-4 w-4 text-slate-400 ml-1" />
         <input
           type="text"
@@ -76,13 +76,13 @@ export default function NotesPage() {
       {notes === undefined ? (
         <div className="text-center py-12 text-slate-400 text-xs">Loading notes...</div>
       ) : notes.length === 0 ? (
-        <div className="text-center py-16 bg-[#0c1222] border border-dashed border-white/[0.08] rounded-2xl flex flex-col items-center">
+        <div className="text-center py-16 surface-1 border border-dashed border-sky-400/25 rounded-2xl flex flex-col items-center">
           <Edit3 className="h-10 w-10 text-slate-500 mb-3" />
           <h3 className="text-base font-semibold text-white">No notes yet</h3>
           <p className="text-slate-400 text-xs mt-1 mb-4">Start writing notes or summarize study materials.</p>
           <Link
             href="/notes/new"
-            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors"
+            className="bg-[#0084ff] hover:bg-[#0074e0] text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors shadow-sm"
           >
             Create First Note
           </Link>
@@ -95,10 +95,10 @@ export default function NotesPage() {
             <Link
               key={note.id}
               href={`/notes/${note.id}`}
-              className="group bg-[#0c1222] border border-white/[0.08] rounded-2xl p-5 hover:border-white/[0.16] transition-colors flex flex-col min-h-[200px]"
+              className="group surface-1 rounded-2xl p-5 hover:border-sky-400/35 transition-colors flex flex-col min-h-[200px]"
             >
               <div className="flex justify-between items-start mb-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+                <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                   <FileText className="h-4 w-4" />
                 </div>
                 <button 
@@ -108,7 +108,7 @@ export default function NotesPage() {
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
-              <h3 className="text-sm font-semibold text-white line-clamp-1 group-hover:text-blue-400 transition-colors">
+              <h3 className="text-sm font-semibold text-white line-clamp-1 group-hover:text-sky-300 transition-colors">
                 {note.title}
               </h3>
               <p className="text-xs text-slate-400 mt-2 line-clamp-3 flex-1 leading-relaxed">

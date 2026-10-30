@@ -167,19 +167,19 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             initial={{ scale: 0.98, opacity: 0, y: 10 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.98, opacity: 0, y: 10 }}
-            className="relative w-full max-w-md rounded-2xl bg-[#0c1222] hairline-border overflow-hidden text-slate-100 z-10"
+            className="relative w-full max-w-md rounded-2xl bg-[#040f26] hairline-border overflow-hidden text-slate-100 z-10"
           >
             {/* Top progress indicator */}
             {isSubmitting && (
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-blue-900/40 overflow-hidden">
-                <div className="h-full bg-blue-500 animate-[pulse_1s_infinite] w-full" />
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-sky-950 overflow-hidden">
+                <div className="h-full bg-sky-400 animate-[pulse_1s_infinite] w-full" />
               </div>
             )}
 
             {/* Header */}
             <div className="p-6 pb-4 flex items-start justify-between hairline-b">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+                <div className="w-9 h-9 rounded-xl bg-[#0084ff] flex items-center justify-center text-white shadow-sm">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
@@ -189,7 +189,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                       Verified ID
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">Academic workspace identity verification</p>
+                  <p className="text-xs text-sky-200/70 mt-0.5">Academic workspace identity verification</p>
                 </div>
               </div>
 
@@ -206,7 +206,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             {/* Success Animation */}
             {step === "complete" ? (
               <div className="p-8 text-center space-y-4">
-                <div className="w-14 h-14 rounded-full bg-blue-500/10 hairline-border flex items-center justify-center text-blue-400 mx-auto">
+                <div className="w-14 h-14 rounded-full bg-sky-500/10 hairline-border flex items-center justify-center text-sky-400 mx-auto">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <div>
@@ -223,7 +223,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                     onClick={() => setActiveTab("instant")}
                     className={`flex-1 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       activeTab === "instant"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-[#0084ff] text-white"
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
@@ -235,7 +235,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                     onClick={() => setActiveTab("custom")}
                     className={`flex-1 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       activeTab === "custom"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-[#0084ff] text-white"
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
@@ -258,7 +258,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                       type="button"
                       disabled={isSubmitting}
                       onClick={handleGoogleQuick}
-                      className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center justify-between group cursor-pointer"
+                      className="w-full p-3.5 rounded-xl bg-[#0084ff] hover:bg-[#0073e6] text-white font-medium text-xs transition-colors flex items-center justify-between group cursor-pointer shadow-sm"
                     >
                       <div className="flex items-center gap-2.5 text-left">
                         <GoogleIcon className="w-4 h-4" />

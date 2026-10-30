@@ -55,9 +55,9 @@ export function FloatingAssistant() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                 transition={{ duration: 0.15 }}
-                className="relative bg-[#0c1222] border border-white/[0.12] p-4 rounded-2xl max-w-[270px] mb-2 text-left"
+                className="relative surface-1 hairline-border p-4 rounded-2xl max-w-[270px] mb-2 text-left shadow-[0_12px_40px_rgba(2,11,28,0.7)]"
               >
-                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-white/[0.08]">
+                <div className="flex items-center justify-between gap-2 mb-2 pb-2 hairline-b">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     <span className="text-xs font-semibold text-white">
@@ -84,9 +84,9 @@ export function FloatingAssistant() {
                   {getSpeechText()}
                 </p>
 
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-slate-400">
+                <div className="mt-3 pt-2 hairline-t flex items-center justify-between text-[11px] text-slate-400">
                   <span>Contextual Assistant</span>
-                  <span className="text-blue-400 font-mono text-[10px]">Active</span>
+                  <span className="text-sky-400 font-mono text-[10px]">Active</span>
                 </div>
               </motion.div>
             )}
@@ -106,7 +106,7 @@ export function FloatingAssistant() {
             }}
           >
             <div
-              className={`relative overflow-hidden rounded-full border border-white/[0.15] bg-[#0c1222] transition-transform duration-200 group-hover:scale-105 ${
+              className={`relative overflow-hidden rounded-full border border-sky-400/30 bg-[#040f26] shadow-[0_4px_20px_rgba(0,132,255,0.25)] transition-transform duration-200 group-hover:scale-105 ${
                 isMinimized
                   ? "w-10 h-10"
                   : "w-12 h-12"
@@ -122,7 +122,7 @@ export function FloatingAssistant() {
             </div>
 
             {/* Flat Accent Status Badge */}
-            <div className="absolute -top-0.5 -right-0.5 bg-blue-600 text-white p-1 rounded-full border border-[#070b16]">
+            <div className="absolute -top-0.5 -right-0.5 bg-[#0084ff] text-white p-1 rounded-full border border-[#030d22]">
               {showSpeech ? (
                 <MessageCircle className="h-2.5 w-2.5" />
               ) : (

@@ -35,29 +35,29 @@ export function AuthLandingGateway() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b16] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#030c20] text-slate-100 selection:bg-sky-500/30 selection:text-white font-sans overflow-x-hidden relative">
       <GoogleAuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
 
       {/* Clean Top Navigation Bar */}
-      <header className="relative z-40 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between border-b border-white/[0.08]">
+      <header className="relative z-40 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between border-b border-sky-500/15">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+          <div className="w-8 h-8 rounded-xl bg-[#0084ff] flex items-center justify-center text-white shadow-sm">
             <GraduationCap className="w-4 h-4" />
           </div>
           <div className="flex items-baseline gap-1">
             <span className="text-base font-bold tracking-tight text-white font-sans">
               StudyOS
             </span>
-            <span className="text-[11px] font-semibold text-blue-400 font-mono">
+            <span className="text-[11px] font-semibold text-sky-400 font-mono">
               .ai
             </span>
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-slate-400">
+        <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-slate-300">
           <a href="#features" className="hover:text-white transition-colors">Features</a>
           <a href="#security" className="hover:text-white transition-colors">Security Vault</a>
           <a href="#workflow" className="hover:text-white transition-colors">Adaptive Learning</a>
@@ -79,13 +79,13 @@ export function AuthLandingGateway() {
             onClick={() => setShowAuthModal(true)}
             className="surface-2 hairline-border text-slate-200 hover:text-white font-medium text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Fingerprint className="w-3.5 h-3.5 text-blue-400" />
+            <Fingerprint className="w-3.5 h-3.5 text-sky-400" />
             <span>Google ID</span>
           </button>
 
           <Link
             href="/login"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors"
+            className="bg-[#0084ff] hover:bg-[#0073e6] text-white font-medium text-xs px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
           >
             <GoogleIcon className="w-3.5 h-3.5" />
             <span>Sign In</span>
@@ -110,7 +110,7 @@ export function AuthLandingGateway() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
+          <p className="text-sm sm:text-base text-sky-200/80 max-w-2xl mx-auto font-normal leading-relaxed">
             Organize study materials, generate adaptive flashcards, practice comprehensive quizzes, and boost your daily focus with Pomodoro task planning.
           </p>
 
@@ -120,19 +120,19 @@ export function AuthLandingGateway() {
               <span>Verified Google Account: <strong>{savedAccounts[0].name}</strong></span>
               <button
                 onClick={() => loginWithGoogle({ name: savedAccounts[0].name, email: savedAccounts[0].email })}
-                className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 font-medium text-[11px] transition-colors"
+                className="px-3 py-1 rounded-lg bg-[#0084ff] hover:bg-[#0073e6] font-medium text-[11px] transition-colors"
               >
                 Enter Workspace
               </button>
             </div>
           )}
 
-          {/* Primary CTA Buttons: Pure Flat Accent */}
+          {/* Primary CTA Buttons: Pure Azure Flat Accent */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             {/* Direct Google OAuth Login */}
             <Link
               href="/login"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#0084ff] hover:bg-[#0073e6] text-white font-medium text-sm flex items-center justify-center gap-2.5 transition-colors cursor-pointer shadow-sm"
             >
               <GoogleIcon className="w-4 h-4" />
               <span>Sign In with Google</span>
@@ -144,7 +144,7 @@ export function AuthLandingGateway() {
               onClick={() => setShowAuthModal(true)}
               className="w-full sm:w-auto px-5 py-3 rounded-xl surface-2 hairline-border text-slate-200 hover:text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <Fingerprint className="w-4 h-4 text-blue-400" />
+              <Fingerprint className="w-4 h-4 text-sky-400" />
               <span>Enter with Google ID</span>
             </button>
           </div>

@@ -45,7 +45,7 @@ export default function SubjectsPage() {
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors"
+          className="flex items-center gap-2 bg-[#0084ff] hover:bg-[#0074e0] text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors shadow-sm"
         >
           <Plus className="h-4 w-4" />
           <span>Add Course</span>
@@ -53,9 +53,9 @@ export default function SubjectsPage() {
       </div>
 
       {/* Gwen Stacy Curriculum Card */}
-      <div className="p-4 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl surface-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/20 shrink-0">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-sky-400/30 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
@@ -72,7 +72,7 @@ export default function SubjectsPage() {
       </div>
 
       {isAdding && (
-        <form onSubmit={handleAddSubject} className="bg-[#0c1222] p-5 border border-white/[0.08] rounded-2xl space-y-3">
+        <form onSubmit={handleAddSubject} className="surface-1 p-5 rounded-2xl space-y-3">
           <h3 className="text-sm font-semibold text-white">New Academic Subject</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input
@@ -81,14 +81,14 @@ export default function SubjectsPage() {
               placeholder="Course Title (e.g. Distributed Systems CS402)"
               value={newSubjectName}
               onChange={(e) => setNewSubjectName(e.target.value)}
-              className="px-4 py-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+              className="px-4 py-2.5 surface-2 hairline-border rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-sky-400"
             />
             <input
               type="text"
               placeholder="Description or Professor Name (Optional)"
               value={newSubjectDesc}
               onChange={(e) => setNewSubjectDesc(e.target.value)}
-              className="px-4 py-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+              className="px-4 py-2.5 surface-2 hairline-border rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-sky-400"
             />
           </div>
           <div className="flex gap-2 justify-end pt-1">
@@ -101,7 +101,7 @@ export default function SubjectsPage() {
             </button>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition-colors"
+              className="bg-[#0084ff] hover:bg-[#0074e0] text-white px-4 py-1.5 rounded-xl text-xs font-medium transition-colors shadow-sm"
             >
               Save Course
             </button>
@@ -112,13 +112,13 @@ export default function SubjectsPage() {
       {subjects === undefined ? (
         <div className="text-slate-400 text-center py-12 text-xs">Loading courses...</div>
       ) : subjects.length === 0 ? (
-        <div className="text-center py-16 bg-[#0c1222] border border-dashed border-white/[0.08] rounded-2xl flex flex-col items-center">
+        <div className="text-center py-16 surface-1 border border-dashed border-sky-400/25 rounded-2xl flex flex-col items-center">
           <BookOpen className="h-10 w-10 text-slate-500 mb-3" />
           <h3 className="text-base font-semibold text-white">No courses enrolled yet</h3>
           <p className="text-slate-400 text-xs mt-1 mb-4">Add your academic subjects to link materials, flashcards, and tasks.</p>
           <button
             onClick={() => setIsAdding(true)}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors"
+            className="bg-[#0084ff] hover:bg-[#0074e0] text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors shadow-sm"
           >
             Add First Course
           </button>
@@ -128,11 +128,11 @@ export default function SubjectsPage() {
           {subjects.map((subject) => (
             <div
               key={subject.id}
-              className="bg-[#0c1222] border border-white/[0.08] rounded-2xl p-5 hover:border-white/[0.16] transition-colors flex flex-col justify-between group"
+              className="surface-1 rounded-2xl p-5 hover:border-sky-400/35 transition-colors flex flex-col justify-between group"
             >
               <div>
                 <div className="flex justify-between items-start mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+                  <div className="w-8 h-8 rounded-lg surface-3 hairline-border flex items-center justify-center text-slate-300 group-hover:text-sky-300 transition-colors">
                     <BookOpen className="h-4 w-4" />
                   </div>
                   <button 

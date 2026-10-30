@@ -138,18 +138,18 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b19] flex flex-col items-center justify-center p-4 selection:bg-blue-600/30 font-sans text-slate-100">
+    <div className="min-h-screen bg-[#030d22] flex flex-col items-center justify-center p-4 selection:bg-sky-500/30 font-sans text-slate-100">
       {/* Background subtle illumination */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-blue-600/10 blur-[140px] rounded-full" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-sky-500/10 blur-[140px] rounded-full" />
       </div>
 
       {/* Main Google Accounts Container */}
-      <div className="relative w-full max-w-[460px] bg-[#0c1224] border border-white/10 rounded-3xl p-8 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
+      <div className="relative w-full max-w-[460px] bg-[#040f26]/90 border border-sky-400/25 rounded-3xl p-8 sm:p-10 shadow-[0_20px_60px_rgba(2,11,28,0.85)] backdrop-blur-xl overflow-hidden">
         {/* Indeterminate loading bar */}
         {isSubmitting && (
-          <div className="absolute top-0 left-0 right-0 h-1 bg-blue-900/30 overflow-hidden">
-            <div className="h-full bg-blue-500 animate-[shimmer_1.5s_infinite] w-full" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-sky-950/40 overflow-hidden">
+            <div className="h-full bg-[#0084ff] animate-[shimmer_1.5s_infinite] w-full" />
           </div>
         )}
 
@@ -203,7 +203,7 @@ function LoginContent() {
           <div className="space-y-3 mb-6">
             <a
               href="/api/auth/google"
-              className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center justify-between transition-colors group cursor-pointer"
+              className="w-full p-3.5 rounded-xl bg-[#0084ff] hover:bg-[#0074e0] text-white font-medium text-xs flex items-center justify-between transition-colors group cursor-pointer shadow-sm"
             >
               <div className="flex items-center gap-3 text-left">
                 <GoogleIcon className="w-4 h-4" />
@@ -224,7 +224,7 @@ function LoginContent() {
                 <button
                   type="button"
                   onClick={() => handleInstantPersona("Alex Rivera", "alex.rivera.cs@gmail.com", "Computer Science & AI", "Stanford University", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80")}
-                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-blue-500/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
+                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-sky-400/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" alt="Alex" className="w-9 h-9 rounded-full object-cover mb-1 border border-white/10 group-hover:scale-105 transition-transform" />
@@ -234,7 +234,7 @@ function LoginContent() {
                 <button
                   type="button"
                   onClick={() => handleInstantPersona("Sarah Chen", "sarah.chen.mit@gmail.com", "Biomedical Engineering", "MIT", "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=256&q=80")}
-                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-blue-500/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
+                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-sky-400/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=256&q=80" alt="Sarah" className="w-9 h-9 rounded-full object-cover mb-1 border border-white/10 group-hover:scale-105 transition-transform" />
@@ -244,7 +244,7 @@ function LoginContent() {
                 <button
                   type="button"
                   onClick={() => handleInstantPersona("Dr. Elena Vance", "elena.vance.edu@gmail.com", "Cognitive Neuroscience", "Cambridge Academy", "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80")}
-                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-blue-500/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
+                  className="p-2.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-sky-400/40 hover:bg-white/[0.07] transition-all text-center flex flex-col items-center group cursor-pointer"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80" alt="Elena" className="w-9 h-9 rounded-full object-cover mb-1 border border-white/10 group-hover:scale-105 transition-transform" />
@@ -281,7 +281,7 @@ function LoginContent() {
                   setEmail(e.target.value);
                   if (errorMessage) setErrorMessage(null);
                 }}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-blue-500 focus:bg-white/[0.06] text-white text-xs placeholder-slate-500 outline-none transition-all"
+                className="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-sky-400 focus:bg-white/[0.06] text-white text-xs placeholder-slate-500 outline-none transition-all"
               />
             </div>
 
@@ -294,7 +294,7 @@ function LoginContent() {
                     <div
                       key={acc.id}
                       onClick={() => handleSelectSaved(acc.email, acc.name)}
-                      className="p-2 rounded-xl bg-white/[0.02] border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.05] cursor-pointer flex items-center justify-between transition-colors"
+                      className="p-2 rounded-xl bg-white/[0.02] border border-white/5 hover:border-sky-400/30 hover:bg-white/[0.05] cursor-pointer flex items-center justify-between transition-colors"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -336,14 +336,14 @@ function LoginContent() {
                     "Institute of Technology"
                   )
                 }
-                className="text-xs font-semibold text-blue-400 hover:text-blue-300"
+                className="text-xs font-semibold text-sky-400 hover:text-sky-300"
               >
                 Quick Demo Account
               </button>
 
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+                className="px-6 py-2.5 rounded-full bg-[#0084ff] hover:bg-[#0074e0] text-white font-semibold text-xs transition-all shadow-sm"
               >
                 Next
               </button>
@@ -356,7 +356,7 @@ function LoginContent() {
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <div className="p-2 px-3 rounded-full bg-white/5 border border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-6 h-6 rounded-full bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-blue-400 text-xs font-bold">
+                <div className="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300 text-xs font-bold">
                   {email.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-xs text-white truncate max-w-[240px] font-medium">{email}</span>
@@ -367,7 +367,7 @@ function LoginContent() {
                   setStep("email");
                   setPassword("");
                 }}
-                className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold ml-2 shrink-0"
+                className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 font-semibold ml-2 shrink-0"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Change</span>
@@ -389,7 +389,7 @@ function LoginContent() {
                     setPassword(e.target.value);
                     if (errorMessage) setErrorMessage(null);
                   }}
-                  className="w-full pl-4 pr-10 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-blue-500 focus:bg-white/[0.06] text-white text-xs placeholder-slate-500 outline-none transition-all"
+                  className="w-full pl-4 pr-10 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-sky-400 focus:bg-white/[0.06] text-white text-xs placeholder-slate-500 outline-none transition-all"
                 />
                 <button
                   type="button"
@@ -406,7 +406,7 @@ function LoginContent() {
                   id="showPass"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.target.checked)}
-                  className="rounded border-white/20 bg-white/5 text-blue-600 focus:ring-0 cursor-pointer"
+                  className="rounded border-white/20 bg-white/5 text-sky-500 focus:ring-0 cursor-pointer"
                 />
                 <label htmlFor="showPass" className="text-xs text-slate-400 cursor-pointer">
                   Show password
@@ -429,7 +429,7 @@ function LoginContent() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-7 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] disabled:opacity-50 flex items-center gap-2"
+                className="px-7 py-2.5 rounded-full bg-[#0084ff] hover:bg-[#0074e0] text-white font-semibold text-xs transition-all shadow-sm disabled:opacity-50 flex items-center gap-2"
               >
                 {isSubmitting ? (
                   <span>Signing in...</span>
