@@ -35,52 +35,49 @@ export default function DashboardPage() {
   const totalVaultSize = materials?.reduce((acc, m) => acc + (m.fileSize || 0), 0) || 0;
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto pb-32 text-slate-100 font-sans">
-      {/* Clean Welcome Banner */}
-      <div className="relative rounded-3xl bg-[#0c1224] border border-white/10 p-8 sm:p-10 shadow-sm overflow-hidden">
-        {/* Subtle illumination */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 blur-[100px] pointer-events-none rounded-full" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="space-y-6 max-w-7xl mx-auto pb-24 text-slate-100 font-sans">
+      {/* Welcome Banner */}
+      <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-300">
+              <span className="tag-outline">
                 <GoogleIcon className="w-3.5 h-3.5" />
-                <span>Google Identity Verified</span>
-              </div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-[10px] font-black text-pink-300 uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse" />
-                <span>Earth-65 • Light AI Copilot</span>
-              </div>
+                <span>Verified Scholar</span>
+              </span>
+              <span className="tag-outline">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Encrypted Sandbox</span>
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
               {user ? `Welcome back, ${user.name}` : "Academic Workspace"}
             </h1>
-            <p className="text-slate-400 text-xs sm:text-sm font-medium max-w-xl">
+            <p className="text-slate-400 text-xs sm:text-sm font-normal max-w-xl">
               {user
                 ? `${user.degree} • ${user.institution}`
-                : "Your high-security academic workspace is active and isolated."}
+                : "Your client-isolated academic operating system is active."}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/planner"
-              className="px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-semibold text-xs transition-all flex items-center gap-2"
+              className="px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
             >
-              <Clock className="w-4 h-4 text-amber-400" />
-              <span>Pomodoro Timer</span>
+              <Clock className="w-4 h-4 text-slate-400" />
+              <span>Pomodoro</span>
             </Link>
             <Link
               href="/materials"
-              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 font-semibold text-xs transition-all flex items-center gap-2"
+              className="px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 text-xs font-medium transition-colors flex items-center gap-2"
             >
-              <Files className="w-4 h-4 text-blue-400" />
+              <Files className="w-4 h-4 text-slate-400" />
               <span>Vault</span>
             </Link>
             <Link
               href="/tasks"
-              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-sm transition-all flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               <span>New Task</span>
@@ -89,125 +86,115 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats Overview Grid */}
+      {/* Stats Overview Grid: Neutral + One Flat Accent */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Subjects */}
+        {/* Courses */}
         <Link
           href="/subjects"
-          className="rounded-3xl bg-[#0c1224] p-6 border border-white/10 shadow-sm hover:border-blue-500/40 transition-all group"
+          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-slate-400 text-xs font-semibold">
-              <BookOpen className="h-4 w-4 text-blue-400" />
-              <span>Courses</span>
+            <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+              <BookOpen className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <span>Curriculum Courses</span>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <span className="tag-outline text-[10px]">
               Active
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black text-white">{subjects?.length ?? 0}</p>
+          <p className="mt-3 text-3xl font-bold text-white tracking-tight">{subjects?.length ?? 0}</p>
           <p className="text-[11px] text-slate-500 mt-1">Organized in curriculum</p>
         </Link>
 
         {/* Pending Tasks */}
         <Link
           href="/tasks"
-          className="rounded-3xl bg-[#0c1224] p-6 border border-white/10 shadow-sm hover:border-teal-500/40 transition-all group"
+          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-slate-400 text-xs font-semibold">
-              <Target className="h-4 w-4 text-teal-400" />
+            <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+              <Target className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
               <span>Pending Tasks</span>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20">
-              Tasks
+            <span className="tag-outline text-[10px]">
+              {pendingTasks.length} Open
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black text-teal-400">{pendingTasks.length}</p>
+          <p className="mt-3 text-3xl font-bold text-white tracking-tight">{pendingTasks.length}</p>
           <p className="text-[11px] text-slate-500 mt-1">{completedTasks.length} items completed</p>
         </Link>
 
         {/* Flashcards */}
         <Link
           href="/flashcards"
-          className="rounded-3xl bg-[#0c1224] p-6 border border-white/10 shadow-sm hover:border-purple-500/40 transition-all group"
+          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-slate-400 text-xs font-semibold">
-              <Layers className="h-4 w-4 text-purple-400" />
-              <span>Flashcards</span>
+            <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+              <Layers className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <span>Flashcard Cards</span>
             </div>
-            <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                dueFlashcards.length > 0
-                  ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
-                  : "bg-white/5 text-slate-400 border-white/10"
-              }`}
-            >
+            <span className="tag-outline text-[10px]">
               {dueFlashcards.length} Due
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black text-purple-400">{flashcards?.length ?? 0}</p>
+          <p className="mt-3 text-3xl font-bold text-white tracking-tight">{flashcards?.length ?? 0}</p>
           <p className="text-[11px] text-slate-500 mt-1">SM-2 Spaced Repetition</p>
         </Link>
 
-        {/* Secure Vault Materials */}
+        {/* Materials Vault */}
         <Link
           href="/materials"
-          className="rounded-3xl bg-[#0c1224] p-6 border border-white/10 shadow-sm hover:border-indigo-500/40 transition-all group"
+          className="rounded-2xl bg-[#0c1222] p-5 border border-white/[0.08] hover:border-white/[0.16] transition-colors group"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-slate-400 text-xs font-semibold">
-              <HardDrive className="h-4 w-4 text-indigo-400" />
-              <span>Vault Materials</span>
+            <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+              <HardDrive className="h-4 w-4 text-slate-400 group-hover:text-blue-400 transition-colors" />
+              <span>Vault Documents</span>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <span className="tag-outline text-[10px]">
               ≤ 10MB
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black text-indigo-400">{materials?.length ?? 0}</p>
-          <p className="text-[11px] text-slate-500 mt-1">{formatBytes(totalVaultSize)} stored</p>
+          <p className="mt-3 text-3xl font-bold text-white tracking-tight">{materials?.length ?? 0}</p>
+          <p className="text-[11px] text-slate-500 mt-1">{formatBytes(totalVaultSize)} secured</p>
         </Link>
       </div>
 
-      {/* Spider-Gwen Earth-65 Study Rhythm Widget */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#190a1f] via-[#0c1224] to-[#0a1728] border border-pink-500/30 p-6 shadow-[0_10px_35px_rgba(236,72,153,0.15)] flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
-        <div className="absolute -right-16 -bottom-16 w-48 h-48 bg-pink-500/10 blur-[70px] rounded-full pointer-events-none" />
-        <div className="absolute -left-16 -top-16 w-48 h-48 bg-cyan-500/10 blur-[70px] rounded-full pointer-events-none" />
-
-        <div className="flex items-center gap-4 z-10">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-pink-500/40 shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300">
+      {/* Study Rhythm Companion Module: Restrained & Sophisticated */}
+      <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border border-white/20 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen Stacy" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
           </div>
 
           <div className="space-y-1 text-left">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-black uppercase text-pink-400 bg-pink-500/15 border border-pink-500/30 px-2.5 py-0.5 rounded-full">
-                GWEN • EARTH-65
+              <span className="tag-outline text-[10px]">
+                STUDY STRATEGY
               </span>
-              <span className="text-[10px] font-semibold text-cyan-400">Light AI Active</span>
+              <span className="text-xs text-slate-400 font-medium">Gwen Stacy</span>
             </div>
-            <h3 className="text-base sm:text-lg font-black text-white leading-tight">
+            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
               &quot;Stay in the groove. Sharp reflexes beat cramming.&quot;
             </h3>
-            <p className="text-xs text-slate-300">
-              Web-linked task tracking and spaced repetition keep your retention at superhero peak.
+            <p className="text-xs text-slate-400">
+              Active recall drills and spaced repetition keep your retention high without burnout.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 z-10 w-full md:w-auto">
+        <div className="flex items-center gap-2.5 shrink-0 w-full md:w-auto">
           <Link
             href="/planner"
-            className="flex-1 md:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-bold text-xs shadow-md transition-all hover:scale-105 active:scale-95 text-center"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors text-center"
           >
             Start Focus Sprint
           </Link>
           <Link
             href="/quizzes"
-            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-semibold text-xs transition-colors text-center"
+            className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white font-medium text-xs transition-colors text-center"
           >
             Reflex Quiz
           </Link>
@@ -217,121 +204,107 @@ export default function DashboardPage() {
       {/* Main Two-Column Hub */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Launchpad */}
-        <div className="rounded-3xl bg-[#0c1224] border border-white/10 shadow-sm p-6 space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 className="font-bold text-white text-base">Academic Launchpad</h3>
-            <span className="text-xs text-blue-400 font-semibold">Ready for study</span>
+        <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+            <h3 className="font-semibold text-white text-sm">Academic Launchpad</h3>
+            <span className="tag-outline text-[10px]">Ready</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <Link
               href="/planner"
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-amber-500/40 hover:bg-amber-500/5 transition-all group text-left space-y-2"
+              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
                 <Clock className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">
-                  Pomodoro Timer
-                </p>
+                <p className="text-xs font-semibold text-white">Pomodoro Timer</p>
                 <p className="text-[11px] text-slate-400">Focus sprints & breaks</p>
               </div>
             </Link>
 
             <Link
               href="/quizzes"
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-violet-500/40 hover:bg-violet-500/5 transition-all group text-left space-y-2"
+              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
                 <BrainCircuit className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white group-hover:text-violet-300 transition-colors">
-                  AI Quiz Centre
-                </p>
+                <p className="text-xs font-semibold text-white">AI Quiz Centre</p>
                 <p className="text-[11px] text-slate-400">{quizzes?.length || 0} active test sets</p>
               </div>
             </Link>
 
             <Link
               href="/flashcards"
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-purple-500/40 hover:bg-purple-500/5 transition-all group text-left space-y-2"
+              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
                 <Layers className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white group-hover:text-purple-300 transition-colors">
-                  Flashcard Decks
-                </p>
+                <p className="text-xs font-semibold text-white">Flashcard Decks</p>
                 <p className="text-[11px] text-slate-400">{dueFlashcards.length} cards due today</p>
               </div>
             </Link>
 
             <Link
               href="/notes"
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all group text-left space-y-2"
+              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.12] transition-colors group text-left space-y-2"
             >
-              <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
                 <BookOpen className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white group-hover:text-blue-300 transition-colors">
-                  Lecture Notes
-                </p>
+                <p className="text-xs font-semibold text-white">Lecture Notes</p>
                 <p className="text-[11px] text-slate-400">Encrypted note store</p>
               </div>
             </Link>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between text-xs text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <Flame className="w-3.5 h-3.5 text-amber-400" />
-              <span>Current Streak: Active</span>
+          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs text-slate-400">
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Current Streak Active</span>
             </span>
-            <Link href="/planner" className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">
-              Start Focus Session <ArrowRight className="w-3 h-3" />
+            <Link href="/planner" className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 transition-colors">
+              Focus Session <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
         </div>
 
         {/* Priority Action Items */}
-        <div className="rounded-3xl bg-[#0c1224] border border-white/10 shadow-sm p-6 space-y-5 flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 className="font-bold text-white text-base">Priority Action Items</h3>
-            <Link href="/tasks" className="text-xs font-semibold text-blue-400 hover:text-blue-300">
+        <div className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-6 space-y-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+            <h3 className="font-semibold text-white text-sm">Priority Action Items</h3>
+            <Link href="/tasks" className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors">
               View all ({tasks?.length || 0})
             </Link>
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
             {pendingTasks.length > 0 ? (
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {pendingTasks.slice(0, 4).map((task) => (
                   <div
                     key={task.id}
-                    className="p-3.5 bg-white/[0.02] border border-white/10 hover:border-blue-500/30 rounded-2xl flex justify-between items-center transition-all"
+                    className="p-3 bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] rounded-xl flex justify-between items-center transition-colors"
                   >
-                    <span className="font-semibold text-xs text-white truncate max-w-xs">{task.title}</span>
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded capitalize ${
-                        task.priority === "high"
-                          ? "bg-red-500/10 text-red-400 border border-red-500/20"
-                          : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                      }`}
-                    >
+                    <span className="font-medium text-xs text-white truncate max-w-xs">{task.title}</span>
+                    <span className="tag-outline text-[10px] capitalize">
                       {task.priority}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <div className="h-10 w-10 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-2 text-emerald-400">
-                  <CheckSquare className="h-5 w-5" />
+              <div className="text-center py-6">
+                <div className="h-9 w-9 bg-white/[0.04] border border-white/[0.08] rounded-xl flex items-center justify-center mx-auto mb-2 text-slate-400">
+                  <CheckSquare className="h-4 w-4" />
                 </div>
-                <p className="text-slate-300 font-bold text-xs">All tasks completed!</p>
+                <p className="text-slate-300 font-medium text-xs">All tasks completed</p>
                 <p className="text-[11px] text-slate-500 mt-0.5">Add new tasks from the Tasks tab or Planner.</p>
               </div>
             )}
@@ -340,7 +313,7 @@ export default function DashboardPage() {
           <div className="pt-2">
             <Link
               href="/tasks"
-              className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-medium text-slate-300 hover:text-white transition-colors flex items-center justify-center gap-2"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add New Assignment</span>

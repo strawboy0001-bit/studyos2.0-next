@@ -4,19 +4,17 @@ import React from "react";
 
 export function SecurityMeshBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[-1] bg-[#070b19]">
-      {/* Subtle, soft ambient illumination */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[70vw] h-[450px] bg-blue-600/10 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[450px] h-[450px] bg-indigo-500/5 blur-[160px] rounded-full pointer-events-none" />
-
-      {/* Subtle modern dot grid */}
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[-1] bg-[#070b16]">
+      {/* Precision micro-dot grid for subtle architectural depth */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.4) 1px, transparent 0)`,
-          backgroundSize: "32px 32px",
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.6) 1px, transparent 0)`,
+          backgroundSize: "28px 28px",
         }}
       />
+      {/* 1px hairline horizontal guide rule */}
+      <div className="absolute top-16 left-0 right-0 h-px bg-white/[0.04]" />
     </div>
   );
 }

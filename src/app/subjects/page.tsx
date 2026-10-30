@@ -36,47 +36,44 @@ export default function SubjectsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Course Curriculum</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
-              Earth-65 Matrix
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Active Courses
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Course Curriculum</h1>
+            <span className="tag-outline">
+              {subjects?.length || 0} Enrolled
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">Manage your active academic courses and syllabus units.</p>
         </div>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 shadow-[0_0_20px_rgba(236,72,153,0.35)] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:brightness-110 transition-all"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors"
         >
           <Plus className="h-4 w-4" />
           <span>Add Course</span>
         </button>
       </div>
 
-      {/* Earth-65 Gwen Stacy Curriculum Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      {/* Gwen Stacy Curriculum Card */}
+      <div className="p-4 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/20 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Curriculum</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Active Matrix</span>
+              <span className="text-xs font-semibold text-white">Gwen Stacy</span>
+              <span className="tag-outline text-[10px]">CURRICULUM MATRIX</span>
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Organize your syllabus units and map your flashcards and quizzes directly to their corresponding courses.
+            <p className="text-xs text-slate-400 mt-0.5">
+              Organize syllabus units and map flashcards, quizzes, and tasks directly to their corresponding courses.
             </p>
           </div>
         </div>
       </div>
 
       {isAdding && (
-        <form onSubmit={handleAddSubject} className="bg-[#0d1424] p-5 border border-white/10 rounded-3xl shadow-sm space-y-3">
-          <h3 className="text-sm font-bold text-white">New Academic Subject</h3>
+        <form onSubmit={handleAddSubject} className="bg-[#0c1222] p-5 border border-white/[0.08] rounded-2xl space-y-3">
+          <h3 className="text-sm font-semibold text-white">New Academic Subject</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input
               type="text"
@@ -84,27 +81,27 @@ export default function SubjectsPage() {
               placeholder="Course Title (e.g. Distributed Systems CS402)"
               value={newSubjectName}
               onChange={(e) => setNewSubjectName(e.target.value)}
-              className="px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+              className="px-4 py-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
             />
             <input
               type="text"
               placeholder="Description or Professor Name (Optional)"
               value={newSubjectDesc}
               onChange={(e) => setNewSubjectDesc(e.target.value)}
-              className="px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
+              className="px-4 py-2.5 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-500 text-xs outline-none focus:border-blue-500"
             />
           </div>
           <div className="flex gap-2 justify-end pt-1">
             <button
               type="button"
               onClick={() => setIsAdding(false)}
-              className="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-xl hover:bg-white/5 transition-colors"
+              className="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-xl hover:bg-white/[0.05] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition-colors"
+              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-xl text-xs font-medium transition-colors"
             >
               Save Course
             </button>
@@ -115,28 +112,28 @@ export default function SubjectsPage() {
       {subjects === undefined ? (
         <div className="text-slate-400 text-center py-12 text-xs">Loading courses...</div>
       ) : subjects.length === 0 ? (
-        <div className="text-center py-16 bg-[#0b1226]/50 border border-dashed border-white/10 rounded-3xl flex flex-col items-center">
-          <BookOpen className="h-12 w-12 text-slate-500 mb-4" />
-          <h3 className="text-lg font-bold text-white">No courses enrolled yet</h3>
+        <div className="text-center py-16 bg-[#0c1222] border border-dashed border-white/[0.08] rounded-2xl flex flex-col items-center">
+          <BookOpen className="h-10 w-10 text-slate-500 mb-3" />
+          <h3 className="text-base font-semibold text-white">No courses enrolled yet</h3>
           <p className="text-slate-400 text-xs mt-1 mb-4">Add your academic subjects to link materials, flashcards, and tasks.</p>
           <button
             onClick={() => setIsAdding(true)}
-            className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-600/30 transition-colors"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors"
           >
             Add First Course
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {subjects.map((subject) => (
             <div
               key={subject.id}
-              className="bg-[#0d1424] border border-white/10 rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-blue-500/40 transition-all flex flex-col justify-between group"
+              className="bg-[#0c1222] border border-white/[0.08] rounded-2xl p-5 hover:border-white/[0.16] transition-colors flex flex-col justify-between group"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 p-3 rounded-2xl shadow-sm">
-                    <BookOpen className="h-6 w-6" />
+                <div className="flex justify-between items-start mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+                    <BookOpen className="h-4 w-4" />
                   </div>
                   <button 
                     onClick={() => handleDelete(subject.id)}
@@ -146,7 +143,7 @@ export default function SubjectsPage() {
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">
+                <h3 className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
                   {subject.name}
                 </h3>
                 <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
@@ -154,9 +151,9 @@ export default function SubjectsPage() {
                 </p>
               </div>
 
-              <div className="pt-6 flex justify-between items-center text-xs text-slate-500 border-t border-white/5 mt-4">
+              <div className="pt-4 flex justify-between items-center text-xs text-slate-500 border-t border-white/[0.06] mt-4">
                 <span>Enrolled {new Date(subject.createdAt).toLocaleDateString()}</span>
-                <span className="font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer">
+                <span className="font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer">
                   Explore <ArrowRight className="w-3 h-3" />
                 </span>
               </div>

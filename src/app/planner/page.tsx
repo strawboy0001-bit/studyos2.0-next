@@ -196,13 +196,9 @@ export default function PlannerPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Study Planner & Pomodoro</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 flex items-center gap-1">
-              <Flame className="w-3.5 h-3.5" /> Spider-Sense Tempo
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Earth-65 Protocol
-            </span>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Study Planner & Pomodoro</h1>
+            <span className="tag-outline text-slate-300">Tempo Sprint</span>
+            <span className="tag-outline text-slate-400">Structured Intervals</span>
           </div>
           <p className="text-slate-400 text-xs mt-1">
             Focus sprints paired with scheduled daily milestones to maximize deep academic retention.
@@ -211,27 +207,27 @@ export default function PlannerPage() {
 
         <Link
           href="/settings"
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg surface-2 hairline-border text-xs font-medium text-slate-300 hover:text-white transition-colors"
         >
-          <Settings2 className="w-4 h-4 text-slate-400" />
+          <Settings2 className="w-3.5 h-3.5 text-slate-400" />
           <span>Timer Settings</span>
         </Link>
       </div>
 
-      {/* Earth-65 Gwen Stacy Focus Tempo Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      {/* Focus Strategy Banner */}
+      <div className="p-4 rounded-xl surface-1 hairline-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+          <div className="relative w-10 h-10 rounded-lg overflow-hidden hairline-border shrink-0 bg-slate-900">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Focus Tempo</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Reflex Rhythm</span>
+              <span className="text-xs font-semibold text-white tracking-wide">Focus Cadence</span>
+              <span className="tag-outline text-blue-400">Optimal Sprint</span>
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Stay in the pocket. 25 minutes of unbroken focus followed by a 5-minute breather builds peak reflex stamina.
+            <p className="text-xs text-slate-400 mt-0.5">
+              25 minutes of unbroken focus followed by a 5-minute breather builds consistent stamina without mental fatigue.
             </p>
           </div>
         </div>
@@ -240,14 +236,14 @@ export default function PlannerPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Pomodoro Focus Timer Card (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#0c1224] border border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.3)] flex flex-col items-center text-center relative overflow-hidden">
+          <div className="p-6 sm:p-8 rounded-2xl surface-1 hairline-border flex flex-col items-center text-center relative">
             {/* Top Mode Pills */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#070b19] border border-white/10 text-xs mb-8">
+            <div className="flex items-center gap-1.5 p-1 rounded-xl surface-2 hairline-border text-xs mb-8">
               <button
                 onClick={() => switchMode("focus")}
-                className={`px-3.5 py-1.5 rounded-xl font-semibold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "focus"
-                    ? "bg-pink-500/20 text-pink-300 border border-pink-500/40 shadow-sm"
+                    ? "bg-blue-600 text-white"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -255,9 +251,9 @@ export default function PlannerPage() {
               </button>
               <button
                 onClick={() => switchMode("shortBreak")}
-                className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "shortBreak"
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
+                    ? "bg-blue-600 text-white"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -265,9 +261,9 @@ export default function PlannerPage() {
               </button>
               <button
                 onClick={() => switchMode("longBreak")}
-                className={`px-3 py-1.5 rounded-xl font-semibold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   mode === "longBreak"
-                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm"
+                    ? "bg-blue-600 text-white"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -276,7 +272,7 @@ export default function PlannerPage() {
             </div>
 
             {/* Circular Progress Ring */}
-            <div className="relative w-64 h-64 flex items-center justify-center my-2 select-none">
+            <div className="relative w-60 h-60 flex items-center justify-center my-2 select-none">
               <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 160 160">
                 {/* Background Ring */}
                 <circle
@@ -284,7 +280,7 @@ export default function PlannerPage() {
                   cy="80"
                   r="70"
                   className="stroke-white/5"
-                  strokeWidth="8"
+                  strokeWidth="6"
                   fill="transparent"
                 />
                 {/* Progress Ring */}
@@ -292,14 +288,8 @@ export default function PlannerPage() {
                   cx="80"
                   cy="80"
                   r="70"
-                  className={
-                    mode === "focus"
-                      ? "stroke-pink-500"
-                      : mode === "shortBreak"
-                      ? "stroke-cyan-400"
-                      : "stroke-purple-400"
-                  }
-                  strokeWidth="8"
+                  className="stroke-blue-500"
+                  strokeWidth="6"
                   strokeDasharray="440"
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
@@ -310,20 +300,20 @@ export default function PlannerPage() {
 
               {/* Time Display Center */}
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-5xl font-black tracking-tight text-white font-mono">
+                <span className="text-5xl font-bold tracking-tight text-white font-mono">
                   {formatTime(timeLeft)}
                 </span>
-                <span className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">
-                  {mode === "focus" ? "Spider-Sense Focus" : "Reflex Recharge"}
+                <span className="text-[11px] font-medium text-slate-400 mt-1 uppercase tracking-wider">
+                  {mode === "focus" ? "Deep Focus Session" : "Interval Recovery"}
                 </span>
               </div>
             </div>
 
             {/* Controls Bar */}
-            <div className="flex items-center justify-center gap-3 mt-6 w-full max-w-xs">
+            <div className="flex items-center justify-center gap-2.5 mt-6 w-full max-w-xs">
               <button
                 onClick={resetTimer}
-                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                className="p-2.5 rounded-xl surface-2 hairline-border text-slate-400 hover:text-white transition-colors"
                 title="Reset timer"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -331,12 +321,10 @@ export default function PlannerPage() {
 
               <button
                 onClick={toggleTimer}
-                className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 ${
+                className={`flex-1 py-2.5 px-5 rounded-xl font-medium text-xs transition-colors flex items-center justify-center gap-2 ${
                   isRunning
                     ? "bg-rose-600 hover:bg-rose-500 text-white"
-                    : mode === "focus"
-                    ? "bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:brightness-110 text-white font-black shadow-[0_0_25px_rgba(236,72,153,0.4)]"
-                    : "bg-cyan-600 hover:bg-cyan-500 text-white"
+                    : "bg-blue-600 hover:bg-blue-500 text-white"
                 }`}
               >
                 {isRunning ? (
@@ -347,14 +335,14 @@ export default function PlannerPage() {
                 ) : (
                   <>
                     <Play className="w-4 h-4 fill-current" />
-                    <span>Start Focus</span>
+                    <span>Start Session</span>
                   </>
                 )}
               </button>
 
               <button
                 onClick={skipSession}
-                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                className="p-2.5 rounded-xl surface-2 hairline-border text-slate-400 hover:text-white transition-colors"
                 title="Skip to next session"
               >
                 <SkipForward className="w-4 h-4" />
@@ -362,30 +350,30 @@ export default function PlannerPage() {
 
               <button
                 onClick={() => setSoundEnabled(!soundEnabled)}
-                className="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                className="p-2.5 rounded-xl surface-2 hairline-border text-slate-400 hover:text-white transition-colors"
                 title={soundEnabled ? "Mute chimes" : "Enable chimes"}
               >
-                {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4" />}
+                {soundEnabled ? <Volume2 className="w-4 h-4 text-blue-400" /> : <VolumeX className="w-4 h-4" />}
               </button>
             </div>
 
             {/* Daily Sessions Stats */}
-            <div className="mt-8 pt-6 border-t border-white/5 w-full grid grid-cols-2 gap-3 text-center">
-              <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Pomodoros Done</p>
-                <p className="text-xl font-black text-amber-400 mt-0.5">{sessionsCompleted}</p>
+            <div className="mt-8 pt-5 hairline-t w-full grid grid-cols-2 gap-3 text-center">
+              <div className="p-3 rounded-xl surface-2 hairline-border">
+                <p className="text-[10px] uppercase font-semibold text-slate-400">Sessions Completed</p>
+                <p className="text-xl font-bold text-white mt-0.5">{sessionsCompleted}</p>
               </div>
 
-              <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Focused Time</p>
-                <p className="text-xl font-black text-teal-400 mt-0.5">{focusedHours} hrs</p>
+              <div className="p-3 rounded-xl surface-2 hairline-border">
+                <p className="text-[10px] uppercase font-semibold text-slate-400">Focused Time</p>
+                <p className="text-xl font-bold text-blue-400 mt-0.5">{focusedHours} hrs</p>
               </div>
             </div>
           </div>
 
-          {/* Unseen Power Focus Artwork Card */}
-          <div className="p-5 rounded-3xl bg-[#0c1224] border border-red-500/20 shadow-sm relative overflow-hidden flex items-center gap-4 group">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-red-500/30 shadow-md">
+          {/* Unseen Power Focus Card */}
+          <div className="p-4 rounded-xl surface-1 hairline-border flex items-center gap-4 group">
+            <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 hairline-border bg-slate-900">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/unseen.png"
@@ -394,13 +382,13 @@ export default function PlannerPage() {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-[9px] font-black uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">
+              <span className="tag-outline text-slate-300">
                 UNSEEN POWER • 085
               </span>
-              <h4 className="text-xs font-bold text-white mt-1 leading-snug">
+              <h4 className="text-xs font-semibold text-white mt-1 leading-snug">
                 &quot;Covered, but never contained.&quot;
               </h4>
-              <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-2">
+              <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-2">
                 Transformation quietly begins in silent, uninterrupted focus.
               </p>
             </div>
@@ -410,24 +398,24 @@ export default function PlannerPage() {
         {/* Right Column: Daily Focus Schedule & Tasks (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Daily Goal Card */}
-          <div className="p-6 rounded-3xl bg-[#0c1224] border border-white/10 flex items-center justify-between gap-4">
+          <div className="p-5 rounded-xl surface-1 hairline-border flex items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-teal-400" />
-                <h3 className="text-sm font-bold text-white">Daily Target Progress</h3>
+                <Target className="w-4 h-4 text-blue-400" />
+                <h3 className="text-sm font-semibold text-white">Daily Target Progress</h3>
               </div>
               <p className="text-xs text-slate-400">
                 {focusedHours} of {dailyGoalHours} hours completed today
               </p>
             </div>
 
-            <div className="w-48 space-y-1 text-right">
-              <span className="text-xs font-bold text-teal-400">
+            <div className="w-44 space-y-1.5 text-right">
+              <span className="text-xs font-medium text-blue-400">
                 {Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%
               </span>
-              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-teal-400 transition-all duration-300"
+                  className="h-full bg-blue-600 transition-all duration-300"
                   style={{
                     width: `${Math.min(100, Math.round((Number(focusedHours) / dailyGoalHours) * 100))}%`,
                   }}
@@ -437,7 +425,7 @@ export default function PlannerPage() {
           </div>
 
           {/* Today's Schedule & Action Items */}
-          <div className="p-6 rounded-3xl bg-[#0c1224] border border-white/10 space-y-5">
+          <div className="p-5 rounded-xl surface-1 hairline-border space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-400" />

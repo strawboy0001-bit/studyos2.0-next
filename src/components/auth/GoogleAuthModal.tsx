@@ -172,41 +172,41 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
           />
 
           <motion.div
-            initial={{ scale: 0.95, opacity: 0, y: 15 }}
+            initial={{ scale: 0.98, opacity: 0, y: 10 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 15 }}
-            className="relative w-full max-w-md rounded-3xl bg-[#0c1224] border border-blue-500/20 shadow-[0_20px_70px_rgba(0,0,0,0.8)] overflow-hidden text-slate-100 z-10"
+            exit={{ scale: 0.98, opacity: 0, y: 10 }}
+            className="relative w-full max-w-md rounded-2xl bg-[#0c1222] border border-white/[0.12] overflow-hidden text-slate-100 z-10"
           >
             {/* Top progress indicator */}
             {isSubmitting && (
-              <div className="absolute top-0 left-0 right-0 h-1 bg-blue-900/40 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-blue-900/40 overflow-hidden">
                 <div className="h-full bg-blue-500 animate-[pulse_1s_infinite] w-full" />
               </div>
             )}
 
             {/* Header */}
-            <div className="p-6 pb-3 flex items-start justify-between border-b border-white/5">
+            <div className="p-6 pb-4 flex items-start justify-between border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-                  <GraduationCap className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+                  <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-black text-white">StudyOS Pass</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                      1-Tap Access
+                    <h3 className="text-sm font-bold text-white">StudyOS Pass</h3>
+                    <span className="tag-outline text-[10px]">
+                      Verified Access
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">Instant academic entry like Free Fire</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Instant academic entry to your local workspace</p>
                 </div>
               </div>
 
               {!isSubmitting && (
                 <button
                   onClick={onClose}
-                  className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/5 transition-colors"
+                  className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </div>
@@ -214,36 +214,35 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
             {/* Success Animation */}
             {step === "complete" ? (
               <div className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto animate-bounce">
-                  <CheckCircle2 className="w-8 h-8" />
+                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
+                  <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-white">Workspace Unlocked!</h4>
+                  <h4 className="text-base font-bold text-white">Workspace Unlocked</h4>
                   <p className="text-xs text-slate-400 mt-1">Deploying local academic sandbox...</p>
                 </div>
               </div>
             ) : (
               <div className="p-6 space-y-5">
                 {/* Tabs */}
-                <div className="flex items-center gap-1 p-1 rounded-2xl bg-white/[0.03] border border-white/10 text-xs font-semibold">
+                <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs font-medium">
                   <button
                     type="button"
                     onClick={() => setActiveTab("instant")}
-                    className={`flex-1 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       activeTab === "instant"
-                        ? "bg-blue-600 text-white shadow-sm"
+                        ? "bg-blue-600 text-white"
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
-                    <Zap className="w-3.5 h-3.5" />
-                    <span>Quick Play (1-Tap)</span>
+                    <span>Instant Access</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setActiveTab("custom")}
-                    className={`flex-1 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 ${
                       activeTab === "custom"
-                        ? "bg-blue-600 text-white shadow-sm"
+                        ? "bg-blue-600 text-white"
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
@@ -260,27 +259,22 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                 )}
 
                 {activeTab === "instant" ? (
-                  <div className="space-y-3.5">
-                    {/* Primary Free Fire style 1-Tap Guest button */}
+                  <div className="space-y-3">
+                    {/* Primary Flat Accent Guest Button */}
                     <button
                       type="button"
                       disabled={isSubmitting}
                       onClick={handleGuestLogin}
-                      className="w-full p-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(79,70,229,0.45)] transition-all flex items-center justify-between group active:scale-[0.98]"
+                      className="w-full p-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center justify-between group"
                     >
-                      <div className="flex items-center gap-3 text-left">
-                        <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-                          <Zap className="w-5 h-5 text-amber-300 fill-amber-300 animate-pulse" />
-                        </div>
+                      <div className="flex items-center gap-2.5 text-left">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
                         <div>
-                          <div className="font-extrabold flex items-center gap-1.5">
-                            <span>1-Tap Guest Access</span>
-                            <span className="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.2 rounded uppercase">Fastest</span>
-                          </div>
-                          <p className="text-[11px] text-white/80 font-normal">Jump straight in • Zero password needed</p>
+                          <div className="font-semibold text-xs text-white">Guest Scholar Access</div>
+                          <p className="text-[11px] text-white/70">Jump straight in • Zero password needed</p>
                         </div>
                       </div>
-                      <ArrowRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 group-hover:text-white transition-all" />
+                      <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform" />
                     </button>
 
                     {/* Google OAuth Button */}
@@ -288,19 +282,19 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                       type="button"
                       disabled={isSubmitting}
                       onClick={handleGoogleQuick}
-                      className="w-full p-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs shadow-md transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+                      className="w-full p-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-200 hover:text-white font-medium text-xs transition-colors flex items-center justify-center gap-2.5"
                     >
                       <GoogleIcon className="w-4 h-4" />
                       <span>Continue with Google Account</span>
                     </button>
 
-                    {/* Quick Character / Profile Pickers (Free Fire Style) */}
+                    {/* Quick Character / Profile Pickers */}
                     <div className="pt-2">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                          Or Pick Cadet Persona:
+                        <span className="text-[11px] font-medium text-slate-400">
+                          Or select preset scholar profile:
                         </span>
-                        <span className="text-[10px] text-slate-500">1-click switch</span>
+                        <span className="text-[10px] text-slate-500 font-mono">1-click</span>
                       </div>
 
                       <div className="grid grid-cols-3 gap-2">
@@ -373,7 +367,7 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition-colors flex items-center justify-center gap-2"
                       >
                         <UserCheck className="w-4 h-4" />
                         <span>{isSubmitting ? "Authenticating..." : "Sign In & Enter"}</span>
@@ -382,11 +376,11 @@ export function GoogleAuthModal({ isOpen, onClose, onSuccess }: GoogleAuthModalP
                   </form>
                 )}
 
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <Shield className="w-3 h-3 text-blue-400" /> Free Fire-Grade Fast Access
+                <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="flex items-center gap-1.5">
+                    <Shield className="w-3.5 h-3.5 text-slate-400" /> Client-Isolated Sandbox
                   </span>
-                  <span>Instant IndexedDB Storage</span>
+                  <span>Local IndexedDB Storage</span>
                 </div>
               </div>
             )}

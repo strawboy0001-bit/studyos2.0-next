@@ -27,45 +27,42 @@ export default function NotesPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Lecture Notes Vault</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
-              Earth-65 Synthesizer
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Encrypted Local
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Lecture Notes</h1>
+            <span className="tag-outline">
+              {notes?.length || 0} Saved Notes
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">Capture, synthesize, and review encrypted study notes.</p>
         </div>
         <Link
           href="/notes/new"
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:brightness-110 transition-all shadow-[0_0_20px_rgba(236,72,153,0.35)] shrink-0"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors shrink-0"
         >
           <Plus className="h-4 w-4" />
           <span>New Note</span>
         </Link>
       </div>
 
-      {/* Earth-65 Gwen Stacy Notes Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      {/* Gwen Stacy Notes Card */}
+      <div className="p-4 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/20 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Knowledge Base</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Fast Markdown</span>
+              <span className="text-xs font-semibold text-white">Gwen Stacy</span>
+              <span className="tag-outline text-[10px]">NOTE SYNTHESIS</span>
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Synthesize messy class discussions into crisp Cornell notes. Clean structure makes exam prep seamless.
+            <p className="text-xs text-slate-400 mt-0.5">
+              Synthesize messy class discussions into crisp structured notes. Clean hierarchy makes exam prep seamless.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-[#0d1424] border border-white/10 rounded-2xl p-3 shadow-sm flex gap-3 items-center hover:border-pink-500/30 transition-all">
+      <div className="bg-[#0c1222] border border-white/[0.08] rounded-xl p-3 flex gap-3 items-center">
         <Search className="h-4 w-4 text-slate-400 ml-1" />
         <input
           type="text"
@@ -79,13 +76,13 @@ export default function NotesPage() {
       {notes === undefined ? (
         <div className="text-center py-12 text-slate-400 text-xs">Loading notes...</div>
       ) : notes.length === 0 ? (
-        <div className="text-center py-16 bg-[#0b1226]/50 border border-dashed border-white/10 rounded-3xl flex flex-col items-center">
-          <Edit3 className="h-12 w-12 text-slate-500 mb-4" />
-          <h3 className="text-lg font-bold text-white">No notes yet</h3>
+        <div className="text-center py-16 bg-[#0c1222] border border-dashed border-white/[0.08] rounded-2xl flex flex-col items-center">
+          <Edit3 className="h-10 w-10 text-slate-500 mb-3" />
+          <h3 className="text-base font-semibold text-white">No notes yet</h3>
           <p className="text-slate-400 text-xs mt-1 mb-4">Start writing notes or summarize study materials.</p>
           <Link
             href="/notes/new"
-            className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-600/30 transition-colors"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-medium transition-colors"
           >
             Create First Note
           </Link>
@@ -93,16 +90,16 @@ export default function NotesPage() {
       ) : filteredNotes?.length === 0 ? (
         <div className="text-center py-12 text-slate-400 text-xs">No notes match your search.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredNotes?.map((note) => (
             <Link
               key={note.id}
               href={`/notes/${note.id}`}
-              className="group bg-[#0d1424] border border-white/10 rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-blue-500/40 transition-all flex flex-col min-h-[220px]"
+              className="group bg-[#0c1222] border border-white/[0.08] rounded-2xl p-5 hover:border-white/[0.16] transition-colors flex flex-col min-h-[200px]"
             >
               <div className="flex justify-between items-start mb-3">
-                <div className="bg-blue-500/10 border border-blue-500/20 p-2.5 rounded-xl text-blue-400">
-                  <FileText className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-300 group-hover:text-blue-400 transition-colors">
+                  <FileText className="h-4 w-4" />
                 </div>
                 <button 
                   onClick={(e) => handleDelete(note.id, e)}
@@ -111,7 +108,7 @@ export default function NotesPage() {
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
-              <h3 className="text-base font-bold text-white line-clamp-1 group-hover:text-blue-300 transition-colors">
+              <h3 className="text-sm font-semibold text-white line-clamp-1 group-hover:text-blue-400 transition-colors">
                 {note.title}
               </h3>
               <p className="text-xs text-slate-400 mt-2 line-clamp-3 flex-1 leading-relaxed">

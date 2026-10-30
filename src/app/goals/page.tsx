@@ -20,38 +20,35 @@ export default function GoalsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl font-black tracking-tight text-white">Academic Goals & Milestones</h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
-              Earth-65 Trajectory
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Milestone Tracking
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Academic Goals & Milestones</h1>
+            <span className="tag-outline">
+              {goals?.length || 0} Targets
             </span>
           </div>
           <p className="text-slate-400 text-xs mt-1">Set high-impact targets and monitor progress across your semester.</p>
         </div>
         <Link
           href="/goals/new"
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-500 to-cyan-600 hover:brightness-110 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-[0_0_20px_rgba(236,72,153,0.35)] transition-all"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-medium transition-colors"
         >
           <Plus className="h-4 w-4" />
           <span>Create New Goal</span>
         </Link>
       </div>
 
-      {/* Earth-65 Gwen Stacy Goals Motivator Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#180a1c] via-[#0c1224] to-[#081826] border border-pink-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+      {/* Gwen Stacy Goals Motivator Card */}
+      <div className="p-4 rounded-2xl bg-[#0c1222] border border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="relative w-11 h-11 rounded-2xl overflow-hidden border border-pink-500/40 shrink-0 shadow-[0_0_15px_rgba(236,72,153,0.35)]">
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-white/20 shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gwen.png" alt="Gwen" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase text-pink-400 tracking-wider">Gwen Stacy • Earth-65 Trajectory</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-semibold">Semester Velocity</span>
+              <span className="text-xs font-semibold text-white">Gwen Stacy</span>
+              <span className="tag-outline text-[10px]">GOAL VELOCITY</span>
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Aim high, break it down, hit the targets. Big ambitions become reality when you execute milestones one day at a time.
             </p>
           </div>
@@ -61,16 +58,16 @@ export default function GoalsPage() {
       {goals === undefined ? (
         <div className="text-slate-400 text-center py-12 text-xs">Loading goals...</div>
       ) : goals.length === 0 ? (
-        <div className="text-center py-16 rounded-3xl bg-[#0c1224] border border-dashed border-white/10 p-8 space-y-3">
-          <Target className="h-12 w-12 text-slate-500 mx-auto" />
-          <h3 className="text-base font-bold text-white">No active goals yet</h3>
+        <div className="text-center py-16 rounded-2xl bg-[#0c1222] border border-dashed border-white/[0.08] p-8 space-y-3">
+          <Target className="h-10 w-10 text-slate-500 mx-auto" />
+          <h3 className="text-base font-semibold text-white">No active goals yet</h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
             Define target grades, research milestones, or study streaks to break down into daily tasks.
           </p>
           <div className="pt-2">
             <Link
               href="/goals/new"
-              className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all inline-flex items-center gap-2"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition-colors inline-flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
               <span>Start a Goal</span>
@@ -78,36 +75,36 @@ export default function GoalsPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {goals.map((goal) => {
             const isDone = goal.status === "completed";
 
             return (
               <div
                 key={goal.id}
-                className="rounded-3xl bg-[#0c1224] border border-white/10 p-6 shadow-sm flex flex-col justify-between hover:border-blue-500/30 transition-all group"
+                className="rounded-2xl bg-[#0c1222] border border-white/[0.08] p-5 hover:border-white/[0.16] transition-colors flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`p-2.5 rounded-2xl border ${
+                        className={`p-2 rounded-xl border ${
                           isDone
                             ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                            : "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                            : "bg-white/[0.04] border-white/[0.08] text-slate-300"
                         }`}
                       >
-                        <Target className="h-5 w-5" />
+                        <Target className="h-4 w-4" />
                       </div>
                       <div>
-                        <h3 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors">
+                        <h3 className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
                           {goal.title}
                         </h3>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mt-0.5 ${
+                          className={`text-[10px] font-medium px-2 py-0.5 rounded-full border inline-block mt-0.5 ${
                             isDone
                               ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                              : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                              : "bg-white/[0.04] text-slate-400 border-white/[0.08]"
                           }`}
                         >
                           {isDone ? "Completed" : "In Progress"}
